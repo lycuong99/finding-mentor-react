@@ -1,10 +1,11 @@
 // import { Container } from '@mui/material';
 import { Button, Container, FormControl, FormLabel, Grid, Grow, Paper, TextField, Typography } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import bg from '../../assets/images/loginBg.jpg';
 import LoginForm from './LoginForm';
 import SignUpForm from './SignUpForm';
+import { useParams } from 'react-router-dom';
 const containerHeight = '70vh';
 const useStyles = makeStyles((theme) => ({
     mainContainer: {
@@ -33,6 +34,20 @@ export default function LoginPage(props) {
     const [translateForm, setTranslateForm] = useState(0);
     const [isSignUp, setIsSignUp] = useState(true);
     const [SignUpAppear, setSignUpAppear] = useState(true);
+    let { type } = useParams();
+
+    useEffect(() => {
+        console.log(type);
+        if (type == 'signup') {
+            navToSignUp();
+        } else if (type == 'signin') {
+            navToSignIn();
+        } else {
+
+        }
+
+    }, []);
+
     const navToSignIn = () => {
         console.log(formRef);
         setIsSignUp(false);
@@ -50,6 +65,7 @@ export default function LoginPage(props) {
             setSignUpAppear(true);
         }, 250);
     }
+
 
     return (
         <div style={{ backgroundColor: '#fabafa', width: '100%', height: '100vh', paddingTop: '10em' }}>

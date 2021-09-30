@@ -7,7 +7,8 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-          <Route path='/auth' component={Login} />
+        <Route path='/auth/:type' component={Login} />
+        <Route path='/'>Hello</Route>
       </Switch>
     </BrowserRouter>
   );
