@@ -1,7 +1,17 @@
 import { createTheme } from '@mui/material/styles';
 import { themeTypography } from './typography'
+import { customComponent } from "./component";
+
+const themeObj = {
+
+}
 const theme = createTheme({
-    typography: themeTypography,
+    typography: themeTypography(themeObj),
+    palette:{
+        primary:{
+            main: "#4E8656"
+        }
+    },
     transitions: {
         duration: {
             shortest: 150,
@@ -17,6 +27,7 @@ const theme = createTheme({
             leavingScreen: 195,
         },
     },
+    components: customComponent(themeObj)
 });
 
 export default theme;

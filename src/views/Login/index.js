@@ -6,15 +6,20 @@ import bg from '../../assets/images/loginBg.jpg';
 import LoginForm from './LoginForm';
 import SignUpForm from './SignUpForm';
 import { useParams } from 'react-router-dom';
+import logo from "../../assets/images/FMLogo.png";
+import { reset } from '../../actions/index';
+import { connect } from 'react-redux';
 const containerHeight = '70vh';
 const useStyles = makeStyles((theme) => ({
-    mainContainer: {
+    root: {
         height: containerHeight,
-        paddingLeft: 0
+        paddingLeft: 0,
+        borderRadius: 20
     },
     navigation: {
-        borderRadius: 28,
+        borderRadius: 20,
         height: '100%',
+        width: '100%',
         // width: '60%',
         // position: 'absolute',
         transition: 'all 0.35s ease-in-out',
@@ -23,10 +28,16 @@ const useStyles = makeStyles((theme) => ({
         backgroundPosition: 'center center',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
+    },
+    logo: {
+
+    },
+    leftContainer: {
+
     }
 }));
 
-export default function LoginPage(props) {
+function LoginPage(props) {
     const classes = useStyles();
     const formRef = useRef(null);
     const imageRef = useRef(null);
@@ -41,7 +52,10 @@ export default function LoginPage(props) {
         if (type == 'signup') {
             navToSignUp();
         } else if (type == 'signin') {
-            navToSignIn();
+            setTimeout(() => {
+                navToSignIn();
+            }, 300);
+
         } else {
 
         }
@@ -50,45 +64,57 @@ export default function LoginPage(props) {
 
     const navToSignIn = () => {
         console.log(formRef);
-        setIsSignUp(false);
         setSignUpAppear(false);
+        setIsSignUp(false);
+
         setTranslateImage(formRef.current.clientWidth);
         setTranslateForm(imageRef.current.clientWidth);
+        props.reset();
     }
 
     const navToSignUp = () => {
+        props.reset();
         console.log(formRef);
         setIsSignUp(true);
         setTranslateImage(0);
         setTranslateForm(0);
         setTimeout(() => {
             setSignUpAppear(true);
-        }, 250);
+        }, 300);
     }
 
 
-    return (
-        <div style={{ backgroundColor: '#fabafa', width: '100%', height: '100vh', paddingTop: '10em' }}>
-            <Container className={classes.mainContainer} component={Paper} disableGutters elevation={2}>
-                <Grid container style={{ height: "100%", position: 'relative', zIndex: 1000 }}>
-                    <Grid item ref={formRef} md={5}
-                        style={{ padding: "2em 3em", height: "100%", transform: `translateX(${translateForm}px)`, transition: 'all 1s ease-in-out', }} >
-                        <Grow in={SignUpAppear}
 
+
+    return (
+        <div style={{ backgroundColor: '#f2f2f2', width: '100%', height: '100vh', paddingTop: '10em' }}>
+            <Container className={classes.root} component={Paper} disableGutters elevation={12}>
+                <Grid container style={{ height: "100%", position: 'relative', zIndex: 1000 }}>
+                    <Grid item ref={formRef} xs={5}
+                        container
+                        direction="column"
+                        style={{
+                            height: "100%",
+                            padding: '1em 2em',
+                            transform: `translateX(${translateForm}px)`,
+                            transition: 'all 1s ease-in-out',
+                        }} >
+                        <Grid item xs={1} className={classes.logo}>
+                            <img src={logo} alt="Logo" style={{ height: "3em" }} />
+                        </Grid>
+                        {/* <Grid item xs> */}
+                        <Grow in={SignUpAppear}
                             mountOnEnter
                             unmountOnExit
-                            {...(!isSignUp ? { timeout: 500 } : {})}
+                            {...(!SignUpAppear ? { timeout: 350 } : {})}
                             style={{
-                                transitionDelay: isSignUp ? '400ms' : '0ms',
-                                overflow: 'hidden',
-
+                                transitionDelay: SignUpAppear ? '300ms' : '0ms',
                             }} >
                             <Grid container
                                 direction="column"
-                                style={{ height: '100%' }}
-                                justifyContent="space-between">
-                                <Grid item container xs={3} style={{}}>
-                                    <Grid item container direction="column" justifyContent="space-around" style={{ padding: '1em 0' }}>
+                            >
+                                <Grid item xs={3} style={{}}>
+                                    <Grid container direction="column" justifyContent="space-around" style={{ padding: '1em 0' }}>
                                         <Typography variant="h3" style={{ transition: 'all 0.35s ease-in-out' }}>Register now</Typography>
                                         <Typography variant="h1">
                                             Sign up for free.
@@ -107,17 +133,18 @@ export default function LoginPage(props) {
                                                 {` Sign in.`}</Button></Typography>
                                     </Grid>
                                 </Grid>
-                                <Grid item xs={8}>
+                                <Grid item xs>
                                     <SignUpForm />
                                 </Grid>
                             </Grid>
                         </Grow>
+
                         <Grow in={!isSignUp}
                             mountOnEnter
                             unmountOnExit
                             style={{ transitionDelay: !isSignUp ? '500ms' : '0ms', }}
-                            {...(isSignUp ? { timeout: { exit: 400 } } : {})}>
-                            <Grid container direction="column" style={{ height: '100%' }}>
+                            {...(isSignUp ? { timeout: { exit: 350 } } : {})}>
+                            <Grid container direction="column">
                                 <Grid item container xs={3} style={{}}>
                                     <Grid item container direction="column" justifyContent="space-around" style={{ padding: '1em 0' }}>
                                         <Typography variant="h3">Start your journey</Typography>
@@ -143,6 +170,8 @@ export default function LoginPage(props) {
                                 </Grid>
                             </Grid>
                         </Grow>
+                        {/* </Grid> */}
+
                     </Grid>
                     <Grid item xs={7} ref={imageRef} style={{
                         transform: `translateX(-${translateImage}px)`,
@@ -162,3 +191,5 @@ export default function LoginPage(props) {
 
     );
 }
+
+export default connect(null, { reset })(LoginPage);

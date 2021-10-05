@@ -1,7 +1,7 @@
-import { Button, FormControl, FormLabel, Grid, TextField } from "@mui/material";
+import { Alert, Button, FormControl, FormLabel, Grid, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import { connect } from "react-redux";
-import { signUp } from '../../actions'
+import { signUp } from '../../actions';
 
 const SignUpForm = (props) => {
     const formik = useFormik({
@@ -10,21 +10,50 @@ const SignUpForm = (props) => {
             firstname: '',
             lastname: '',
             confirm: '',
-            email: 'foobar@example.com',
-            password: 'foobar',
+            email: '',
+            password: '',
         },
         onSubmit: (values) => {
             console.log(values);
             props.signUp({ fullname: `${values.firstname} ${values.lastname}`, ...values });
         },
+        validate: (values) => {
+            const errors = {};
 
+
+            if (!values.username) {
+                errors.username = "Required!"
+            }
+
+            if (!values.email) {
+                errors.email = 'Required';
+            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+                errors.email = 'Invalid email address';
+            }
+
+            if (!values.password) {
+                errors.password = "Required!"
+            }
+
+            if (values.password !== values.confirm) {
+                errors.confirm = "Password must match!"
+            }
+
+            return errors;
+        }
     });
 
     return (
         <Grid direction="column" container component='form' justifyContent="space-between" onSubmit={formik.handleSubmit}
             style={{ height: '100%' }}>
+            {
+                props.invalid ? (
+                    <Alert color="warning">Username is existed!</Alert>
+                ) : null
+            }
             <Grid item container justifyContent="space-between">
                 <Grid item xs style={{ marginRight: '1em' }}>
+
                     <FormControl fullWidth>
                         <FormLabel>First Name</FormLabel>
                         <TextField size="small" name="firstname"
@@ -62,6 +91,7 @@ const SignUpForm = (props) => {
                 <FormControl fullWidth>
                     <FormLabel>Email</FormLabel>
                     <TextField size="small" name="email"
+
                         onChange={formik.handleChange}
                         value={formik.values.email}
                         error={formik.touched.email && Boolean(formik.errors.email)}
@@ -74,6 +104,7 @@ const SignUpForm = (props) => {
                 <FormControl fullWidth>
                     <FormLabel>Password</FormLabel>
                     <TextField size="small" name="password"
+                        type="password"
                         onChange={formik.handleChange}
                         value={formik.values.password}
                         error={formik.touched.password && Boolean(formik.errors.password)}
@@ -86,6 +117,7 @@ const SignUpForm = (props) => {
                 <FormControl fullWidth>
                     <FormLabel>Confirm </FormLabel>
                     <TextField size="small" name="confirm"
+                        type="password"
                         onChange={formik.handleChange}
                         value={formik.values.confirm}
                         error={formik.touched.confirm && Boolean(formik.errors.confirm)}
@@ -94,12 +126,19 @@ const SignUpForm = (props) => {
                 </FormControl>
             </Grid>
 
-            <Button type="submit" variant="contained" color="primary">Sign up</Button>
+            <Grid item container>
+                <Button type="submit" variant="contained" color="primary" style={{ width: "100%", padding: "0.75em 1em", marginTop: "1em" }}>Sign up</Button>
+            </Grid>
 
         </Grid>
     );
 }
+const mapStateToProps = (state) => {
+    return {
+        invalid: state.auth.invalidSignUp
+    }
+}
 
-export default connect(null, {
+export default connect(mapStateToProps, {
     signUp
 })(SignUpForm);

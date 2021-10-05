@@ -2,7 +2,8 @@ export function themeTypography() {
     return {
         h6: {
             fontWeight: 500,
-            fontSize: '0.75rem'
+            fontSize: '0.75rem',
+           
         },
         h5: {
             fontSize: '0.875rem',
