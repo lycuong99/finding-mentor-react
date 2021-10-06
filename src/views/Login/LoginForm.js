@@ -3,31 +3,65 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { signIn } from '../../actions';
-import { GoogleSignInButton } from "../../components/GoogleAuth";
+import GoogleSignInButton from "../../components/GoogleSignInButton";
+import firebase from "../../firebase";
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import history from "../../history";
+
+
 const LoginForm = (props) => {
 
     const [invalid, setInvalid] = useState(false);
+    const [error, setError] = useState(null);
+
+    const signInFirebase = (email, password) => {
+        const auth = getAuth(firebase);
+        console.log("hello1");
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                console.log("hello");
+                console.log(user);
+                // verify with backend
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                // const errorMessage = error.message;
+                console.log(errorCode);
+                if (errorCode === 'auth/wrong-password') {
+                    console.log("Wrong Password!");
+                    setError('Wrong Password!');
+                } else if (errorCode === 'auth/user-not-found') {
+                    setError('User is not existed!');
+                } else {
+                    setError('Error is unknown');
+                }
+
+            });
+    }
 
 
     const formik = useFormik({
         initialValues: {
-            username: '',
+            email: '',
             password: '',
         },
         onSubmit: (values) => {
             console.log(values);
-            props.signIn(values);
+            signInFirebase(values.email, values.password);
         },
         validate: (values) => {
             const errors = {};
             console.log(props);
 
-            if (!values.username) {
-                errors.username = "Required!"
+            if (!values.email) {
+                errors.email = 'Required';
+            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+                errors.email = 'Invalid email address';
             }
 
-            if (!values.password) {
+            if (!values.email) {
                 errors.password = "Required!"
             }
 
@@ -37,25 +71,23 @@ const LoginForm = (props) => {
 
     return (
         <Grid direction="column" container component='form' justifyContent="space-between" onSubmit={formik.handleSubmit} style={{ height: '100%' }}>
-
-
             <Grid item>
                 {
-                    props.invalid ? (
-                        <Alert color="warning">Invalid username or password</Alert>
+                    error ? (
+                        <Alert color="warning">{error}</Alert>
                     ) : null
                 }
 
                 <FormControl fullWidth>
-                    <FormLabel>Username</FormLabel>
-                    <TextField size="small" name="username"
+                    <FormLabel>email</FormLabel>
+                    <TextField size="small" name="email"
                         onChange={(e) => {
                             formik.handleChange(e);
                         }}
-                        value={formik.values.username}
-                        error={formik.touched.username && Boolean(formik.errors.username)}
-                        helperText={formik.touched.username && formik.errors.username}
-                        fullWidth placeholder="username" />
+                        value={formik.values.email}
+                        error={formik.touched.email && Boolean(formik.errors.email)}
+                        helperText={formik.touched.email && formik.errors.email}
+                        fullWidth placeholder="email" />
                 </FormControl>
             </Grid>
             <Grid item>
@@ -78,7 +110,7 @@ const LoginForm = (props) => {
             </Grid>
 
             <Grid item container>
-                <GoogleSignInButton style={{ width: "100%", padding: "0.75em 1em", marginTop: "1em" }}/>
+                <GoogleSignInButton style={{ width: "100%", padding: "0.75em 1em", marginTop: "1em" }}>Sign In With Google</GoogleSignInButton>
             </Grid>
         </Grid>
     );

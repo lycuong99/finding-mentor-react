@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from "../../assets/images/FMLogo01.png";
 import { SearchSection } from './SearchSection';
-import { ProfileSection } from './ProfileSection';
+import ProfileSection from './ProfileSection';
 import { connect } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({

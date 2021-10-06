@@ -13,6 +13,7 @@ const containerHeight = '70vh';
 const useStyles = makeStyles((theme) => ({
     root: {
         height: containerHeight,
+        maxHeight: '80vh',
         paddingLeft: 0,
         borderRadius: 20
     },
@@ -46,7 +47,7 @@ function LoginPage(props) {
     const [isSignUp, setIsSignUp] = useState(true);
     const [SignUpAppear, setSignUpAppear] = useState(true);
     let { type } = useParams();
-
+    const [containerDirection, setContainerDirection] = useState("row-reverse");
     useEffect(() => {
         console.log(type);
         if (type == 'signup') {
@@ -66,7 +67,7 @@ function LoginPage(props) {
         console.log(formRef);
         setSignUpAppear(false);
         setIsSignUp(false);
-
+       
         setTranslateImage(formRef.current.clientWidth);
         setTranslateForm(imageRef.current.clientWidth);
         props.reset();
@@ -75,6 +76,7 @@ function LoginPage(props) {
     const navToSignUp = () => {
         props.reset();
         console.log(formRef);
+      
         setIsSignUp(true);
         setTranslateImage(0);
         setTranslateForm(0);
@@ -89,15 +91,15 @@ function LoginPage(props) {
     return (
         <div style={{ backgroundColor: '#f2f2f2', width: '100%', height: '100vh', paddingTop: '10em' }}>
             <Container className={classes.root} component={Paper} disableGutters elevation={12}>
-                <Grid container style={{ height: "100%", position: 'relative', zIndex: 1000 }}>
-                    <Grid item ref={formRef} xs={5}
+                <Grid container direction={containerDirection} style={{ height: "100%", position: 'relative', zIndex: 1000 }}>
+                    <Grid item ref={formRef} md={5} sm={7}
                         container
                         direction="column"
                         style={{
                             height: "100%",
                             padding: '1em 2em',
-                            transform: `translateX(${translateForm}px)`,
-                            transition: 'all 1s ease-in-out',
+                            // transform: `translateX(${translateForm}px)`,
+                            transition: 'all .7s ease-in-out',
                         }} >
                         <Grid item xs={1} className={classes.logo}>
                             <img src={logo} alt="Logo" style={{ height: "3em" }} />
@@ -173,15 +175,17 @@ function LoginPage(props) {
                         {/* </Grid> */}
 
                     </Grid>
-                    <Grid item xs={7} ref={imageRef} style={{
-                        transform: `translateX(-${translateImage}px)`,
-                        transition: 'all .7s ease-in-out',
-                        height: "100%",
-                        zIndex: 1001
-                    }}>
-                        <div className={classes.navigation}>
-                            {/* <img src={bg} style={{ height: "100%", width: '100%' }} /> */}
-                        </div>
+                    <Grid item md={7} sm={5}
+                        ref={imageRef}
+                        style={{
+                            // position: 'absolute',
+                            // right: `${translateImage}px`,
+                            // transform: `translateX(-${translateImage}px)`,
+                            transition: 'all .7s ease-in-out',
+                            height: "100%",
+                            zIndex: 1001
+                        }}>
+                        <img src={bg} style={{ height: "100%", width: '100%' }} />
 
                     </Grid>
                 </Grid>

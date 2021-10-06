@@ -6,7 +6,7 @@ class Authentication extends React.Component {
 
     handleAuth = () => {
         const { authenticated } = this.props;
-    
+
         if (authenticated === false && window.location.pathname !== "/auth/signin") {
             history.push("/auth/signin");
         }
@@ -32,4 +32,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Authentication);
+export default connect(mapStateToProps, {})(Authentication);

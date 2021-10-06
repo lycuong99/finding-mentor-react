@@ -1,9 +1,41 @@
 import { Alert, Button, FormControl, FormLabel, Grid, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import { connect } from "react-redux";
-import { signUp } from '../../actions';
+import { signUp, verifySignUp } from '../../actions';
+import firebase from "../../firebase";
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
+import GoogleSignInButton from "../../components/GoogleSignInButton";
+
+
 
 const SignUpForm = (props) => {
+    const [error, setError] = useState(null);
+
+    const signUpWithFirebase = ({ firstname, lastname, email, password }) => {
+        const auth = getAuth(firebase);
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                user.getIdToken(true).then(idToken => {
+                    console.log(idToken);
+                    props.verifySignUp({ fullname: `${firstname} ${lastname}`, email, idToken });
+                })
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorMessage);
+                if (errorCode === 'auth/email-already-in-use') {
+                    setError('Email is already in use!');
+                }
+                // ..
+            });
+    }
+
+
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -15,15 +47,16 @@ const SignUpForm = (props) => {
         },
         onSubmit: (values) => {
             console.log(values);
-            props.signUp({ fullname: `${values.firstname} ${values.lastname}`, ...values });
+            signUpWithFirebase(values);
+
         },
         validate: (values) => {
             const errors = {};
 
 
-            if (!values.username) {
-                errors.username = "Required!"
-            }
+            // if (!values.username) {
+            //     errors.username = "Required!"
+            // }
 
             if (!values.email) {
                 errors.email = 'Required';
@@ -47,8 +80,8 @@ const SignUpForm = (props) => {
         <Grid direction="column" container component='form' justifyContent="space-between" onSubmit={formik.handleSubmit}
             style={{ height: '100%' }}>
             {
-                props.invalid ? (
-                    <Alert color="warning">Username is existed!</Alert>
+                error ? (
+                    <Alert color="warning">{error}</Alert>
                 ) : null
             }
             <Grid item container justifyContent="space-between">
@@ -76,7 +109,7 @@ const SignUpForm = (props) => {
                     </FormControl>
                 </Grid>
             </Grid>
-            <Grid item>
+            {/* <Grid item>
                 <FormControl fullWidth>
                     <FormLabel>Username</FormLabel>
                     <TextField size="small" name="username"
@@ -86,7 +119,7 @@ const SignUpForm = (props) => {
                         helperText={formik.touched.username && formik.errors.username}
                         fullWidth placeholder="username" />
                 </FormControl>
-            </Grid>
+            </Grid> */}
             <Grid item>
                 <FormControl fullWidth>
                     <FormLabel>Email</FormLabel>
@@ -130,6 +163,10 @@ const SignUpForm = (props) => {
                 <Button type="submit" variant="contained" color="primary" style={{ width: "100%", padding: "0.75em 1em", marginTop: "1em" }}>Sign up</Button>
             </Grid>
 
+            <Grid item container>
+                <GoogleSignInButton style={{ width: "100%", padding: "0.75em 1em", marginTop: "1em" }}>Sign Up With Google</GoogleSignInButton>
+            </Grid>
+
         </Grid>
     );
 }
@@ -140,5 +177,5 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {
-    signUp
+    signUp, verifySignUp
 })(SignUpForm);

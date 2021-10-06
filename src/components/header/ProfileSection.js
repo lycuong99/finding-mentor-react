@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Card, CardContent, ClickAwayListener, Fade, IconButton, List, ListItem, ListItemIcon, ListItemText, Paper, Popper, Typography } from '@mui/material';
 import { AccountCircle, ExitToApp } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
+import { connect } from 'react-redux';
+import {logOut} from '../../actions';
 const useStyles = makeStyles((theme) => ({
     navContainer: {
         width: '100%',
@@ -92,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export function ProfileSection(props) {
+const ProfileSection = (props)=> {
     const classes = useStyles();
     const anchorRef = React.useRef(null);
     const [open, setOpen] = React.useState(false);
@@ -164,6 +166,9 @@ export function ProfileSection(props) {
                                             <ListItem
                                                 className={classes.listItem}
                                                 button
+                                                onClick={()=>{
+                                                    props.logOut();
+                                                }}
                                             >
                                                 <ListItemIcon>
                                                     <ExitToApp stroke={1.5} size="1.3rem" />
@@ -182,3 +187,5 @@ export function ProfileSection(props) {
         </React.Fragment>
     );
 }
+
+export default connect(null, {logOut})(ProfileSection);
