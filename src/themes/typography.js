@@ -3,7 +3,7 @@ export function themeTypography() {
         h6: {
             fontWeight: 500,
             fontSize: '0.75rem',
-           
+
         },
         h5: {
             fontSize: '0.875rem',
@@ -26,9 +26,8 @@ export function themeTypography() {
             fontWeight: 700
         },
         subtitle1: {
-            fontSize: '0.875rem',
+            fontSize: '1rem',
             fontWeight: 500,
-
         },
         subtitle2: {
             fontSize: '0.75rem',
