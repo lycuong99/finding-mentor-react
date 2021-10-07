@@ -2,7 +2,7 @@ import { Alert, Button, FormControl, FormLabel, Grid, TextField } from "@mui/mat
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { signIn } from '../../actions';
+import { verifySignIn } from '../../actions';
 import GoogleSignInButton from "../../components/GoogleSignInButton";
 import firebase from "../../firebase";
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
@@ -24,6 +24,10 @@ const LoginForm = (props) => {
                 console.log("hello");
                 console.log(user);
                 // verify with backend
+
+                user.getIdToken(true).then(idToken => {
+                    props.verifySignIn(idToken);
+                })
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -120,5 +124,5 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {
-    signIn
+    verifySignIn
 })(LoginForm);
