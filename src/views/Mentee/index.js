@@ -1,4 +1,4 @@
-import { AppBar, Button, createStyles, Toolbar } from '@mui/material';
+import { AppBar, Button, createStyles, Grid, Toolbar, Typography } from '@mui/material';
 import { withStyles } from '@mui/styles';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -27,6 +27,14 @@ class MenteeHomePage extends React.Component {
                         <Header />
                     </Toolbar>
                 </AppBar>
+
+                <Grid container direction='column'>
+                    <Grid item container direction='column'>
+                        <Grid item>
+                            <Typography variant="h2">Recomend Course</Typography>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </div>
         )
     }
