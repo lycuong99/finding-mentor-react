@@ -26,12 +26,12 @@ export function themeTypography() {
             fontWeight: 700
         },
         subtitle1: {
-            fontSize: '1rem',
+            fontSize: '1.25rem',
             fontWeight: 500,
         },
         subtitle2: {
-            fontSize: '0.75rem',
-            fontWeight: 400,
+            fontSize: '1rem',
+            fontWeight: 500,
 
         },
         caption: {

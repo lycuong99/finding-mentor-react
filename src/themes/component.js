@@ -3,7 +3,7 @@ export function customComponent(theme) {
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    
+                    // boxShadow: 'rgb(61 71 82 / 20%) 0px 4px 20px'
                 }
             }
         },

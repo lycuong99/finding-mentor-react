@@ -4,7 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from "../../assets/images/FMLogo01.png";
 import { SearchSection } from './SearchSection';
-import ProfileSection from './ProfileSection';
+import ProfileSection from '../Layout/ProfileSection';
 import { connect } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +35,7 @@ const Header = (props) => {
                 <SearchSection />
             </Grid>
             <Grid item xs></Grid>
-            <Grid item justifySelf="self-end" style={{marginRight:"2em"}}>
+            <Grid item justifySelf="self-end" style={{ marginRight: "2em" }}>
                 {props.authenticated ?
                     (
                         <ProfileSection />

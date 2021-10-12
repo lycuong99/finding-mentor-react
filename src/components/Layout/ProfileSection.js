@@ -4,7 +4,7 @@ import { Card, CardContent, ClickAwayListener, Fade, IconButton, List, ListItem,
 import { AccountCircle, ExitToApp } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 import { connect } from 'react-redux';
-import {logOut} from '../../actions';
+import { logOut } from '../../actions';
 const useStyles = makeStyles((theme) => ({
     navContainer: {
         width: '100%',
@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const ProfileSection = (props)=> {
+const ProfileSection = (props) => {
     const classes = useStyles();
     const anchorRef = React.useRef(null);
     const [open, setOpen] = React.useState(false);
@@ -121,7 +121,7 @@ const ProfileSection = (props)=> {
         <React.Fragment>
             <IconButton ref={anchorRef}
                 size="large"
-                
+
                 onClick={handleToggle}
                 color="inherit"
             >
@@ -166,7 +166,7 @@ const ProfileSection = (props)=> {
                                             <ListItem
                                                 className={classes.listItem}
                                                 button
-                                                onClick={()=>{
+                                                onClick={() => {
                                                     props.logOut();
                                                 }}
                                             >
@@ -188,4 +188,4 @@ const ProfileSection = (props)=> {
     );
 }
 
-export default connect(null, {logOut})(ProfileSection);
+export default connect(null, { logOut })(ProfileSection);

@@ -67,7 +67,7 @@ function LoginPage(props) {
         console.log(formRef);
         setSignUpAppear(false);
         setIsSignUp(false);
-       
+
         setTranslateImage(formRef.current.clientWidth);
         setTranslateForm(imageRef.current.clientWidth);
         props.reset();
@@ -76,7 +76,7 @@ function LoginPage(props) {
     const navToSignUp = () => {
         props.reset();
         console.log(formRef);
-      
+
         setIsSignUp(true);
         setTranslateImage(0);
         setTranslateForm(0);
@@ -90,7 +90,7 @@ function LoginPage(props) {
 
     return (
         <div style={{ backgroundColor: '#f2f2f2', width: '100%', height: '100vh', paddingTop: '10em' }}>
-            <Container className={classes.root} component={Paper} disableGutters elevation={12}>
+            <Container className={classes.root} component={Paper} style={{ borderRadius: 12 }} disableGutters elevation={12}>
                 <Grid container direction={containerDirection} style={{ height: "100%", position: 'relative', zIndex: 1000 }}>
                     <Grid item ref={formRef} md={5} sm={7}
                         container
@@ -185,7 +185,7 @@ function LoginPage(props) {
                             height: "100%",
                             zIndex: 1001
                         }}>
-                        <img src={bg} style={{ height: "100%", width: '100%' }} />
+                        <img src={bg} style={{ height: "100%", width: '100%',borderRadius:12 }} />
 
                     </Grid>
                 </Grid>
