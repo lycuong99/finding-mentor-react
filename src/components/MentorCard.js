@@ -26,7 +26,7 @@ const MentorCard = (props) => {
                         <Typography variant="subtitle1" fontSize="1.25rem" color="primary">
                             Amin Ghaderi
                         </Typography>
-                        <Typography variant="subtitle2" fontSize="1rem" style={{marginBottom:'5px'}}>
+                        <Typography variant="subtitle2" fontSize="1rem" style={{ marginBottom: '5px' }}>
                             Software engineering
                         </Typography>
                         <Rating size="medium"
@@ -47,7 +47,7 @@ const MentorCard = (props) => {
             <Grid container>
                 <Grid item container xs sx={{ paddingX: '1.5em', paddingY: '2em' }} spacing={3} className="Left">
                     <Grid item>
-                        <Avatar sx={{ width: 88, height: 88 }} src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80" />
+                        <Avatar sx={{ width: 88, height: 88, border: '2px solid #0000001f' }} src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80" />
                     </Grid>
                     <Grid item container xs direction="column" spacing={1} sx={{ paddingX: '1em' }} >
                         <Grid item container rowGap="4px" direction="column">

@@ -5,8 +5,10 @@ import { Link } from 'react-router-dom';
 import logo from "../../assets/images/FMLogo.png";
 import CourseCard from '../../components/CourseCard';
 import Header from "../../components/header";
-import banner from '../../assets/images/banner02.jpg';
+import banner from '../../assets/images/bannerBg.svg';
+import bannerRightImg from '../../assets/images/bannerRight.svg';
 import MentorCard from '../../components/MentorCard';
+
 const appbarHeight = '6em';
 const styles = createStyles((theme) => ({
     // logo: {
@@ -37,17 +39,33 @@ class MenteeHomePage extends React.Component {
         const classes = this.props.classes;
         return (
             <div>
-                <Container maxWidth="lg" >
-                    <Grid container direction='column' className={classes.content} rowGap="3em">
-                        <Grid item container direction='column' className={classes.banner} justifyContent="center" style={{
-                            height: '20em',
+                <div className={classes.banner}>
+                    <Container fixed>
+                        <Grid container direction='column' justifyContent="center" style={{
+                            height: '43em',
+                            marginTop: '-3em',
+                            marginBottom: '3em',
+                            paddingX: 0,
                             color: '#ffffff',
                             fontWeight: '500',
                         }} >
-                            <Typography variant="h3" fontWeight="500" textAlign="center" color="white">Welcome to</Typography>
-                            <Typography variant="h1" fontWeight="500" textAlign="center"  color="white">FPT University Program</Typography>
-                            <Typography variant="h3" fontWeight="500" textAlign="center"  color="white">Start learning </Typography>
+                            <Grid item style={{ marginLeft: '-3em' }}>
+                                <Typography variant="h3" fontSize="2rem" fontFamily="Epilogue" fontWeight="600" color="white">Welcome to</Typography>
+                                <Typography variant="h1" sx={{ marginY: '16px' }} fontSize="4rem" fontFamily="Epilogue" fontWeight="800" color="white">FPT University Program</Typography>
+                                <Typography variant="h3" fontSize="2rem" fontFamily="Epilogue" fontWeight="600" color="white">Find mentor that you can trust</Typography>
+                            </Grid>
+                            <Grid item>
+                                <Grid container justifyContent="flex-end">
+                                    <img src={bannerRightImg} style={{ marginRight: '-3em' }} />
+                                </Grid>
+
+                            </Grid>
                         </Grid>
+                    </Container>
+                </div>
+                <Container maxWidth="lg" >
+                    <Grid container direction='column' className={classes.content} rowGap="3em">
+
 
                         <Grid item container direction='column'>
                             <Grid item style={{ marginBottom: '1em' }}>

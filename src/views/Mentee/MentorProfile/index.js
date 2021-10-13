@@ -1,5 +1,6 @@
 import { Avatar, Button, Card, Chip, Container, Grid, Paper, Rating, Typography } from '@mui/material';
 import React from 'react';
+import CourseCard from '../../../components/CourseCard';
 
 const SectionContainer = (props) => {
     return (
@@ -13,21 +14,25 @@ const SectionContainer = (props) => {
         </Grid>
     )
 }
+
+const CustomChip = (props) => {
+    return (<Chip label={props.label} sx={{ borderRadius: '16px !important', fontFamily: 'Inter, Epilogue', fontWeight: '600', fontSize: '0.85rem', paddingX: '10px', paddingY: '1.4em' }} />);
+}
 const MentorProfilePage = () => {
     const avatarSize = 180;
     return (
         <Container component={Paper} variant="outline" sx={{ border: '2px solid #e5e7eb', borderRadius: 3 }} >
-            <Grid container sx={{ paddingX: '4em', paddingY: '3em' }} justifyContent="space-between" >
-                <Grid item xs={8}>
+            <Grid container sx={{ paddingLeft: '3em', paddingRight: '2em', paddingY: '3em' }} justifyContent="space-between" >
+                <Grid item xs={9}>
                     <Grid container direction="column" rowSpacing={1}>
                         <Grid item>
-                            <Typography variant="h3" color='#737373'>Mentor</Typography>
+                            <Typography variant="h3" color='#b9b9b9'>MENTOR</Typography>
                         </Grid>
-                        <Grid item>
+                        <Grid item sx={{marginBottom:'0.5em'}}>
                             <Typography variant="h1"> Amin Ghaderi</Typography>
                         </Grid>
                         <Grid item>
-                            <Typography variant="h3"> Software engineering</Typography>
+                            <Typography variant="h3" color="primary"> Software engineering</Typography>
                         </Grid>
                         <Grid item>
                             <Rating size="small"
@@ -55,27 +60,40 @@ const MentorProfilePage = () => {
 
                             <SectionContainer title="Subject">
                                 <Grid container spacing={2}>
-                                    <Grid item><Chip label="SWP391" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                                    <Grid item><Chip label="DB301" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                                    <Grid item><Chip label="SYB202" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                                    <Grid item><Chip label="JAV101" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
+                                    <Grid item>
+                                        <CustomChip label="SWP391" />
+                                    </Grid>
+                                    <Grid item><CustomChip label="DB301" /></Grid>
+                                    <Grid item><CustomChip label="SYB202" /></Grid>
+                                    <Grid item><CustomChip label="JAV101" /></Grid>
 
-                                    <Grid item><Chip label="SWP391" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                                    <Grid item><Chip label="DB301" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                                    <Grid item><Chip label="SYB202" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                                    <Grid item><Chip label="JAV101" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
+                                    <Grid item><CustomChip label="SWP391" /></Grid>
+                                    <Grid item><CustomChip label="DB301" /></Grid>
+                                    <Grid item><CustomChip label="SYB202" /></Grid>
+                                    <Grid item><CustomChip label="JAV101" /></Grid>
 
-                                    <Grid item><Chip label="SWP391" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                                    <Grid item><Chip label="DB301" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                                    <Grid item><Chip label="SYB202" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                                    <Grid item><Chip label="JAV101" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
+                                    <Grid item><CustomChip label="SWP391" /></Grid>
+                                    <Grid item><CustomChip label="DB301" /></Grid>
+                                    <Grid item><CustomChip label="SYB202" /></Grid>
+                                    <Grid item><CustomChip label="JAV101" /></Grid>
                                 </Grid>
                             </SectionContainer>
                         </Grid>
 
                         <Grid item >
                             <SectionContainer title="My Course">
+                                <Grid container direction="row" gap='4px' flexWrap="wrap">
+                                    <Grid item xs>
+                                        <CourseCard />
+                                    </Grid>
+                                    <Grid item xs>
+                                        <CourseCard />
+                                    </Grid>
+                                    <Grid item xs>
+                                        <CourseCard />
+                                    </Grid>
 
+                                </Grid>
                             </SectionContainer>
                         </Grid>
                         <Grid item container>
@@ -94,7 +112,7 @@ const MentorProfilePage = () => {
                                 sx={{ width: avatarSize, height: avatarSize }}
                                 src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80" />
                         </Grid>
-                        <Grid item sx={{ marginBottom: '0.5em' }}> 
+                        <Grid item sx={{ marginBottom: '0.5em' }}>
                             <Button variant="outlined" fullWidth sx={{ backgroundColor: 'white', fontSize: '1rem', width: '12em', textTransform: 'capitalize', fontWeight: 500 }}>
                                 Follow
                             </Button>

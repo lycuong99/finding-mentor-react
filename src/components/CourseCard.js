@@ -25,7 +25,7 @@ const CourseCard = (props) => {
     const classes = useStyles();
     if (props.type && props.type == 'detail') {
         return (
-            <Card elevation={4} style={{ width: '100%' }} className={classes.root}>
+            <Card elevation={4} sx={{ width: '100%', borderWidth: 2, borderRadius: 2, }} variant="outlined" className={classes.root}>
                 <Grid container direction="row" justifyContent="space-between">
                     <Grid item >
                         <CardMedia
@@ -56,7 +56,7 @@ const CourseCard = (props) => {
                                 </Grid>
 
                                 <Grid item>
-                                    <Typography variant="h4">{`$ ` + 16}</Typography>
+                                    <Typography variant="h2">{`$` + 16}</Typography>
                                 </Grid>
                             </Grid>
                         </CardActions>
@@ -69,9 +69,9 @@ const CourseCard = (props) => {
         );
     }
     return (
-        <Card style={{ maxWidth: '20em' }}
+        <Card
             variant="outlined"
-            sx={{ borderWidth: 2, borderRadius: 2 }}
+            sx={{ borderWidth: 2, borderRadius: 2, maxWidth: '20em' }}
             className={classes.root}>
             <CardMedia
                 component="img"
@@ -91,11 +91,11 @@ const CourseCard = (props) => {
             <CardActions>
                 <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
-                        <Button variant="contained"  sx={{color: 'white'}}> Enroll </Button>
+                        <Button variant="contained" sx={{ color: 'white' }}> Enroll </Button>
                     </Grid>
 
                     <Grid item>
-                        <Typography variant="h4">{`$ ` + 16}</Typography>
+                        <Typography variant="h2">{`$` + 16}</Typography>
                     </Grid>
                 </Grid>
             </CardActions>

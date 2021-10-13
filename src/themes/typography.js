@@ -21,7 +21,8 @@ export function themeTypography() {
         h3: {
             fontSize: '1.25rem',
             fontWeight: 600,
-            color: fontColor
+            color: fontColor,
+            fontFamily: 'Inter, Roboto',
         },
         h2: {
             fontSize: '1.5rem',

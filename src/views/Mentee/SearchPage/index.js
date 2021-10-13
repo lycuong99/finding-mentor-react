@@ -28,8 +28,10 @@ const FilterContainer = styled((props) => {
 
 
 
-    return (<Card variant={variant} sx={{ paddingBottom: '5em' }}>
-        <CardHeader title="Filter By" sx={{ paddingLeft: '1.5em' }} />
+    return (<Card variant={variant} sx={{ paddingBottom: '5em',paddingTop:'0.5em', minHeight: '40em', borderWidth: 2, borderRadius: 2 }}>
+        <CardHeader title="Filter By" sx={{ paddingLeft: '1.5em', }} titleTypographyProps={{
+            variant:'h2'
+        }} disableTypography={false} />
         <CardActions>
             <Grid container direction="column" >
                 <Grid item sx={{ paddingLeft: '1em' }}>
@@ -37,9 +39,9 @@ const FilterContainer = styled((props) => {
                         color="primary"
                         value={typeSearch}
                         onChange={
-                            (e,value) => {
-                                if(value)
-                                setTypeSearch(value);
+                            (e, value) => {
+                                if (value)
+                                    setTypeSearch(value);
                             }
                         }
                         exclusive
@@ -167,14 +169,14 @@ const SearchPage = () => {
 
     return (
         <Container sx={{ paddingTop: '2em' }}>
-            <Grid container spacing={4} >
-                <Grid item xs={3}>
+            <Grid container spacing={3} >
+                <Grid item sx={{ width: '20em' }}>
                     <FilterContainer variant="outlined" />
                 </Grid>
                 <Grid item xs container>
                     <Grid container direction="column">
                         <Grid item height="7em">
-                            <Card variant="outlined" sx={{ p: 1 }}>
+                            <Card variant="outlined" sx={{ p: 1, borderWidth: 2, borderRadius: 2 }}>
                                 <CardActions>
                                     <Grid container justifyContent="space-between">
                                         <Grid item md={8}>
