@@ -9,7 +9,7 @@ const theme = createTheme({
     typography: themeTypography(themeObj),
     palette:{
         primary:{
-            main: "#4E8656"
+            main: "#01C2A9"
         }
     },
     transitions: {

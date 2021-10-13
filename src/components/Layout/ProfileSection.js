@@ -131,6 +131,7 @@ const ProfileSection = (props) => {
             <Popper
                 placement="bottom-end"
                 open={open}
+                style={{ zIndex: 10 }}
                 anchorEl={anchorRef.current}
                 role={undefined}
                 transition

@@ -15,7 +15,6 @@ const styles = createStyles((theme) => ({
     //     [theme.breakpoints.down('xs')]: { height: '5.5em' },
     // },
     content: {
-        marginTop: appbarHeight,
         minHeight: '100vh'
     },
     appbar: {
@@ -38,16 +37,16 @@ class MenteeHomePage extends React.Component {
         const classes = this.props.classes;
         return (
             <div>
-                <Container maxWidth="lg">
+                <Container maxWidth="lg" >
                     <Grid container direction='column' className={classes.content} rowGap="3em">
                         <Grid item container direction='column' className={classes.banner} justifyContent="center" style={{
                             height: '20em',
-                            color: 'white',
+                            color: '#ffffff',
                             fontWeight: '500',
                         }} >
-                            <Typography variant="h3" fontWeight="500" textAlign="center">Welcome to</Typography>
-                            <Typography variant="h1" fontWeight="500" textAlign="center">FPT University Program</Typography>
-                            <Typography variant="h3" fontWeight="500" textAlign="center">Start learning </Typography>
+                            <Typography variant="h3" fontWeight="500" textAlign="center" color="white">Welcome to</Typography>
+                            <Typography variant="h1" fontWeight="500" textAlign="center"  color="white">FPT University Program</Typography>
+                            <Typography variant="h3" fontWeight="500" textAlign="center"  color="white">Start learning </Typography>
                         </Grid>
 
                         <Grid item container direction='column'>

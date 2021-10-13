@@ -10,16 +10,16 @@ export function customComponent(theme) {
         MuiContainer: {
             styleOverrides: {
                 root: {
-                   
+
                 }
             }
         },
         MuiInputBase: {
             styleOverrides: {
                 input: {
-                  
+
                     '&::placeholder': {
-                      
+
                         fontSize: '0.875rem'
                     }
                 }
@@ -28,26 +28,29 @@ export function customComponent(theme) {
         MuiOutlinedInput: {
             styleOverrides: {
                 root: {
-                  
+
                 },
                 input: {
-                   
+
                 },
                 inputAdornedStart: {
-                   
+
                 },
                 notchedOutline: {
-                  
+
                 }
             }
         },
-        MuiButton:{
+        MuiButton: {
             styleOverrides: {
                 root: {
-                  fontSize:"1rem"
+                    fontSize: "1rem"
                 },
-               
+                contained : {
+                    color:'white'
+                }
             }
-        }
+        },
+
     }
 }

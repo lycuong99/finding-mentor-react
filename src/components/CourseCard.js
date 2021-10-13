@@ -91,7 +91,7 @@ const CourseCard = (props) => {
             <CardActions>
                 <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
-                        <Button variant="contained"> Enroll </Button>
+                        <Button variant="contained"  sx={{color: 'white'}}> Enroll </Button>
                     </Grid>
 
                     <Grid item>

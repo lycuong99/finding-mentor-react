@@ -17,7 +17,7 @@ const styles = createStyles((theme) => ({
     //     [theme.breakpoints.down('xs')]: { height: '5.5em' },
     // },
     content: {
-        marginTop: appbarHeight,
+
         minHeight: '100vh'
     },
     appbar: {
@@ -49,7 +49,7 @@ class MenteeLayout extends React.Component {
                     </Toolbar>
                 </AppBar>
                 {/* <div className={classes.appbarHeight} /> */}
-                <Box component="main" sx={{ minHeight: '100vh' }}>
+                <Box component="main" sx={{ minHeight: '100vh', bgcolor: '#F1F5F8', paddingY: '3em' }}>
                     {
                         this.props.children
                     }
