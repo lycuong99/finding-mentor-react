@@ -1,3 +1,5 @@
+import { grey } from "@mui/material/colors";
+
 export function themeTypography() {
     return {
         h6: {
@@ -26,12 +28,13 @@ export function themeTypography() {
             fontWeight: 700
         },
         subtitle1: {
-            fontSize: '1.25rem',
+            fontSize: '1rem',
             fontWeight: 500,
         },
         subtitle2: {
-            fontSize: '1rem',
+            fontSize: '0.85rem',
             fontWeight: 500,
+            color: grey[600]
 
         },
         caption: {

@@ -4,24 +4,12 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-const selectList = [
-  {
-    id: 0,
-    lable: "Select Major"
-  },
-  {
-    id: 1,
-    lable: "UX/UI Designer"
-  },
-  {
-    id: 2,
-    lable: "Software Developer"
-  }
-]
+
 export default function SelectFilter(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const [selectedItem, setSelectedItem] = React.useState(selectList[0]);
+  const { selectList, selected, lable, keyAttribute, onChange, prefix } = props;
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -45,7 +33,7 @@ export default function SelectFilter(props) {
           paddingLeft: '15px',
           fontSize: '0.85rem',
           borderWidth: 2,
-          fontWeight:'500',
+          fontWeight: '500',
           '&:hover': {
             borderWidth: 2,
           }
@@ -54,7 +42,7 @@ export default function SelectFilter(props) {
         onClick={handleClick}>
 
         {
-          selectedItem.lable
+          `${prefix ? prefix : ''} ${selected[lable]}`
         }
         <span style={{ marginLeft: 5, display: 'flex' }}>
           <KeyboardArrowDownIcon color="primary" />
@@ -78,13 +66,15 @@ export default function SelectFilter(props) {
           padding: 0
         }}>
           {
-            selectList.map(e => (
-              <ListItem disablePadding key={e.id} >
-                <ListItemButton selected={selectedItem.id === e.id} onClick={() => {
-                  setSelectedItem(e);
-                }}>
-                  <ListItemText primary={e.lable}  sx={{
-                    fontWeight: selectedItem.id === e.id ? 'bolder' : 'inherit',
+            selectList.map((e, index) => (
+              <ListItem disablePadding key={index} >
+                <ListItemButton selected={selected[keyAttribute] === e[keyAttribute]}
+                  onClick={() => {
+                    console.log(selected[keyAttribute]);
+                    onChange(e);
+                  }}>
+                  <ListItemText primary={e[lable]} sx={{
+                    fontWeight: selected[keyAttribute] === e[keyAttribute] ? 'bolder' : 'inherit',
                   }} />
                 </ListItemButton>
               </ListItem>))

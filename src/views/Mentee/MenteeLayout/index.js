@@ -48,7 +48,7 @@ class MenteeLayout extends React.Component {
                         <Header />
                     </Toolbar>
                 </AppBar>
-                <div className={classes.appbarHeight} />
+                {/* <div className={classes.appbarHeight} /> */}
                 <Box component="main" sx={{ minHeight: '100vh' }}>
                     {
                         this.props.children

@@ -17,8 +17,17 @@ import SelectFilter from './SelectFilter';
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MentorCard from '../../../components/MentorCard';
+
+const MENTOR = 'MENTOR';
+const COURSE = 'COURSE';
+
 const FilterContainer = styled((props) => {
     const { variant } = props;
+    const typeSearchList = []
+    const [typeSearch, setTypeSearch] = useState(MENTOR);
+
+
+
     return (<Card variant={variant} sx={{ paddingBottom: '5em' }}>
         <CardHeader title="Filter By" sx={{ paddingLeft: '1.5em' }} />
         <CardActions>
@@ -26,12 +35,18 @@ const FilterContainer = styled((props) => {
                 <Grid item sx={{ paddingLeft: '1em' }}>
                     <ToggleButtonGroup
                         color="primary"
-                        value='web'
+                        value={typeSearch}
+                        onChange={
+                            (e,value) => {
+                                if(value)
+                                setTypeSearch(value);
+                            }
+                        }
                         exclusive
                         size="small"
                     >
-                        <ToggleButton value="web">Mentor</ToggleButton>
-                        <ToggleButton value="android">Course</ToggleButton>
+                        <ToggleButton value={MENTOR}>MENTOR</ToggleButton>
+                        <ToggleButton value={COURSE}>COURSE</ToggleButton>
                     </ToggleButtonGroup>
                 </Grid>
                 <Grid item >
@@ -132,6 +147,23 @@ const FilterContainer = styled((props) => {
 const SearchPage = () => {
 
     const [keySearch, setKeySearch] = useState("");
+    const sortList = [
+        {
+            id: 0,
+            lable: "Default"
+        },
+        {
+            id: 1,
+            lable: "Top Reviews"
+        },
+        {
+            id: 2,
+            lable: "Total Mentee"
+        }
+    ];
+    const [sortSelected, setSortSelected] = useState(sortList[0]);
+
+
 
     return (
         <Container sx={{ paddingTop: '2em' }}>
@@ -160,7 +192,12 @@ const SearchPage = () => {
                                                 }} />
                                         </Grid>
                                         <Grid item>
-                                            <SelectFilter />
+                                            <SelectFilter
+                                                selectList={sortList}
+                                                keyAttribute="id"
+                                                prefix="Sort By"
+                                                lable="lable" selected={sortSelected}
+                                                onChange={(item) => { setSortSelected(item) }} />
                                         </Grid>
                                     </Grid>
                                 </CardActions>

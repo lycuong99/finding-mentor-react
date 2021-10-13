@@ -1,9 +1,49 @@
-import { Avatar, Button, Card, CardContent, Chip, Grid, Rating, Typography } from '@mui/material';
+import { Avatar, Button, Card, CardActions, CardContent, CardMedia, Chip, Grid, Rating, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
 
-const MentorCard = () => {
+const useStyles = makeStyles((theme) => ({
+    root: {
+        cursor: 'pointer'
+    }
+}));
+
+const MentorCard = (props) => {
+    const { type } = props;
+    const classes = useStyles();
+    const theme = useTheme();
+    const matchMDUp = useMediaQuery(theme.breakpoints.up('md'));
+    if (type && type == 'simple') {
+        return (
+            <Card className={classes.root} variant="outlined" sx={{ borderRadius: 2, borderWidth: '2px', paddingX: '2em', paddingY: '2.5em' }}>
+                <Grid container direction="column" alignItems="center">
+                    <Grid item xs >
+                        <Avatar
+                            style={{ width: matchMDUp ? 220 : 160, height: matchMDUp ? 220 : 160 }}
+                            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80" />
+                    </Grid>
+                    <Grid item container direction="column" alignItems="center" sx={{ marginTop: '1em', minWidth: 200 }} >
+                        <Typography variant="subtitle1" color="primary">
+                            Amin Ghaderi
+                        </Typography>
+                        <Typography variant="subtitle2">
+                            Software engineering
+                        </Typography>
+                        <Rating size="small"
+                            readOnly
+                            name="simple-controlled"
+                            value={4}
+                        />
+                    </Grid>
+                </Grid>
+
+            </Card >
+        );
+    }
+
+
     return (
-        <Card variant="outlined" sx={{ borderRadius: 2, borderWidth:'2px' }}>
+        <Card variant="outlined" sx={{ borderRadius: 2, borderWidth: '2px' }}>
             <Grid container>
                 <Grid item container xs sx={{ paddingX: '1.5em', paddingY: '2em' }} spacing={3} className="Left">
                     <Grid item>

@@ -69,15 +69,18 @@ const CourseCard = (props) => {
         );
     }
     return (
-        <Card style={{ maxWidth: '17em' }} className={classes.root}>
+        <Card style={{ maxWidth: '20em' }}
+            variant="outlined"
+            sx={{ borderWidth: 2, borderRadius: 2 }}
+            className={classes.root}>
             <CardMedia
                 component="img"
                 height="140"
-                image="https://img-c.udemycdn.com/course/240x135/705264_caa9_11.jpg"
+                image="https://img-c.udemycdn.com/course/240x135/947098_02ec_2.jpg"
                 alt="green iguana"
             />
-            <CardContent style={{ paddingTop: '1em' }}>
-                <Typography variant="subtitle1">
+            <CardContent sx={{ paddingTop: '1em', paddingX: '8px', paddingBottom: 0 }}>
+                <Typography variant="subtitle1" lineHeight="1.2">
                     The Complete 2021 Web Development Bootcamp
                 </Typography>
 
@@ -88,7 +91,7 @@ const CourseCard = (props) => {
             <CardActions>
                 <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
-                        <Button> Enroll </Button>
+                        <Button variant="contained"> Enroll </Button>
                     </Grid>
 
                     <Grid item>
