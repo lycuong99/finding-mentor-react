@@ -1,19 +1,8 @@
 import { Avatar, Button, Card, Chip, Container, Grid, Paper, Rating, Typography } from '@mui/material';
 import React from 'react';
 import CourseCard from '../../../components/CourseCard';
+import SectionContainer from '../../../components/SectionContainer';
 
-const SectionContainer = (props) => {
-    return (
-        <Grid container sx={{ marginTop: '1em' }}>
-            <Grid item sx={{ marginBottom: '1em' }}>
-                <Typography variant="h2">{props.title}</Typography>
-            </Grid>
-            <Grid item>
-                {props.children}
-            </Grid>
-        </Grid>
-    )
-}
 
 const CustomChip = (props) => {
     return (<Chip label={props.label} sx={{ borderRadius: '16px !important', fontFamily: 'Inter, Epilogue', fontWeight: '600', fontSize: '0.85rem', paddingX: '10px', paddingY: '1.4em' }} />);

@@ -43,7 +43,7 @@ class MenteeLayout extends React.Component {
         const classes = this.props.classes;
         return (
             <div>
-                <AppBar position="static" color="inherit" elevation={2} variant="outlined" className={classes.appbar}>
+                <AppBar position="static" color="inherit" elevation={4} className={classes.appbar}>
                     <Toolbar style={{ padding: 0 }} >
                         <Header />
                     </Toolbar>

@@ -10,6 +10,7 @@ import MentorHomePage from './views/Mentor';
 import SearchPage from './views/Mentee/SearchPage';
 import MenteeLayout from './views/Mentee/MenteeLayout';
 import MentorProfilePage from './views/Mentee/MentorProfile';
+import CourseDetailPage from './views/Mentee/CourseDetailPage';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
             </Route>
             <Route path='/mentee/search' component={SearchPage} />
             <Route path='/mentee/profile' component={MentorProfilePage} />
+            <Route path='/mentee/course' component={CourseDetailPage} />
           </MenteeLayout>
         </Route>
 

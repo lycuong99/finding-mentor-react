@@ -28,7 +28,7 @@ const Header = (props) => {
     return (
         <Grid container alignItems="center" justifyContent="flex-start">
             <Grid item style={{ marginRight: '2em' }}>
-                <Link className={classes.logoContainer} to="/"
+                <Link className={classes.logoContainer} to="/mentee"
                 ><img className={classes.logo} alt="company logo" src={logo} /></Link>
             </Grid>
             <Grid item xs={4}>
