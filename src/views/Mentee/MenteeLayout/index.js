@@ -9,7 +9,7 @@ import banner from '../../../assets/images/banner02.jpg';
 import Footer from '../../../components/Footer';
 import { Box } from '@mui/system';
 
-const appbarHeight = '5em';
+const appbarHeight = '4.2em';
 const styles = createStyles((theme) => ({
     // logo: {
     //     height: '3.5em',

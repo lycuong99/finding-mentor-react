@@ -14,9 +14,9 @@ const MentorCard = (props) => {
     const classes = useStyles();
     const theme = useTheme();
     const matchMDUp = useMediaQuery(theme.breakpoints.up('md'));
-    if (type && type == 'simple') {
+    if (type && type == 'vertical') {
         return (
-            <Link to="/mentee/profile"  style={{ textDecoration: 'none' }}>
+            <Link to="/mentee/profile" style={{ textDecoration: 'none' }}>
                 <Card className={classes.root}
                     variant="outlined"
                     sx={{ borderRadius: 2, borderWidth: '2px', paddingX: '2em', paddingY: '2.2em' }}
@@ -46,10 +46,42 @@ const MentorCard = (props) => {
             </Link>
         );
     }
+    else if (type && type == 'horizontal') {
+        return (
+            <Card variant="outlined" sx={{ borderRadius: 2, borderWidth: '2px' }}>
+                <Grid container sx={{ paddingX: '1em', paddingY: '1em' }}>
+                    <Grid item>
+                        <Avatar sx={{ width: 88, height: 88, border: '2px solid #0000001f' }} src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80" />
+                    </Grid>
+                    <Grid item container xs direction="column" spacing={1} sx={{ paddingX: '1em' }} >
+                        <Grid item container direction="column">
+                            <Typography variant="subtitle1" fontSize="1.25rem" color="primary">
+                                Amin Ghaderi
+                            </Typography>
+                            <Typography variant="subtitle2" fontSize="0.875rem">
+                                Software engineering
+                            </Typography>
 
+                            <Rating size="small"
+                                readOnly
+                                name="simple-controlled"
+                                value={4}
+                            />
+                        </Grid>
+                        <Grid item container spacing={1}>
+                            <Grid item><Chip label="SWP391" size="small" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
+                            <Grid item><Chip label="DB301" size="small" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
+                            <Grid item><Chip label="SYB202" size="small" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
+                            <Grid item><Chip label="JAV101" size="small" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Card>
+        )
+    } else {
 
-    return (
-        <Link to="/mentee/profile" style={{ textDecoration: 'none' }}>
+        return (
+
             <Card variant="outlined" sx={{ borderRadius: 2, borderWidth: '2px' }}>
                 <Grid container>
                     <Grid item container xs sx={{ paddingX: '1.5em', paddingY: '2em' }} spacing={3} className="Left">
@@ -87,7 +119,7 @@ const MentorCard = (props) => {
                         justifyContent="center" alignItems="center" xs={3}
                         sx={{ paddingX: '2em', paddingY: '2em', bgcolor: '#f8f8f8', }} >
                         <Grid item >
-                            <Button variant="contained" sx={{ fontSize: '1rem', width: '8em', textTransform: 'capitalize', fontWeight: 400 }} >
+                            <Button variant="contained" component={Link} to="/mentee/profile" sx={{ fontSize: '1rem', width: '8em', textTransform: 'capitalize', fontWeight: 400 }} >
                                 View Profile
                             </Button>
                         </Grid>
@@ -102,8 +134,9 @@ const MentorCard = (props) => {
                     </Grid>
                 </Grid>
             </Card >
-        </Link>
-    );
+
+        );
+    }
 }
 
 export default MentorCard;

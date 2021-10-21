@@ -5,12 +5,14 @@ import MenteeHomePage from './views/Mentee';
 import history from './history';
 import AuthComponent from './components/AuthComponent';
 import ManageUserPage from './views/Admin/ManageUserPage';
-import MentorLayout from './views/Mentor/Layout';
+import MentorLayout from './components/Layout/MentorLayout';
 import MentorHomePage from './views/Mentor';
 import SearchPage from './views/Mentee/SearchPage';
 import MenteeLayout from './views/Mentee/MenteeLayout';
 import MentorProfilePage from './views/Mentee/MentorProfile';
 import CourseDetailPage from './views/Mentee/CourseDetailPage';
+import BecomeMentorPage from './views/Mentor/BecomeMentorPage';
+import CoursesManagementPage from './views/Mentor/CoursesManagementPage';
 
 function App() {
 
@@ -30,8 +32,21 @@ function App() {
             <Route path='/mentee/course' component={CourseDetailPage} />
           </MenteeLayout>
         </Route>
+        <Route path='/mentor/apply' exact>
+          <BecomeMentorPage />
+        </Route>
+        <Route path={['/mentor']} >
+          <MentorLayout>
+            <Route path='/mentor/course' exact>
+              <CoursesManagementPage />
+            </Route>
+          </MentorLayout>
+        </Route>
 
-        <Route path='/mentor'>
+
+
+
+        <Route path='/mentor' exact>
           <MentorHomePage />
         </Route>
 

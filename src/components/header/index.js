@@ -10,8 +10,8 @@ import { connect } from 'react-redux';
 const useStyles = makeStyles((theme) => ({
     logo: {
         height: '2em',
-        [theme.breakpoints.down('md')]: { height: '7em' },
-        [theme.breakpoints.down('xs')]: { height: '5.5em' },
+        // [theme.breakpoints.down('md')]: { height: '7em' },
+        // [theme.breakpoints.down('xs')]: { height: '5.5em' },
     },
     logoContainer: {
         padding: "1em",

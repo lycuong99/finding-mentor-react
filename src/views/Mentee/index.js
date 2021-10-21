@@ -1,13 +1,83 @@
-import { AppBar, Button, Container, createStyles, Grid, Toolbar, Typography } from '@mui/material';
+import { AppBar, Button, Container, createStyles, Grid, IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import { withStyles } from '@mui/styles';
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import logo from "../../assets/images/FMLogo.png";
 import CourseCard from '../../components/CourseCard';
 import Header from "../../components/header";
+import SectionContainer from "../../components/SectionContainer";
 import banner from '../../assets/images/bannerBg.svg';
 import bannerRightImg from '../../assets/images/bannerRight.svg';
 import MentorCard from '../../components/MentorCard';
+import Slider from 'react-slick';
+import { Box } from '@mui/system';
+import { fetchRecommendMentor, fetchRecommendMentorByMajor } from '../../actions';
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import { connect } from 'react-redux';
+
+function SimpleSlider() {
+    const slider = useRef();
+    const next = () => {
+        slider.current.slickNext();
+    }
+    const previous = () => {
+        slider.current.slickPrev();
+    }
+    const [disabledFirstBtn, setDisabledFirstBtn] = React.useState(true);
+    const [disabledLastBtn, setDisabledLastBtn] = React.useState(false);
+    var settings = {
+        speed: 500,
+        slidesToShow: 2.5,
+        slidesToScroll: 1,
+        // dots: true,
+        afterChange: current => {
+            console.log(current);
+            if (current == 0) setDisabledFirstBtn(true); else setDisabledFirstBtn(false);
+            if (current == 2.5) setDisabledLastBtn(true); else setDisabledLastBtn(false);
+        },
+        infinite: false,
+    };
+
+    return (
+        <React.Fragment>
+            <Box height="2em" />
+            <Stack direction="row" alignItems="center" sx={{ marginBottom: '1em' }} spacing={2}>
+                <Typography variant="h2" >Recommend Mentor for Engineering Software</Typography>
+                <Stack direction="row" alignItems="center" spacing={2}>
+                    <IconButton onClick={previous} style={{ backgroundColor: 'white', opacity: disabledFirstBtn == true ? 0.6 : 1 }} ><KeyboardArrowLeftIcon fontSize="large" /></IconButton>
+                    <IconButton onClick={next} style={{ backgroundColor: 'white', opacity: disabledLastBtn == true ? 0.6 : 1 }}><KeyboardArrowRightIcon fontSize="large" /></IconButton>
+                </Stack></Stack>
+            <Slider {...settings} ref={slider}>
+                <div key={1} style={{ width: '400px' }}>
+                    <Stack direction="row" spacing={2}><MentorCard type="horizontal" />
+                        <Box sx={{ width: 20 }} /></Stack>
+                </div>
+                <div key={2} style={{ width: '400px' }}>
+                    <Stack direction="row" spacing={2}><MentorCard type="horizontal" />
+                        <Box sx={{ width: 20 }} /></Stack>
+                </div>
+                <div key={3} style={{ width: '400px' }}>
+                    <Stack direction="row" spacing={2}><MentorCard type="horizontal" />
+                        <Box sx={{ width: 20 }} /></Stack>
+                </div >
+                <div key={4} style={{ width: '400px' }}>
+                    <Stack direction="row" spacing={2}><MentorCard type="horizontal" />
+                        <Box sx={{ width: 20 }} /></Stack>
+                </div>
+                <div key={5} style={{ width: '400px' }}>
+                    <Stack direction="row" spacing={2}><MentorCard type="horizontal" />
+                        <Box sx={{ width: 20 }} /></Stack>
+                </div>
+            </Slider>
+
+            <Box height="2em" />
+        </React.Fragment>
+    );
+}
+
 
 const appbarHeight = '6em';
 const styles = createStyles((theme) => ({
@@ -17,7 +87,7 @@ const styles = createStyles((theme) => ({
     //     [theme.breakpoints.down('xs')]: { height: '5.5em' },
     // },
     content: {
-        minHeight: '100vh'
+        // minHeight: '100vh'
     },
     appbar: {
         backgroundColor: 'white'
@@ -29,11 +99,64 @@ const styles = createStyles((theme) => ({
         backgroundSize: "cover",
     }
 }))
+
 class MenteeHomePage extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
+        this.state = {
+            // renderRecommendMentor: null,
+            // recommendMentorByMajor: null
+        };
     }
 
+    componentDidMount() {
+        this.props.fetchRecommendMentor();
+        this.props.fetchRecommendMentorByMajor();
+    }
+
+    componentDidUpdate(){
+        
+    }
+
+    renderRecommendMentor = () => {
+        let renderRecommendMentor = this.props.renderRecommendMentor;
+
+        if (renderRecommendMentor)
+            return (<Grid container direction="row" spacing={3} flexWrap="wrap">
+                {
+                    renderRecommendMentor.map(mentor => {
+                        return (
+                            <Grid item xs md={4} sm={6} key={mentor.id}>
+                                <MentorCard type="vertical" mentorData={mentor} />
+                            </Grid>
+                        );
+                    })
+                }
+            </Grid>
+            );
+
+        return (<div>Loading... !</div>);
+    }
+
+    renderRecommendMentorByMajor = () => {
+        let renderRecommendMentor = this.props.renderRecommendMentorByMajor;
+
+        if (renderRecommendMentor)
+            return (<Grid container direction="row" spacing={3} flexWrap="wrap">
+                {
+                    renderRecommendMentor.map(mentor => {
+                        return (
+                            <Grid item xs md={4} sm={6} key={mentor.id}>
+                                <MentorCard type="vertical" mentorData={mentor} />
+                            </Grid>
+                        );
+                    })
+                }
+            </Grid>
+            );
+
+        return (<div>Loading... !</div>);
+    }
 
     render() {
         const classes = this.props.classes;
@@ -65,35 +188,39 @@ class MenteeHomePage extends React.Component {
                 </div>
                 <Container maxWidth="lg" >
                     <Grid container direction='column' className={classes.content} rowGap="3em">
-
-
                         <Grid item container direction='column'>
                             <Grid item style={{ marginBottom: '1em' }}>
-                                <Typography variant="h2">Recommend Mentor</Typography>
+                                <Typography variant="h2">Top Mentor</Typography>
                             </Grid>
-
                             <Grid item container direction="row" spacing={3} flexWrap="wrap">
                                 <Grid item xs md={4} sm={6}>
-                                    <MentorCard type="simple" />
+                                    <MentorCard type="vertical" />
                                 </Grid>
                                 <Grid item xs md={4} sm={6}>
-                                    <MentorCard type="simple" />
+                                    <MentorCard type="vertical" />
                                 </Grid>
                                 <Grid item xs md={4} sm={6}>
-                                    <MentorCard type="simple" />
+                                    <MentorCard type="vertical" />
                                 </Grid>
                                 <Grid item xs md={4} sm={6}>
-                                    <MentorCard type="simple" />
+                                    <MentorCard type="vertical" />
                                 </Grid>
                                 <Grid item xs md={4} sm={6}>
-                                    <MentorCard type="simple" />
+                                    <MentorCard type="vertical" />
                                 </Grid>
                                 <Grid item xs md={4} sm={6}>
-                                    <MentorCard type="simple" />
+                                    <MentorCard type="vertical" />
                                 </Grid>
                             </Grid>
                         </Grid>
+                    </Grid>
 
+                    <SimpleSlider />
+
+                </Container>
+
+                <Container maxWidth="lg" >
+                    <Grid container direction='column' className={classes.content} rowGap="3em">
                         <Grid item container direction='column'>
                             <Grid item style={{ marginBottom: '1em' }}>
                                 <Typography variant="h2">Recommend Course</Typography>
@@ -142,4 +269,17 @@ class MenteeHomePage extends React.Component {
     }
 }
 
-export default withStyles(styles)(MenteeHomePage);
+const mapStateToProps = (state) => {
+    return {
+        recommendMentor: state.mentor.recommendMentor,
+        recommendMentorByMajor: state.mentor.recommendMentorByMajor
+    }
+}
+export default connect(
+    mapStateToProps, {
+    fetchRecommendMentorByMajor,
+    fetchRecommendMentor
+}
+)(
+    withStyles(styles)(MenteeHomePage)
+);

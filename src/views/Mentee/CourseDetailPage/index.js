@@ -44,9 +44,7 @@ const CourseDetailPage = () => {
                 </Grid>
             </Container>
             <Container component={Paper} maxWidth="xl" variant="outline" sx={{ border: '2px solid #e5e7eb', borderRadius: 3, marginTop: '2em' }} >
-                <Grid container>
-
-                    </Grid>
+                <Grid container></Grid>
             </Container>
 
         </React.Fragment>

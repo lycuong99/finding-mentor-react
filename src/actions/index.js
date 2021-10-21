@@ -35,9 +35,9 @@ export const signUp = ({ username, password, fullname, email }) => async (dispat
 export const verifySignUp = ({ fullname, email, idToken }) => async (dispatch) => {
 
     try {
-        console.log({ fullname, email, idToken  });
+        console.log({ fullname, email, idToken });
         const response = await fm.post("Account/Register", {
-           fullname, email, idToken
+            fullname, email, idToken
         });
 
         console.log(response);
@@ -45,7 +45,7 @@ export const verifySignUp = ({ fullname, email, idToken }) => async (dispatch) =
             dispatch({
                 type: SIGN_UP,
                 payload: {
-                    
+
                 }
             });
             // JwtToken.set(response.data.token);
@@ -53,8 +53,8 @@ export const verifySignUp = ({ fullname, email, idToken }) => async (dispatch) =
 
             UserStorage.setJWTDecode(response.data.token);
             console.log('Go');
-            history.replace("/");
-           
+            history.replace("/mentee");
+
         }
     } catch (error) {
         console.log('Sign Un fail');
@@ -64,23 +64,24 @@ export const verifySignUp = ({ fullname, email, idToken }) => async (dispatch) =
     }
 }
 
-export const logOut = ()=>{
-        UserStorage.clear();
-        const auth = getAuth();
-        signOut(auth).then(() => {
-            // Sign-out successful.
-        }).catch((error) => {
-            // An error happened.
-        });
+export const logOut = () => {
+    UserStorage.clear();
+    const auth = getAuth();
+    signOut(auth).then(() => {
+        // Sign-out successful.
+    }).catch((error) => {
+        // An error happened.
+    });
 
-        return {
-            type: SIGN_OUT
-        }
+    return {
+        type: SIGN_OUT
+    }
 }
-export const verifySignIn = (idToken ) => async (dispatch) => {
+
+export const verifySignIn = (idToken) => async (dispatch) => {
 
     try {
-        console.log({  idToken  });
+        console.log({ idToken });
         const response = await fm.post("Account/Auth", {
             idToken
         });
@@ -90,7 +91,7 @@ export const verifySignIn = (idToken ) => async (dispatch) => {
             dispatch({
                 type: SIGN_IN,
                 payload: {
-                    
+
                 }
             });
             // JwtToken.set(response.data.token);
@@ -98,7 +99,7 @@ export const verifySignIn = (idToken ) => async (dispatch) => {
             // JwtToken.setJWTDecode(response.data.token);
             UserStorage.setJWTDecode(response.data.token);
             console.log('Go');
-            history.replace("/");
+            history.replace("/mentee");
         }
     } catch (error) {
         console.log('Sign Un fail');
@@ -172,3 +173,6 @@ export const signIn = ({ username, password }) => async (dispatch) => {
 export const reset = () => {
     return { type: RESET_AUTH_FORM }
 }
+
+
+export * from './mentor.action';

@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-    baseURL: "https://localhost:44307/api/"
+    baseURL: "http://beclean.store:2020/api/"
 });

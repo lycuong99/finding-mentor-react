@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: appBarHeight,
         flexGrow: 1,
         padding: 10,
-        backgroundColor: '#e3f2fd',
+        backgroundColor: '#F1F5F8',
         padding: theme.spacing(1),
         transition: theme.transitions.create("margin", {
             easing: theme.transitions.easing.sharp,
@@ -119,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-var webName = "STS Store Manager"
+var webName = "Mentor "
 const INIT_DATA = {
     items: [
     ]
@@ -128,39 +128,53 @@ const INIT_DATA = {
 
 INIT_DATA.items.push(
     {
-        id: 'store',
-        title: 'Store',
+        id: 'course',
+        title: 'Courses',
         type: 'item',
-        url: '/stores',
-        icon: <FiberManualRecord />
+        url: '/mentor/course',
+        icon: <FiberManualRecord fontSize="small" />
     },
     {
-        id: 'staffs',
-        title: 'Staff',
-        type: 'collapse',
-        url: '/staffs',
-        icon: <GroupOutlined />,
-        children: [
-            {
-                type: 'item',
-                id: 'request',
-                title: 'Request',
-                url: '/notify/request',
-                icon: <FiberManualRecord style={{ width: 6, height: 6 }} />,
-            },
-            {
-                type: 'item',
-                id: 'activity',
-                title: 'Activity',
-                url: '/notify/activity',
-                icon: <FiberManualRecord style={{ width: 6, height: 6 }} />,
-            }
-        ]
+        id: 'question',
+        title: 'Questions',
+        type: 'item',
+        url: '/mentor/question',
+        icon: <FiberManualRecord fontSize="small" />
+    },
+    // {
+    //     id: 'questions',
+    //     title: 'Staff',
+    //     type: 'collapse',
+    //     url: '/staffs',
+    //     icon: <GroupOutlined />,
+    //     children: [
+    //         {
+    //             type: 'item',
+    //             id: 'request',
+    //             title: 'Request',
+    //             url: '/notify/request',
+    //             icon: <FiberManualRecord style={{ width: 6, height: 6 }} />,
+    //         },
+    //         {
+    //             type: 'item',
+    //             id: 'activity',
+    //             title: 'Activity',
+    //             url: '/notify/activity',
+    //             icon: <FiberManualRecord style={{ width: 6, height: 6 }} />,
+    //         }
+    //     ]
+    // },
+    {
+        id: 'resourse',
+        title: 'Resourse',
+        url: 'mentor/resourse',
+        type: 'item',
+        icon: <EventNoteOutlined />
     },
     {
-        id: 'schedule',
-        title: 'Schedule',
-        url: '/schedule',
+        id: 'profile',
+        title: 'Profile',
+        url: 'mentor/profile',
         type: 'item',
         icon: <EventNoteOutlined />
     },
