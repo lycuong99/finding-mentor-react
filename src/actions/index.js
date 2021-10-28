@@ -23,7 +23,7 @@ export const signUp = ({ username, password, fullname, email }) => async (dispat
 
             UserStorage.setJWTDecode(response.data.token);
             console.log('Go');
-            history.replace("/");
+            history.replace("/additional-info");
         }
     } catch (error) {
         console.log('Sign Un fail');
@@ -53,7 +53,8 @@ export const verifySignUp = ({ fullname, email, idToken }) => async (dispatch) =
 
             UserStorage.setJWTDecode(response.data.token);
             console.log('Go');
-            history.replace("/mentee");
+            history.replace("/additional-info");
+            // history.replace("/mentee");
 
         }
     } catch (error) {
@@ -176,3 +177,4 @@ export const reset = () => {
 
 
 export * from './mentor.action';
+export * from './major.action';

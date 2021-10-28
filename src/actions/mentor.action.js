@@ -5,10 +5,25 @@ import {
 } from '../constants/actionTypes';
 import authHeader from '../ultils/authHeader';
 
+export const fetchMentors = (key) => async (dispatch) => {
+    try {
+
+        const response = await fm.get("Mentor/RecommendMentor", {
+            headers: authHeader(),
+        });
+
+        dispatch({ type: FETCH_RECOMMEND_MENTOR, payload: response.data });
+    } catch (error) {
+        dispatch({ type: FETCH_RECOMMEND_MENTOR_ERROR, payload: { error: "ERROR" } });
+    }
+
+}
+
+
 export const fetchRecommendMentor = () => async (dispatch) => {
     try {
 
-        const response = await fm.get("/Mentor​/RecommendMentor", {
+        const response = await fm.get("Mentor/RecommendMentor", {
             headers: authHeader(),
         });
 
@@ -22,7 +37,7 @@ export const fetchRecommendMentor = () => async (dispatch) => {
 export const fetchRecommendMentorByMajor = () => async (dispatch) => {
     try {
 
-        const response = await fm.get("/Mentor​/RecommendMentorByMajor", {
+        const response = await fm.get("Mentor/RecommendMentorByMajor", {
             headers: authHeader(),
         });
 

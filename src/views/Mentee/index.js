@@ -111,23 +111,24 @@ class MenteeHomePage extends React.Component {
 
     componentDidMount() {
         this.props.fetchRecommendMentor();
-        this.props.fetchRecommendMentorByMajor();
+        // this.props.fetchRecommendMentorByMajor();
     }
 
-    componentDidUpdate(){
-        
+    componentDidUpdate() {
+
     }
 
     renderRecommendMentor = () => {
-        let renderRecommendMentor = this.props.renderRecommendMentor;
+        let recommendMentor = this.props.recommendMentor;
+        // console.log(recommendMentor);
 
-        if (renderRecommendMentor)
+        if (this.props.recommendMentor)
             return (<Grid container direction="row" spacing={3} flexWrap="wrap">
                 {
-                    renderRecommendMentor.map(mentor => {
+                    recommendMentor.map(mentor => {
                         return (
                             <Grid item xs md={4} sm={6} key={mentor.id}>
-                                <MentorCard type="vertical" mentorData={mentor} />
+                                <MentorCard type="vertical" data={mentor}  />
                             </Grid>
                         );
                     })
@@ -192,25 +193,8 @@ class MenteeHomePage extends React.Component {
                             <Grid item style={{ marginBottom: '1em' }}>
                                 <Typography variant="h2">Top Mentor</Typography>
                             </Grid>
-                            <Grid item container direction="row" spacing={3} flexWrap="wrap">
-                                <Grid item xs md={4} sm={6}>
-                                    <MentorCard type="vertical" />
-                                </Grid>
-                                <Grid item xs md={4} sm={6}>
-                                    <MentorCard type="vertical" />
-                                </Grid>
-                                <Grid item xs md={4} sm={6}>
-                                    <MentorCard type="vertical" />
-                                </Grid>
-                                <Grid item xs md={4} sm={6}>
-                                    <MentorCard type="vertical" />
-                                </Grid>
-                                <Grid item xs md={4} sm={6}>
-                                    <MentorCard type="vertical" />
-                                </Grid>
-                                <Grid item xs md={4} sm={6}>
-                                    <MentorCard type="vertical" />
-                                </Grid>
+                            <Grid item >
+                                {this.renderRecommendMentor()}
                             </Grid>
                         </Grid>
                     </Grid>
@@ -270,11 +254,13 @@ class MenteeHomePage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state.mentor.recommendMentor);
     return {
         recommendMentor: state.mentor.recommendMentor,
         recommendMentorByMajor: state.mentor.recommendMentorByMajor
     }
 }
+
 export default connect(
     mapStateToProps, {
     fetchRecommendMentorByMajor,

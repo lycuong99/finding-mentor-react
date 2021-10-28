@@ -35,7 +35,15 @@ const Header = (props) => {
                 <SearchSection />
             </Grid>
             <Grid item xs></Grid>
-            <Grid item justifySelf="self-end" style={{ marginRight: "2em" }}>
+            <Grid item>
+                {props.authenticated ?
+                    (
+                        <Button component={Link} variant='outlined' to="/mentor/apply">Mentor</Button>
+                    ) : (
+                        null
+                    )}
+            </Grid>
+            <Grid item justifySelf="self-end" style={{ marginRight: "2em", marginLeft: "2em" }}>
                 {props.authenticated ?
                     (
                         <ProfileSection />

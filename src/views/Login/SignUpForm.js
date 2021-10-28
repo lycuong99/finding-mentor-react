@@ -78,7 +78,7 @@ const SignUpForm = (props) => {
 
     return (
         <Grid direction="column" container component='form' justifyContent="space-between" onSubmit={formik.handleSubmit}
-            style={{ height: '100%' }}>
+            style={{ height: '100%' }} spacing={1}>
             {
                 error ? (
                     <Alert color="warning">{error}</Alert>
@@ -161,11 +161,10 @@ const SignUpForm = (props) => {
 
             <Grid item container>
                 <Button type="submit" variant="contained" color="primary" style={{ width: "100%", padding: "0.75em 1em", marginTop: "1em" }}>Sign up</Button>
-            </Grid>
-
-            <Grid item container>
                 <GoogleSignInButton style={{ width: "100%", padding: "0.75em 1em", marginTop: "1em" }}>Sign Up With Google</GoogleSignInButton>
             </Grid>
+
+        
 
         </Grid>
     );

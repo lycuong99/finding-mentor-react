@@ -1,50 +1,26 @@
 import { Avatar, Button, Card, Checkbox, Chip, Container, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Paper, Radio, RadioGroup, Rating, TextField, Typography } from '@mui/material';
 import React from 'react';
+import MultipleSelectChip from '../../../components/MultipleSelectChip';
 
 const BecomeMentorPage = () => {
 
     return (
-        <Container maxWidth="md" sx={{ minHeight: '100vh' }}>
-            <Typography variant="h1">Apply as a mentor</Typography>
-            <Paper sx={{ paddingLeft: '2em', paddingRight: '2em', paddingTop: '2em', paddingBottom: '3em', borderRadius: 3, borderWidth:'2px' }} variant="outlined">
-                <Grid container direction="column" rowGap={3}>
+        <Container maxWidth="md" sx={{ minHeight: '100vh', paddingTop: '2em' }}>
+
+            <Paper sx={{ paddingLeft: '2em', paddingRight: '2em', paddingTop: '2em', paddingBottom: '3em', borderRadius: 3, borderWidth: '2px' }} variant="outlined">
+                <Typography variant="h1">Apply as a mentor</Typography>
+
+                <Grid container direction="column" rowGap={3} sx={{ marginTop: '2em' }}>
                     <Grid item>
-                        <FormControl component="fieldset">
+                        <FormControl component="fieldset" fullWidth>
                             <FormLabel component="legend">What is you major ?</FormLabel>
-                            <RadioGroup
-                                aria-label="gender"
-                                defaultValue="female"
-                                name="radio-buttons-group"
-                            >
-                                <FormControlLabel value="female" control={<Radio />} label="Female" />
-                                <FormControlLabel value="male" control={<Radio />} label="Male" />
-                                <FormControlLabel value="other" control={<Radio />} label="Other" />
-                            </RadioGroup>
+                            <MultipleSelectChip />
                         </FormControl>
                     </Grid>
                     <Grid item>
-                        <FormControl component="fieldset" variant="standard">
+                        <FormControl component="fieldset" variant="standard" fullWidth>
                             <FormLabel component="legend">What subject you can mentor ?</FormLabel>
-                            <FormGroup>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox name="gilad" />
-                                    }
-                                    label="Gilad Gray"
-                                />
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox name="jason" />
-                                    }
-                                    label="Jason Killian"
-                                />
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox name="antoine" />
-                                    }
-                                    label="Antoine Llorca"
-                                />
-                            </FormGroup>
+                            <MultipleSelectChip />
 
                         </FormControl>
                     </Grid>

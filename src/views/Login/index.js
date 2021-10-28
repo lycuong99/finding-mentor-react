@@ -9,10 +9,10 @@ import { useParams } from 'react-router-dom';
 import logo from "../../assets/images/FMLogo.png";
 import { reset } from '../../actions/index';
 import { connect } from 'react-redux';
-const containerHeight = '70vh';
+const containerHeight = '60vh';
 const useStyles = makeStyles((theme) => ({
     root: {
-        height: containerHeight,
+        minHeight: containerHeight,
         maxHeight: '80vh',
         paddingLeft: 0,
         borderRadius: 20
@@ -92,12 +92,13 @@ function LoginPage(props) {
         <div style={{ backgroundColor: '#f2f2f2', width: '100%', height: '100vh', paddingTop: '10em' }}>
             <Container className={classes.root} component={Paper} style={{ borderRadius: 12 }} disableGutters elevation={12}>
                 <Grid container direction={containerDirection} style={{ height: "100%", position: 'relative', zIndex: 1000 }}>
-                    <Grid item ref={formRef} md={5} sm={7}
+                    <Grid item ref={formRef}
+                        md={5} sm={7}
                         container
                         direction="column"
                         style={{
                             height: "100%",
-                            padding: '1em 2em',
+                            padding: '2em 2em',
                             // transform: `translateX(${translateForm}px)`,
                             transition: 'all .7s ease-in-out',
                         }} >
@@ -116,7 +117,7 @@ function LoginPage(props) {
                                 direction="column"
                             >
                                 <Grid item xs={3} style={{}}>
-                                    <Grid container direction="column" justifyContent="space-around" style={{ padding: '1em 0' }}>
+                                    <Grid container direction="column" justifyContent="space-around" style={{ padding: '1em 0px' }}>
                                         <Typography variant="h3" style={{ transition: 'all 0.35s ease-in-out' }}>Register now</Typography>
                                         <Typography variant="h1">
                                             Sign up for free.
@@ -136,6 +137,8 @@ function LoginPage(props) {
                                     </Grid>
                                 </Grid>
                                 <Grid item xs>
+                                    {/* <div style={{ height: '200px', backgroundColor: 'blue' }}
+                                    ></div> */}
                                     <SignUpForm />
                                 </Grid>
                             </Grid>
@@ -146,7 +149,7 @@ function LoginPage(props) {
                             unmountOnExit
                             style={{ transitionDelay: !isSignUp ? '500ms' : '0ms', }}
                             {...(isSignUp ? { timeout: { exit: 350 } } : {})}>
-                            <Grid container direction="column">
+                            <Grid container direction="column" alignItems="stretch">
                                 <Grid item container xs={3} style={{}}>
                                     <Grid item container direction="column" justifyContent="space-around" style={{ padding: '1em 0' }}>
                                         <Typography variant="h3">Start your journey</Typography>
@@ -167,7 +170,7 @@ function LoginPage(props) {
                                                 {` Sign up.`}</Button></Typography>
                                     </Grid>
                                 </Grid>
-                                <Grid item xs={4}>
+                                <Grid item xs>
                                     <LoginForm />
                                 </Grid>
                             </Grid>
@@ -183,9 +186,10 @@ function LoginPage(props) {
                             // transform: `translateX(-${translateImage}px)`,
                             transition: 'all .7s ease-in-out',
                             height: "100%",
+                           
                             zIndex: 1001
                         }}>
-                        <img src={bg} style={{ height: "100%", width: '100%',borderRadius:12 }} />
+                        <img src={bg} style={{ height: "100%", maxHeight: '600px', width: '100%', borderRadius: 12 }} />
 
                     </Grid>
                 </Grid>

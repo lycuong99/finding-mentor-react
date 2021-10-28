@@ -13,6 +13,8 @@ import MentorProfilePage from './views/Mentee/MentorProfile';
 import CourseDetailPage from './views/Mentee/CourseDetailPage';
 import BecomeMentorPage from './views/Mentor/BecomeMentorPage';
 import CoursesManagementPage from './views/Mentor/CoursesManagementPage';
+import CourseEditorPage from './views/Mentor/CourseEditorPage';
+import AdditionalInformationAfterSignUp from './views/AdditionalInformationAfterSignUp';
 
 function App() {
 
@@ -21,6 +23,7 @@ function App() {
       <Switch>
         <Route exact path='/'><MenteeHomePage /></Route>
         <Route path='/auth/:type' component={Login} />
+        <Route path='/additional-info' component={AdditionalInformationAfterSignUp} />
         {/* <Route path='/mentee/search' component={SearchPage} /> */}
         <Route path={['/mentee', '/mentee/search']} >
           <MenteeLayout>
@@ -28,7 +31,7 @@ function App() {
               <MenteeHomePage />
             </Route>
             <Route path='/mentee/search' component={SearchPage} />
-            <Route path='/mentee/profile' component={MentorProfilePage} />
+            <Route path='/mentee/profile/:id' component={MentorProfilePage} />
             <Route path='/mentee/course' component={CourseDetailPage} />
           </MenteeLayout>
         </Route>
@@ -37,8 +40,11 @@ function App() {
         </Route>
         <Route path={['/mentor']} >
           <MentorLayout>
-            <Route path='/mentor/course' exact>
+            <Route path={['/mentor', '/mentor/course']} exact>
               <CoursesManagementPage />
+            </Route>
+            <Route path='/mentor/course/new' exact>
+              <CourseEditorPage />
             </Route>
           </MentorLayout>
         </Route>

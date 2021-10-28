@@ -9,6 +9,7 @@ import {
 const INIT_STATE = {
     recommendMentor: [],
     recommendMentorByMajor: [],
+    searchResults: [],
     error: '',
 
 }

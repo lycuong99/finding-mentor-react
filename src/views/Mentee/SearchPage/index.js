@@ -17,158 +17,19 @@ import SelectFilter from './SelectFilter';
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MentorCard from '../../../components/MentorCard';
-
-const MENTOR = 'MENTOR';
-const COURSE = 'COURSE';
-
-const FilterContainer = styled((props) => {
-    const { variant } = props;
-    const typeSearchList = []
-    const [typeSearch, setTypeSearch] = useState(MENTOR);
+import FilterContainer from './FilterContainer';
+import SearchSection from './SearchSection';
 
 
-
-    return (<Card variant={variant} sx={{ paddingBottom: '5em',paddingTop:'0.5em', minHeight: '40em', borderWidth: 2, borderRadius: 2 }}>
-        <CardHeader title="Filter By" sx={{ paddingLeft: '1.5em', }} titleTypographyProps={{
-            variant:'h2'
-        }} disableTypography={false} />
-        <CardActions>
-            <Grid container direction="column" >
-                <Grid item sx={{ paddingLeft: '1em' }}>
-                    <ToggleButtonGroup
-                        color="primary"
-                        value={typeSearch}
-                        onChange={
-                            (e, value) => {
-                                if (value)
-                                    setTypeSearch(value);
-                            }
-                        }
-                        exclusive
-                        size="small"
-                    >
-                        <ToggleButton value={MENTOR}>MENTOR</ToggleButton>
-                        <ToggleButton value={COURSE}>COURSE</ToggleButton>
-                    </ToggleButtonGroup>
-                </Grid>
-                <Grid item >
-                    <Accordion disableGutters elevation={0}>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-
-                        >
-                            <Typography>Select Major</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails sx={{ padding: 0 }}>
-                            <List>
-                                <ListItem disablePadding>
-                                    <ListItemButton dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                                edge="start"
-
-                                                tabIndex={-1}
-                                                disableRipple
-
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`Major A`} />
-                                    </ListItemButton >
-                                </ListItem>
-
-                                <ListItem disablePadding>
-                                    <ListItemButton dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                                edge="start"
-
-                                                tabIndex={-1}
-                                                disableRipple
-
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`Major B`} />
-                                    </ListItemButton>
-                                </ListItem>
-
-                                <ListItem disablePadding>
-                                    <ListItemButton>
-                                        <ListItemIcon dense>
-                                            <Checkbox
-                                                edge="start"
-
-                                                tabIndex={-1}
-                                                disableRipple
-
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`Major C`} />
-                                    </ListItemButton>
-                                </ListItem>
-                            </List>
-                        </AccordionDetails>
-                    </Accordion>
-                </Grid>
-
-                <Grid item>
-                    <Accordion disableGutters elevation={0}>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                        >
-                            <Typography>Select Subject</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <List>
-                                <ListItem disablePadding>
-                                    <ListItemButton dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                                edge="start"
-                                                tabIndex={-1}
-                                                disableRipple
-
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`Major`} />
-                                    </ListItemButton>
-                                </ListItem>
-                            </List>
-                        </AccordionDetails>
-                    </Accordion>
-                </Grid>
-
-            </Grid>
-        </CardActions>
-    </Card>);
-})(({ theme }) => ({
-    width: '100%'
-}));
 
 const SearchPage = () => {
 
-    const [keySearch, setKeySearch] = useState("");
-    const sortList = [
-        {
-            id: 0,
-            lable: "Default"
-        },
-        {
-            id: 1,
-            lable: "Top Reviews"
-        },
-        {
-            id: 2,
-            lable: "Total Mentee"
-        }
-    ];
-    const [sortSelected, setSortSelected] = useState(sortList[0]);
 
 
+    // const []
 
     return (
-        <Container sx={{ paddingTop: '2em' }}>
+        <Container sx={{}}>
             <Grid container spacing={3} >
                 <Grid item sx={{ width: '20em' }}>
                     <FilterContainer variant="outlined" />
@@ -176,34 +37,7 @@ const SearchPage = () => {
                 <Grid item xs container>
                     <Grid container direction="column">
                         <Grid item height="7em">
-                            <Card variant="outlined" sx={{ p: 1, borderWidth: 2, borderRadius: 2 }}>
-                                <CardActions>
-                                    <Grid container justifyContent="space-between">
-                                        <Grid item md={8}>
-                                            <TextField variant="outlined"
-                                                fullWidth
-                                                placeholder="Seach for anything"
-                                                value={keySearch}
-                                                onChange={(e) => { setKeySearch(e.target.value) }}
-                                                InputProps={{
-                                                    endAdornment: (
-                                                        <InputAdornment position="start">
-                                                            <SearchIcon color="primary" />
-                                                        </InputAdornment>
-                                                    ),
-                                                }} />
-                                        </Grid>
-                                        <Grid item>
-                                            <SelectFilter
-                                                selectList={sortList}
-                                                keyAttribute="id"
-                                                prefix="Sort By"
-                                                lable="lable" selected={sortSelected}
-                                                onChange={(item) => { setSortSelected(item) }} />
-                                        </Grid>
-                                    </Grid>
-                                </CardActions>
-                            </Card>
+                            <SearchSection />
                         </Grid>
                         <Grid item sx={{ paddingY: '1em', paddingX: '1em' }}>
                             <Typography variant="h2">
@@ -211,18 +45,20 @@ const SearchPage = () => {
                             </Typography>
                         </Grid>
 
-                        <Grid item container direction='column' spacing={2}>
-                            <Grid item>
-                                <MentorCard />
-                            </Grid>
-                            <Grid item>
-                                <MentorCard />
-                            </Grid>
-                            <Grid item>
-                                <MentorCard />
-                            </Grid>
-
+                        <Grid item >
+                            <List>
+                                <ListItem>
+                                    <MentorCard />
+                                </ListItem>
+                                <ListItem>
+                                    <MentorCard />
+                                </ListItem>
+                                <ListItem>
+                                    <MentorCard />
+                                </ListItem>
+                            </List>
                         </Grid>
+
                     </Grid>
 
                 </Grid>

@@ -3,12 +3,15 @@ import { themeTypography } from './typography'
 import { customComponent } from "./component";
 
 const themeObj = {
-
+    borderColor: '#e5e7eb',
+    backgroundColor: '#F1F5F8',
+    borderRadius: 12,
+    borderWidthInput: '3px'
 }
 const theme = createTheme({
     typography: themeTypography(themeObj),
-    palette:{
-        primary:{
+    palette: {
+        primary: {
             main: "#01C2A9"
         }
     },

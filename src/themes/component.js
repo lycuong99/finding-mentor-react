@@ -28,16 +28,20 @@ export function customComponent(theme) {
         MuiOutlinedInput: {
             styleOverrides: {
                 root: {
+                    // backgroundColor: theme.backgroundColor
+                    borderRadius: theme.borderRadius + 'px',
+                    // border: `${theme.borderWidthInput} solid ${theme.borderColor}`,
 
                 },
                 input: {
-
+                    borderRadius: theme.borderRadius + 'px',
+                    // border: `${theme.borderWidthInput} solid ${theme.borderColor}`,
                 },
                 inputAdornedStart: {
 
                 },
                 notchedOutline: {
-
+                    borderRadius: theme.borderRadius + 'px',
                 }
             }
         },
@@ -46,8 +50,8 @@ export function customComponent(theme) {
                 root: {
                     fontSize: "1rem"
                 },
-                contained : {
-                    color:'white'
+                contained: {
+                    color: 'white'
                 }
             }
         },

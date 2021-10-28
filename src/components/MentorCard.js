@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Chip, Grid, Rating, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Avatar, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Chip, Grid, Rating, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -10,13 +10,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MentorCard = (props) => {
-    const { type } = props;
+    const { type, data } = props;
+    console.log(data);
     const classes = useStyles();
     const theme = useTheme();
     const matchMDUp = useMediaQuery(theme.breakpoints.up('md'));
     if (type && type == 'vertical') {
         return (
-            <Link to="/mentee/profile" style={{ textDecoration: 'none' }}>
+            <Link to={`/mentee/profile/${data.id}`} style={{ textDecoration: 'none' }}>
                 <Card className={classes.root}
                     variant="outlined"
                     sx={{ borderRadius: 2, borderWidth: '2px', paddingX: '2em', paddingY: '2.2em' }}
@@ -29,11 +30,13 @@ const MentorCard = (props) => {
                         </Grid>
                         <Grid item container direction="column" alignItems="center" sx={{ marginTop: '0.5em', minWidth: 200 }} >
                             <Typography variant="subtitle1" fontSize="1.25rem" color="primary">
-                                Amin Ghaderi
+                                {data.fullname}
                             </Typography>
-                            <Typography variant="subtitle2" fontSize="1rem" style={{ marginBottom: '5px' }}>
-                                Software engineering
-                            </Typography>
+                            <Tooltip title={data?.majorId ? data.majorId : ''}>
+                                <Typography variant="subtitle2" fontSize="1rem" style={{ marginBottom: '5px' }}>
+                                    Software engineering
+                                </Typography>
+                            </Tooltip>
                             <Rating size="medium"
                                 readOnly
                                 name="simple-controlled"

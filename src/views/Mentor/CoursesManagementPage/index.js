@@ -1,6 +1,7 @@
 import { Button, Container, Divider, Grid, Paper, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import CourseCard from '../../../components/CourseCard';
 
 const CourseManagementPage = () => {
@@ -18,7 +19,7 @@ const CourseManagementPage = () => {
                             <TextField fullWidth placeholder="Search your courses" />
                         </Grid>
                         <Grid item>
-                            <Button variant="outlined">Create Course</Button>
+                            <Button variant="outlined" component={Link} to="/mentor/course/new">Create Course</Button>
                         </Grid>
                     </Grid>
                     <Grid item sx={{ marginTop: '1em', marginBottom: '2em' }}>

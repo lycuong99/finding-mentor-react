@@ -3,12 +3,16 @@ import React from 'react';
 import CourseCard from '../../../components/CourseCard';
 import SectionContainer from '../../../components/SectionContainer';
 import WorkIcon from '@mui/icons-material/WorkOutline';
+import { useParams } from 'react-router';
 
 const CustomChip = (props) => {
     return (<Chip label={props.label} sx={{ borderRadius: '16px !important', fontFamily: 'Inter, Epilogue', fontWeight: '600', fontSize: '0.85rem', paddingX: '10px', paddingY: '1.4em' }} />);
 }
 const MentorProfilePage = () => {
     const avatarSize = 180;
+    let { id } = useParams();
+    console.log(useParams());
+
     return (
         <Container component={Paper} variant="outline" sx={{ border: '2px solid #e5e7eb', borderRadius: 3 }} >
             <Grid container sx={{ paddingLeft: '0em', paddingRight: '2em', paddingY: '3em' }} justifyContent="space-between" >

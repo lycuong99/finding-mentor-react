@@ -7,8 +7,9 @@ import ProfileSection from "../ProfileSection";
 import NavItem from "../MenuList/NavItem";
 import NavCollapse from "../MenuList/NavCollapse";
 import { GroupOutlined, Menu, FiberManualRecord, EventNoteOutlined, CalendarTodayOutlined } from "@mui/icons-material";
-import { AppBar, CssBaseline, Drawer, IconButton, useTheme, List, Typography, Divider, Toolbar, useMediaQuery } from "@mui/material";
+import { AppBar, CssBaseline, Drawer, IconButton, useTheme, List, Typography, Divider, Toolbar, useMediaQuery, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { connect } from "react-redux";
 
 
 const drawerWidth = 260;
@@ -195,7 +196,7 @@ INIT_DATA.items.push(
 )
 
 
-export default function MainLayout(props) {
+function MainLayout(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [openSideBar, setOpenSideBar] = React.useState(false);
@@ -249,6 +250,14 @@ export default function MainLayout(props) {
                         {webName}
                     </Typography>
                     <div className={classes.grow} />
+                    <div style={{ marginRight: '1em' }}>
+                        {props.authenticated ?
+                            (
+                                <Button component={Link} variant='outlined' to="/mentee">Mentee</Button>
+                            ) : (
+                                null
+                            )}
+                    </div>
                     <div>
                         <ProfileSection />
                     </div>
@@ -292,3 +301,11 @@ export default function MainLayout(props) {
         </div>
     );
 }
+
+
+const mapStateToProps = (state) => {
+    return {
+        authenticated: state.auth.authenticated
+    }
+}
+export default connect(mapStateToProps, null)(MainLayout);

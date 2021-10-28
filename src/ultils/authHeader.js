@@ -5,7 +5,7 @@ export default function authHeader() {
     let token = JwtToken.getJWTToken();
 
     if (token) {
-        return { 'Authorization': 'Bearer ' + JwtToken.getJWTDecode };
+        return { 'Authorization': 'Bearer ' +token };
     } else {
         return {};
     }
