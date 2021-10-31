@@ -2,22 +2,17 @@ import {
     Button, Container, Grid, InputAdornment,
     Popover, TextField, Card, CardHeader,
     CardActions, ToggleButtonGroup, ToggleButton, Accordion, AccordionSummary, AccordionDetails,
-    Typography,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    Checkbox,
-    ListItemText,
-    Divider
 } from '@mui/material';
 import React, { useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import SelectFilter from './SelectFilter';
+import { connect } from 'react-redux';
+import { fetchMentors } from '../../../actions';
 
 const SearchSection = (props) => {
 
-    const [keySearch, setKeySearch] = useState("");
+    const { searchKey, onChangeSearchKey, onSubmitSearch } = props;;
+
     const sortList = [
         {
             id: 0,
@@ -34,7 +29,7 @@ const SearchSection = (props) => {
     ];
     const [sortSelected, setSortSelected] = useState(sortList[0]);
 
-    
+
     return (<Card variant="outlined" sx={{ p: 1, borderWidth: 2, borderRadius: 2 }}>
         <CardActions>
             <Grid container justifyContent="space-between">
@@ -42,8 +37,8 @@ const SearchSection = (props) => {
                     <TextField variant="outlined"
                         fullWidth
                         placeholder="Seach for anything"
-                        value={keySearch}
-                        onChange={(e) => { setKeySearch(e.target.value) }}
+                        value={searchKey}
+                        onChange={(e) => { onChangeSearchKey(e.target.value) }}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="start">
@@ -65,4 +60,4 @@ const SearchSection = (props) => {
     </Card>);
 }
 
-export default SearchSection;
+export default connect()(SearchSection);

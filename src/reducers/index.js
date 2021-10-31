@@ -3,11 +3,12 @@ import { combineReducers } from 'redux';
 import authReducer from './authReducer';
 import majorReducer from './majorReducer';
 import mentorReducer from './mentorReducer';
-
+import courseReducer from './courseReducer';
 export default combineReducers(
     {
         auth: authReducer,
         mentor: mentorReducer,
-        major: majorReducer
+        major: majorReducer,
+        course: courseReducer
     }
 );

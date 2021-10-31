@@ -12,27 +12,46 @@ import {
     Divider
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { styled } from '@mui/material/styles';
+import { COURSE, MENTOR } from '../../../constants/searchType';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { fetchAllMajor } from '../../../actions';
+import { fetchAllMajor, fetchAllSubjectByMajor } from '../../../actions';
 import { connect } from 'react-redux';
 
 
-const MENTOR = 'MENTOR';
-const COURSE = 'COURSE';
 
 const FilterContainer = (props) => {
     const { variant } = props;
     const typeSearchList = []
-    const [typeSearch, setTypeSearch] = useState(MENTOR);
+
+
+    // ............ 
+    const [selectedMajors, setSelectedMajors] = useState([]);
+    // const [selectedMajors, setSelectedMajors] = useState([]);
+
+    const handleToggleMajor = (value) => () => {
+        // console.log(selectedMajors);
+        props.fetchAllSubjectByMajor(value);
+        const currentIndex = selectedMajors.indexOf(value);
+        const newChecked = [...selectedMajors];
+
+        if (currentIndex === -1) {
+            newChecked.push(value);
+        } else {
+            newChecked.splice(currentIndex, 1);
+        }
+
+        setSelectedMajors(newChecked);
+    };
 
     useEffect(() => {
         props.fetchAllMajor();
     }, []);
 
     useEffect(() => {
+        if (props.subjectMajors) {
 
-    }, [])
+        }
+    }, [props.subjectMajors])
 
 
     return (<Card variant={variant} sx={{ paddingBottom: '5em', paddingTop: '0.5em', minHeight: '40em', borderWidth: 2, borderRadius: 2 }}>
@@ -44,11 +63,11 @@ const FilterContainer = (props) => {
                 <Grid item sx={{ paddingLeft: '1em' }}>
                     <ToggleButtonGroup
                         color="primary"
-                        value={typeSearch}
+                        value={props.searchType}
                         onChange={
                             (e, value) => {
                                 if (value)
-                                    setTypeSearch(value);
+                                    props.onChangeSearchType(value);
                             }
                         }
                         exclusive
@@ -77,14 +96,13 @@ const FilterContainer = (props) => {
                                     props.majors ?
                                         props.majors.map((major) => ((
                                             <ListItem disablePadding key={major.id}>
-                                                <ListItemButton dense>
+                                                <ListItemButton dense onClick={handleToggleMajor(major.id)}>
                                                     <ListItemIcon>
                                                         <Checkbox
                                                             edge="start"
-                                                            value={major.id}
+                                                            checked={selectedMajors.indexOf(major.id) !== -1}
                                                             tabIndex={-1}
                                                             disableRipple
-
                                                         />
                                                     </ListItemIcon>
                                                     <ListItemText primary={`${major.name}`} />
@@ -109,19 +127,28 @@ const FilterContainer = (props) => {
                         </AccordionSummary>
                         <AccordionDetails>
                             <List>
-                                <ListItem disablePadding>
-                                    <ListItemButton dense>
-                                        <ListItemIcon>
-                                            <Checkbox
-                                                edge="start"
-                                                tabIndex={-1}
-                                                disableRipple
+                                {
+                                    props.majors && props.subjectMajors ?
+                                        selectedMajors.map((majorId) => {
+                                            if (!props.subjectMajors[majorId]) return;
+                                            return props.subjectMajors[majorId].map((subject) => ((
+                                                <ListItem disablePadding key={subject.id}>
+                                                    <ListItemButton dense>
+                                                        <ListItemIcon>
+                                                            <Checkbox
+                                                                edge="start"
+                                                                tabIndex={-1}
+                                                                disableRipple
+                                                            />
+                                                        </ListItemIcon>
+                                                        <ListItemText primary={`${subject.name}`} />
+                                                    </ListItemButton>
+                                                </ListItem>
+                                            )))
+                                        })
+                                        : null
+                                }
 
-                                            />
-                                        </ListItemIcon>
-                                        <ListItemText primary={`Major`} />
-                                    </ListItemButton>
-                                </ListItem>
                             </List>
                         </AccordionDetails>
                     </Accordion>
@@ -131,9 +158,15 @@ const FilterContainer = (props) => {
         </CardActions>
     </Card>);
 }
-const mapStateToProps = (state) => ({
-    majors: state.major.majors
-});
+const mapStateToProps = (state) => {
+
+    // let subjectMajors = state.major.subjectMajors.map(majorSubject => ({majorSubject.}));
+    // let 
+    return {
+        majors: state.major.majors,
+        subjectMajors: state.major.subjectMajors
+    }
+};
 export default connect(mapStateToProps, {
-    fetchAllMajor
+    fetchAllMajor, fetchAllSubjectByMajor
 })(FilterContainer);

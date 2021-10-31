@@ -178,3 +178,4 @@ export const reset = () => {
 
 export * from './mentor.action';
 export * from './major.action';
+export * from './course.action';

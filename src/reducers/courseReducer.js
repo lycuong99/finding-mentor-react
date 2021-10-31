@@ -4,12 +4,10 @@ import {
     FETCH_RECOMMEND_MENTOR_ERROR,
     FETCH_RECOMMEND_MENTOR,
     FETCH_RECOMMEND_MENTOR_BY_MAJOR,
-    FETCH_MENTOR_SEARCH
+    FETCH_COURSE_SEARCH
 } from '../constants/actionTypes';
 
 const INIT_STATE = {
-    recommendMentor: [],
-    recommendMentorByMajor: [],
     searchResults: [],
     error: '',
 
@@ -17,10 +15,8 @@ const INIT_STATE = {
 
 export default (state = INIT_STATE, action) => {
     switch (action.type) {
-        case FETCH_RECOMMEND_MENTOR: return { ...state, recommendMentor: action.payload };
-        case FETCH_RECOMMEND_MENTOR_BY_MAJOR: return { ...state, recommendMentorByMajor: action.payload };
 
-        case FETCH_MENTOR_SEARCH: return { ...state, searchResults: action.payload };
+        case FETCH_COURSE_SEARCH: return { ...state, searchResults: action.payload };
         default: return state;
     }
 }

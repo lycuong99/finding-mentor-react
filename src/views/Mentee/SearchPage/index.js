@@ -11,52 +11,84 @@ import {
     ListItemText,
     Divider
 } from '@mui/material';
-import React, { useState } from 'react';
-import SearchIcon from '@mui/icons-material/Search';
-import SelectFilter from './SelectFilter';
-import { styled } from '@mui/material/styles';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MentorCard from '../../../components/MentorCard';
+import React, { useEffect, useState } from 'react';
 import FilterContainer from './FilterContainer';
+import MentorResults from './MentorResults';
 import SearchSection from './SearchSection';
-
-
-
-const SearchPage = () => {
-
+import { COURSE, MENTOR } from '../../../constants/searchType';
+import { connect } from 'react-redux';
+import { fetchMentors, fetchCourses } from '../../../actions';
+import { propsToClassKey } from '@mui/styles';
+import CourseResults from './CourseResults';
+const SearchPage = (props) => {
 
 
     // const []
+    const [keySearch, setKeySearch] = useState("");
+    const [deboundpKeySearch, setDeboundKeySearch] = useState("");
+    const [searchType, setSearchType] = useState(MENTOR);
 
+    const handleChangeSearchType = (value) => {
+        if (searchType != value) {
+            setSearchType(value);
+
+        }
+    }
+
+    const handleChangeSearchKey = (value) => {
+        if (keySearch !== value) {
+            setKeySearch(value);
+        }
+    }
+
+    useEffect(() => {
+        let timeoutId = setTimeout(() => {
+            setDeboundKeySearch(keySearch);
+        }, 1000);
+        return () => {
+            clearTimeout(timeoutId);
+        }
+    },
+        [keySearch]);
+    useEffect(() => {
+        switch (searchType) {
+            case COURSE: props.fetchCourses(keySearch); return;
+            case MENTOR: props.fetchMentors(keySearch); return;
+            default:
+        }
+
+    },
+        [deboundpKeySearch]);
+
+
+    const onSubmitSearch = () => {
+        // props.fetchMentors(searchType);
+    }
     return (
         <Container sx={{}}>
             <Grid container spacing={3} >
                 <Grid item sx={{ width: '20em' }}>
-                    <FilterContainer variant="outlined" />
+                    <FilterContainer variant="outlined" searchType={searchType} onChangeSearchType={handleChangeSearchType} />
                 </Grid>
                 <Grid item xs container>
                     <Grid container direction="column">
                         <Grid item height="7em">
-                            <SearchSection />
+                            <SearchSection searchKey={keySearch}
+                                onChangeSearchKey={handleChangeSearchKey}
+                            />
                         </Grid>
                         <Grid item sx={{ paddingY: '1em', paddingX: '1em' }}>
                             <Typography variant="h2">
-                                358 Results
+                                {
+                                    searchType == MENTOR ? `${props.countMentorResult} Results` : `${props.countCourseResult} Results`
+                                }
                             </Typography>
                         </Grid>
 
                         <Grid item >
-                            <List>
-                                <ListItem>
-                                    <MentorCard />
-                                </ListItem>
-                                <ListItem>
-                                    <MentorCard />
-                                </ListItem>
-                                <ListItem>
-                                    <MentorCard />
-                                </ListItem>
-                            </List>
+                            {
+                                searchType == MENTOR ? (<MentorResults />) : <CourseResults />
+                            }
                         </Grid>
 
                     </Grid>
@@ -66,5 +98,8 @@ const SearchPage = () => {
         </Container>
     );
 }
-
-export default SearchPage;
+const mapStateToProps = (state) => ({
+    countMentorResult: state.mentor.searchResults.length,
+    countCourseResult: state.course.searchResults.length,
+});
+export default connect(mapStateToProps, { fetchMentors, fetchCourses })(SearchPage);
