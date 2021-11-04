@@ -175,7 +175,7 @@ INIT_DATA.items.push(
     {
         id: 'profile',
         title: 'Profile',
-        url: 'mentor/profile',
+        url: '/mentor/profile',
         type: 'item',
         icon: <EventNoteOutlined />
     },

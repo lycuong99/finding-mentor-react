@@ -33,17 +33,18 @@ const names = [
 
 export default function MultipleSelectChip(props) {
   const theme = useTheme();
-  const [values, setValues] = React.useState([]);
-  const { fullWidth } = props;
+  // const [values, setValues] = React.useState([]);
+  const { fullWidth, values, onChange } = props;
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
 
-    setValues(
-      // On autofill we get a the stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    // setValues(
+    //   // On autofill we get a the stringified value.
+    //   typeof value === 'string' ? value.split(',') : value,
+    // );
+    onChange(typeof value === 'string' ? value.split(',') : value)
   };
 
   const handleDelete = (id) => {
@@ -52,7 +53,7 @@ export default function MultipleSelectChip(props) {
 
     let newValues = values.filter(e => e !== id);
     console.log(newValues);
-    setValues(newValues);
+    onChange(newValues);
   }
 
   return (

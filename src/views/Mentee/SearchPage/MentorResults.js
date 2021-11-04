@@ -10,7 +10,7 @@ const MentorResults = (props) => {
             {
                 _.isEmpty(props.mentorResults) ? null :
                     props.mentorResults.map((mentor) =>
-                        ((<MentorCard />))
+                        ((<MentorCard data={mentor} />))
                     )
             }
         </List>);

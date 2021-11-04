@@ -7,10 +7,10 @@ import authHeader from "../ultils/authHeader";
 
 
 
-export const updateMajor = (majorId) => async (dispatch) => {
+export const updateMajor = async (majorId) => {
     try {
 
-        const response = await fm.get("/Student/Major/" + majorId, {
+        const response = await fm.put("/Student/Major/" + majorId, {}, {
             headers: authHeader(),
         });
 

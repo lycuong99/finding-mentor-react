@@ -11,12 +11,16 @@ import { DesktopDatePicker } from '@mui/lab';
 import MultipleSelectChip from '../../../components/MultipleSelectChip';
 import Curriculum from './Curriculum';
 import General from './General';
-import { addCourse } from '../../../database';
+import { addCourse, getCourse } from '../../../database';
 import history from '../../../history';
-const CourseEditorPage = () => {
+import { useParams } from 'react-router';
+const CourseEditPage = () => {
     const paddingX = '3em';
+    let { id } = useParams();
     const [selectedItem, setSelectedItem] = useState(0);
-    const [course, setCourse] = useState({});
+    const [course, setCourse] = useState(getCourse(id));
+    console.log(course);
+
 
     const handleSubmitGeneralInfo = (values) => {
         console.log(values);
@@ -58,7 +62,7 @@ const CourseEditorPage = () => {
                 </Grid>
                 <Grid item xs>
                     <div hidden={selectedItem !== 0}>
-                        <General onSubmit={handleSubmitGeneralInfo} />
+                        <General onSubmit={handleSubmitGeneralInfo} initData={course} />
                     </div>
                     <div hidden={selectedItem !== 1}>
                         <Curriculum onSubmit={handleSubmitCurriculum} />
@@ -70,4 +74,4 @@ const CourseEditorPage = () => {
     );
 }
 
-export default CourseEditorPage;
+export default CourseEditPage;

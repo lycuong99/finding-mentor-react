@@ -9,8 +9,8 @@ const CourseResults = (props) => {
         <List>
             {
                 _.isEmpty(props.courseResults) ? null :
-                    props.courseResults.map((mentor) =>
-                        ((<CourseCard />))
+                    props.courseResults.map((course) =>
+                        ((<CourseCard type="detail" data={course} />))
                     )
             }
         </List>);

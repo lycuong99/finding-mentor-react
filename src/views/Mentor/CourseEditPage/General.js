@@ -66,7 +66,8 @@ const General = (props) => {
             duration: 1,
             durationUnit: 1,
             major: '',
-            subjectId: ''
+            subjectId: '',
+            ...props.initData
         },
         onSubmit: (values) => {
             upload(props.onSubmit);

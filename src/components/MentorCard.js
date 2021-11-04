@@ -59,7 +59,7 @@ const MentorCard = (props) => {
                     <Grid item container xs direction="column" spacing={1} sx={{ paddingX: '1em' }} >
                         <Grid item container direction="column">
                             <Typography variant="subtitle1" fontSize="1.25rem" color="primary">
-                                Amin Ghaderi
+                                {data.fullname}
                             </Typography>
                             <Typography variant="subtitle2" fontSize="0.875rem">
                                 Software engineering
@@ -94,7 +94,7 @@ const MentorCard = (props) => {
                         <Grid item container xs direction="column" spacing={1} sx={{ paddingX: '1em' }} >
                             <Grid item container rowGap="4px" direction="column">
                                 <Typography variant="subtitle1" color="primary">
-                                    Amin Ghaderi
+                                    {data.fullname}
                                 </Typography>
                                 <Typography variant="subtitle2">
                                     Software engineering

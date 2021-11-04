@@ -38,7 +38,7 @@ const Header = (props) => {
             <Grid item>
                 {props.authenticated ?
                     (
-                        <Button component={Link} variant='outlined' to="/mentor/apply">Mentor</Button>
+                        <Button component={Link} variant='outlined' to="/mentor/course">Mentor</Button>
                     ) : (
                         null
                     )}

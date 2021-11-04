@@ -52,23 +52,23 @@ function SimpleSlider() {
                 </Stack></Stack>
             <Slider {...settings} ref={slider}>
                 <div key={1} style={{ width: '400px' }}>
-                    <Stack direction="row" spacing={2}><MentorCard type="horizontal" />
+                    <Stack direction="row" spacing={2}><MentorCard data={{ fullname: "MENTOR NAME" }} type="horizontal" />
                         <Box sx={{ width: 20 }} /></Stack>
                 </div>
                 <div key={2} style={{ width: '400px' }}>
-                    <Stack direction="row" spacing={2}><MentorCard type="horizontal" />
+                    <Stack direction="row" spacing={2}><MentorCard data={{ fullname: "MENTOR NAME" }} type="horizontal" />
                         <Box sx={{ width: 20 }} /></Stack>
                 </div>
                 <div key={3} style={{ width: '400px' }}>
-                    <Stack direction="row" spacing={2}><MentorCard type="horizontal" />
+                    <Stack direction="row" spacing={2}><MentorCard data={{ fullname: "MENTOR NAME" }} type="horizontal" />
                         <Box sx={{ width: 20 }} /></Stack>
                 </div >
                 <div key={4} style={{ width: '400px' }}>
-                    <Stack direction="row" spacing={2}><MentorCard type="horizontal" />
+                    <Stack direction="row" spacing={2}><MentorCard data={{ fullname: "MENTOR NAME" }} type="horizontal" />
                         <Box sx={{ width: 20 }} /></Stack>
                 </div>
                 <div key={5} style={{ width: '400px' }}>
-                    <Stack direction="row" spacing={2}><MentorCard type="horizontal" />
+                    <Stack direction="row" spacing={2}><MentorCard data={{ fullname: "MENTOR NAME" }} type="horizontal" />
                         <Box sx={{ width: 20 }} /></Stack>
                 </div>
             </Slider>
@@ -114,7 +114,7 @@ class MenteeHomePage extends React.Component {
         // this.props.fetchRecommendMentorByMajor();
     }
 
-    componentDidUpdate() {
+    componentDidUpdata() {
 
     }
 
@@ -128,7 +128,7 @@ class MenteeHomePage extends React.Component {
                     recommendMentor.map(mentor => {
                         return (
                             <Grid item xs md={4} sm={6} key={mentor.id}>
-                                <MentorCard type="vertical" data={mentor}  />
+                                <MentorCard type="vertical" data={mentor} />
                             </Grid>
                         );
                     })

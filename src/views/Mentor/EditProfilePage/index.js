@@ -6,35 +6,35 @@ import React from 'react';
 import MultipleSelectChip from '../../../components/MultipleSelectChip';
 import { useFormik } from "formik";
 
-const BecomeMentorPage = () => {
-        const formik = useFormik({
-            initialValues: {
-                majors: [],
-                subjects: [],
-                isGraduted: false,
-                company: '',
-                about: ''
-            },
-            onSubmit: (values) => {
-                console.log(values);
-            },
-            validate: (values) => {
-                const errors = {};
+const EditProfilePage = () => {
+    const formik = useFormik({
+        initialValues: {
+            majors: [],
+            subjects: [],
+            isGraduted: false,
+            company: '',
+            about: ''
+        },
+        onSubmit: (values) => {
+            console.log(values);
+        },
+        validate: (values) => {
+            const errors = {};
 
 
-                // if (!values.email) {
-                //     errors.email = 'Required';
-                // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                //     errors.email = 'Invalid email address';
-                // }
+            // if (!values.email) {
+            //     errors.email = 'Required';
+            // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+            //     errors.email = 'Invalid email address';
+            // }
 
-                // if (!values.email) {
-                //     errors.password = "Required!"
-                // }
+            // if (!values.email) {
+            //     errors.password = "Required!"
+            // }
 
-                // return errors;
-            }
-        });
+            // return errors;
+        }
+    });
     return (
         <Container maxWidth="md" sx={{ minHeight: '100vh', paddingTop: '2em' }}>
 
@@ -112,4 +112,4 @@ const BecomeMentorPage = () => {
         </Container>
     );
 }
-export default BecomeMentorPage;
+export default EditProfilePage;
