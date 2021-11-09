@@ -31,7 +31,7 @@ const curriculum_init = [
 const Curriculum = (props) => {
 
 
-    const [curriculum, setCurriculum] = useState(curriculum_init);
+    const [curriculum, setCurriculum] = useState(props.initValues && props.initValues.curriculum ? props.initValues.curriculum : curriculum_init);
 
     const handleSubmit = () => {
         console.log(curriculum);

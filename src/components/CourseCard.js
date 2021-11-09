@@ -32,7 +32,7 @@ const CourseCard = (props) => {
     if (props.type && props.type == 'detail') {
         return (
 
-            <Card elevation={4} sx={{ width: '100%', borderWidth: 2, borderRadius: 2, }} variant="outlined" className={classes.root}>
+            <Card sx={{ width: '100%', borderWidth: 2, borderRadius: 2, }} variant="outlined" className={classes.root}>
                 <Grid container direction="row" justifyContent="space-between">
                     <Grid item >
                         <CardMedia
@@ -82,7 +82,7 @@ const CourseCard = (props) => {
         );
     } else if (props.type && props.type == 'mentor') {
         return (
-            <Card elevation={4} sx={{
+            <Card  sx={{
                 width: '100%',
                 borderWidth: 2,
                 // borderRadius: 2,

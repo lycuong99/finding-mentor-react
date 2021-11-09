@@ -13,8 +13,8 @@ import MentorProfilePage from './views/Mentee/MentorProfile';
 import CourseDetailPage from './views/Mentee/CourseDetailPage';
 import BecomeMentorPage from './views/Mentor/BecomeMentorPage';
 import CoursesManagementPage from './views/Mentor/CoursesManagementPage';
-import CourseEditorPage from './views/Mentor/CourseEditorPage';
-import CourseEditPage from './views/Mentor/CourseEditPage';
+import CourseCreaterPage from './views/Mentor/CourseEditor/CourseCreaterPage';
+import CourseEditPage from './views/Mentor/CourseEditor/CourseEditPage';
 import AdditionalInformationAfterSignUp from './views/AdditionalInformationAfterSignUp';
 import EditProfilePage from './views/Mentor/EditProfilePage';
 
@@ -46,7 +46,7 @@ function App() {
               <CoursesManagementPage />
             </Route>
             <Route path='/mentor/course/new' exact>
-              <CourseEditorPage />
+              <CourseCreaterPage />
             </Route>
             <Route path='/mentor/course/edit/:id' exact>
               <CourseEditPage />

@@ -62,12 +62,24 @@ let courses = [
     {
         "id": 6,
         "name": "course 6",
-        "price": 21.4,
+        "price": 10,
         "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
         "rate": 5,
         "imageURL": "https://img-c.udemycdn.com/course/240x135/3646523_6b79.jpg",
-        "subjectId": "GDS004",
-        mentor: { id: "3c5ec754-01b1-49cf-94e0-09250222b061", name: "Ly Van Cuong" }
+        "subjectId": "PRJ001",
+        duration: '3 week',
+        mentor: { id: "111-222-333-444", name: "Ly Van Cuong" }
+    },
+    {
+        "id": 'abc',
+        "name": "course 66",
+        "price": 10,
+        "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+        "rate": 5,
+        "imageURL": "https://img-c.udemycdn.com/course/240x135/3646523_6b79.jpg",
+        "subjectId": "PRJ001",
+        duration: '3 week',
+        mentor: { id: "111-222-333-444", name: "Ly Van Cuong" }
     },
     {
         "id": 7,
@@ -97,7 +109,7 @@ let courses = [
         "rate": 4,
         "imageURL": "https://img-c.udemycdn.com/course/240x135/922484_52a1_8.jpg",
         "subjectId": "MKT005",
-        mentor: { id: "3c5ec754-01b1-49cf-94e0-09250222b066",  name: "Loioc" }
+        mentor: { id: "3c5ec754-01b1-49cf-94e0-09250222b066", name: "Loioc" }
     },
     {
         "id": 10,
