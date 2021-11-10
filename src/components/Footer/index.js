@@ -36,8 +36,8 @@ const LinkCustom = (props) => {
     const classes = useStyle();
 
     return (
-        <Link style={{ textDecoration: 'none' }}  className={classes.link}>
-                {props.children}
+        <Link style={{ textDecoration: 'none' }} className={classes.link} to='#'>
+            {props.children}
         </Link>
     );
 };

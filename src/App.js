@@ -34,7 +34,7 @@ function App() {
             </Route>
             <Route path='/mentee/search' component={SearchPage} />
             <Route path='/mentee/profile/:id' component={MentorProfilePage} />
-            <Route path='/mentee/course' component={CourseDetailPage} />
+            <Route path='/mentee/course/:id' component={CourseDetailPage} />
           </MenteeLayout>
         </Route>
         <Route path='/mentor/apply' exact>

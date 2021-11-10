@@ -82,24 +82,6 @@ const Curriculum = (props) => {
             </Grid>
         </Paper>
 
-        {/* Course 
-                Title
-                Course Description
-                Price
-                Subject
-                Course Image
-                Duration
-                Status
-                Start Date
-        
-                Section
-                    title
-                    Lecture
-                        title
-                        Content
-
-
-             */}
     </Box>);
 }
 export default Curriculum;

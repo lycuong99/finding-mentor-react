@@ -161,7 +161,7 @@ const CourseCard = (props) => {
                         </Grid>
 
                         <Grid item>
-                            <Typography variant="h2">{`$` + 16}</Typography>
+                            <Typography variant="h2">{`$` + data.price}</Typography>
                         </Grid>
                     </Grid>
                 </CardActions>

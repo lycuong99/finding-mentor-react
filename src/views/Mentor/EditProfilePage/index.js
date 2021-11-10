@@ -13,6 +13,7 @@ const EditProfilePage = () => {
             subjects: [],
             isGraduted: false,
             company: '',
+            fullname: '',
             about: ''
         },
         onSubmit: (values) => {
@@ -36,31 +37,72 @@ const EditProfilePage = () => {
         }
     });
     return (
-        <Container maxWidth="md" sx={{ minHeight: '100vh', paddingTop: '2em' }}>
+        <Container maxWidth="lg" sx={{ minHeight: '100vh', paddingTop: '2em' }}>
 
             <Paper sx={{ paddingLeft: '2em', paddingRight: '2em', paddingTop: '2em', paddingBottom: '3em', borderRadius: 3, borderWidth: '2px' }} variant="outlined">
-                <Typography variant="h1">Apply as a mentor</Typography>
+                <Typography variant="h1">Profile</Typography>
 
                 <Grid container direction="column" rowGap={3} sx={{ marginTop: '2em' }}
                     component='form'
                     justifyContent="space-between" onSubmit={formik.handleSubmit} >
                     <Grid item>
                         <FormControl component="fieldset" fullWidth>
-                            <FormLabel component="legend">What is you major ?</FormLabel>
-                            <MultipleSelectChip values={formik.values.majors} onChange={(e) => {
-                                formik.handleChange(e);
-                            }} />
-                        </FormControl>
-                    </Grid>
-                    <Grid item>
-                        <FormControl component="fieldset" variant="standard" fullWidth>
-                            <FormLabel component="legend">What subject you can mentor ?</FormLabel>
-                            <MultipleSelectChip values={formik.values.subjects} onChange={(e) => {
-                                formik.handleChange(e);
-                            }} />
+                            <FormLabel component="legend">Fullname</FormLabel>
+                            <TextField fullWidth
+                                name='fullname'
+                                value={formik.values.fullname}
 
+                                onChange={(e) => {
+                                    formik.handleChange(e);
+                                }} />
                         </FormControl>
                     </Grid>
+                    <Grid item container spacing={2}>
+                        <Grid item xs>
+                            <FormControl component="fieldset" fullWidth>
+                                <FormLabel component="legend">Address</FormLabel>
+                                <TextField fullWidth
+                                    name='fullname'
+                                    value={formik.values.fullname}
+
+                                    onChange={(e) => {
+                                        formik.handleChange(e);
+                                    }} />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs>
+                            <FormControl component="fieldset" fullWidth>
+                                <FormLabel component="legend">Phone</FormLabel>
+                                <TextField fullWidth
+                                    name='fullname'
+                                    value={formik.values.fullname}
+
+                                    onChange={(e) => {
+                                        formik.handleChange(e);
+                                    }} />
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                    <Grid item container spacing={2}>
+                        <Grid item xs>
+                            <FormControl component="fieldset" fullWidth>
+                                <FormLabel component="legend">What is you major ?</FormLabel>
+                                <MultipleSelectChip values={formik.values.majors} onChange={(e) => {
+                                    formik.handleChange(e);
+                                }} />
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs>
+                            <FormControl component="fieldset" variant="standard" fullWidth>
+                                <FormLabel component="legend">What subject you can mentor ?</FormLabel>
+                                <MultipleSelectChip values={formik.values.subjects} onChange={(e) => {
+                                    formik.handleChange(e);
+                                }} />
+
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+
                     <Grid item>
                         <FormControl component="fieldset" fullWidth>
                             <FormLabel component="legend">Have you graduated yet ?</FormLabel>
@@ -82,7 +124,6 @@ const EditProfilePage = () => {
                             <TextField fullWidth
                                 name='company'
                                 value={formik.values.company}
-
                                 onChange={(e) => {
                                     formik.handleChange(e);
                                 }} />
@@ -95,8 +136,8 @@ const EditProfilePage = () => {
                         </FormControl>
                     </Grid> */}
                     <Grid item>
-                        <FormControl component="fieldset" fullWidth>
-                            <FormLabel component="legend">Tell us a little bit about yourself. </FormLabel>
+                        <FormControl fullWidth>
+                            <FormLabel>Tell us a little bit about yourself. </FormLabel>
                             <TextField fullWidth multiline
                                 name='about'
                                 rows={5} value={formik.values.about} onChange={(e) => {
@@ -105,7 +146,7 @@ const EditProfilePage = () => {
                         </FormControl>
                     </Grid>
                     <Grid item>
-                        <Button type='submit' variant="contained">Submit</Button>
+                        <Button type='submit' variant="contained">SAVE</Button>
                     </Grid>
                 </Grid>
             </Paper>
