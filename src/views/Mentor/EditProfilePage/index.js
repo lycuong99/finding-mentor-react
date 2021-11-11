@@ -2,155 +2,60 @@ import {
     Avatar, Button, Card, Checkbox, Chip, Container, FormControl,
     FormControlLabel, FormGroup, FormLabel, Grid, Paper, Radio, RadioGroup, Rating, TextField, Typography
 } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import MultipleSelectChip from '../../../components/MultipleSelectChip';
 import { useFormik } from "formik";
+import { connect } from 'react-redux';
+import { fetchMentor, fetchAllMajor, fetchAllSubjectByMajor } from '../../../actions';
+import UserStorage from '../../../ultils/UserStorage';
+import MentorProfileForm from './MentorProfileForm';
 
-const EditProfilePage = () => {
-    const formik = useFormik({
-        initialValues: {
-            majors: [],
-            subjects: [],
-            isGraduted: false,
-            company: '',
-            fullname: '',
-            about: ''
-        },
-        onSubmit: (values) => {
-            console.log(values);
-        },
-        validate: (values) => {
-            const errors = {};
+const convertToFormObj = (data) => {
+    return {
+        avatarUrl: data.mentor.avatarUrl,
+        fullname: data.fullname,
+        id: data.id,
+        about: data.mentor.about ? data.mentor.about : '',
+        isGraduted: data.mentor.isGraduted,
+        majors: data.mentor.majors.map(m => m.id),
+        subjects: data.mentor.subjects,
+        address: data.mentor.address ? data.mentor.address : '',
+        company: data.mentor.company ? data.mentor.company : ''
+    }
+}
 
+const EditProfilePage = (props) => {
 
-            // if (!values.email) {
-            //     errors.email = 'Required';
-            // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-            //     errors.email = 'Invalid email address';
-            // }
+    useEffect(() => {
+        props.fetchMentor(UserStorage.getUserId());
+    }, []);
 
-            // if (!values.email) {
-            //     errors.password = "Required!"
-            // }
+    useEffect(() => {
+        if (props.currentMentor) {
+            console.log(props.currentMentor);
 
-            // return errors;
         }
-    });
+    }, [props.currentMentor]);
+
+
     return (
         <Container maxWidth="lg" sx={{ minHeight: '100vh', paddingTop: '2em' }}>
 
             <Paper sx={{ paddingLeft: '2em', paddingRight: '2em', paddingTop: '2em', paddingBottom: '3em', borderRadius: 3, borderWidth: '2px' }} variant="outlined">
                 <Typography variant="h1">Profile</Typography>
-
-                <Grid container direction="column" rowGap={3} sx={{ marginTop: '2em' }}
-                    component='form'
-                    justifyContent="space-between" onSubmit={formik.handleSubmit} >
-                    <Grid item>
-                        <FormControl component="fieldset" fullWidth>
-                            <FormLabel component="legend">Fullname</FormLabel>
-                            <TextField fullWidth
-                                name='fullname'
-                                value={formik.values.fullname}
-
-                                onChange={(e) => {
-                                    formik.handleChange(e);
-                                }} />
-                        </FormControl>
-                    </Grid>
-                    <Grid item container spacing={2}>
-                        <Grid item xs>
-                            <FormControl component="fieldset" fullWidth>
-                                <FormLabel component="legend">Address</FormLabel>
-                                <TextField fullWidth
-                                    name='fullname'
-                                    value={formik.values.fullname}
-
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }} />
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs>
-                            <FormControl component="fieldset" fullWidth>
-                                <FormLabel component="legend">Phone</FormLabel>
-                                <TextField fullWidth
-                                    name='fullname'
-                                    value={formik.values.fullname}
-
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }} />
-                            </FormControl>
-                        </Grid>
-                    </Grid>
-                    <Grid item container spacing={2}>
-                        <Grid item xs>
-                            <FormControl component="fieldset" fullWidth>
-                                <FormLabel component="legend">What is you major ?</FormLabel>
-                                <MultipleSelectChip values={formik.values.majors} onChange={(e) => {
-                                    formik.handleChange(e);
-                                }} />
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs>
-                            <FormControl component="fieldset" variant="standard" fullWidth>
-                                <FormLabel component="legend">What subject you can mentor ?</FormLabel>
-                                <MultipleSelectChip values={formik.values.subjects} onChange={(e) => {
-                                    formik.handleChange(e);
-                                }} />
-
-                            </FormControl>
-                        </Grid>
-                    </Grid>
-
-                    <Grid item>
-                        <FormControl component="fieldset" fullWidth>
-                            <FormLabel component="legend">Have you graduated yet ?</FormLabel>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    name='isGraduted'
-                                    checked={formik.values.isGraduted}
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }} />
-
-                            } label="Graduted" />
-
-                        </FormControl>
-                    </Grid>
-                    <Grid item>
-                        <FormControl component="fieldset" fullWidth>
-                            <FormLabel component="legend">What company are you working ?</FormLabel>
-                            <TextField fullWidth
-                                name='company'
-                                value={formik.values.company}
-                                onChange={(e) => {
-                                    formik.handleChange(e);
-                                }} />
-                        </FormControl>
-                    </Grid>
-                    {/* <Grid item>
-                        <FormControl component="fieldset" fullWidth>
-                            <FormLabel component="legend">Where are you live</FormLabel>
-                            <TextField fullWidth />
-                        </FormControl>
-                    </Grid> */}
-                    <Grid item>
-                        <FormControl fullWidth>
-                            <FormLabel>Tell us a little bit about yourself. </FormLabel>
-                            <TextField fullWidth multiline
-                                name='about'
-                                rows={5} value={formik.values.about} onChange={(e) => {
-                                    formik.handleChange(e);
-                                }} />
-                        </FormControl>
-                    </Grid>
-                    <Grid item>
-                        <Button type='submit' variant="contained">SAVE</Button>
-                    </Grid>
-                </Grid>
+                {
+                    props.currentMentor ? (
+                        <MentorProfileForm initialValues={convertToFormObj(props.currentMentor)} />
+                    ) : 'Loading...'
+                }
             </Paper>
         </Container>
     );
 }
-export default EditProfilePage;
+const mapStateToProps = (state) => ({
+    currentMentor: state.mentor.currentMentor
+});
+
+export default connect(mapStateToProps, {
+    fetchMentor, fetchAllMajor, fetchAllSubjectByMajor
+})(EditProfilePage);

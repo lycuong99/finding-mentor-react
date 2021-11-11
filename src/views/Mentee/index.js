@@ -11,12 +11,13 @@ import bannerRightImg from '../../assets/images/bannerRight.svg';
 import MentorCard from '../../components/MentorCard';
 import Slider from 'react-slick';
 import { Box } from '@mui/system';
-import { fetchRecommendMentor, fetchRecommendMentorByMajor } from '../../actions';
+import { fetchRecommendMentor, fetchRecommendMentorByMajor, fetchRecommendCoursesByUserMajor, fetchMyLearningCourses } from '../../actions';
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 function SimpleSlider() {
     const slider = useRef();
@@ -111,7 +112,9 @@ class MenteeHomePage extends React.Component {
 
     componentDidMount() {
         this.props.fetchRecommendMentor();
-        // this.props.fetchRecommendMentorByMajor();
+        this.props.fetchRecommendCoursesByUserMajor();
+        this.props.fetchMyLearningCourses();
+        this.props.fetchRecommendMentorByMajor();
     }
 
     componentDidUpdata() {
@@ -189,6 +192,23 @@ class MenteeHomePage extends React.Component {
                 </div>
                 <Container maxWidth="lg" >
                     <Grid container direction='column' className={classes.content} rowGap="3em">
+                        <Grid item container direction='column' >
+                            <Grid item style={{ marginBottom: '1em' }}>
+                                <Typography variant="h2">My courses</Typography>
+                            </Grid>
+
+                            <Grid item container direction="column" alignItems="stretch" spacing="4px">
+                                {
+                                    (!_.isEmpty(this.props.mylearningCourses)) ?
+                                        this.props.mylearningCourses.map(course => (
+                                            <Grid item container key={course.id}>
+                                                <CourseCard type="detail" data={course} />
+                                            </Grid>
+                                        )) : (<Typography variant="h2" textAlign="center">No Course Yet</Typography>)
+                                }
+                            </Grid>
+                        </Grid>
+
                         <Grid item container direction='column'>
                             <Grid item style={{ marginBottom: '1em' }}>
                                 <Typography variant="h2">Top Mentor</Typography>
@@ -211,41 +231,18 @@ class MenteeHomePage extends React.Component {
                             </Grid>
 
                             <Grid item container direction="row" spacing={1} flexWrap="nowrap">
-                                <Grid item>
-                                    <CourseCard />
-                                </Grid>
-                                <Grid item>
-                                    <CourseCard />
-                                </Grid>
-                                <Grid item>
-                                    <CourseCard />
-                                </Grid>
-                                <Grid item>
-                                    <CourseCard />
-                                </Grid>
-
+                                {
+                                    (!_.isEmpty(this.props.recommendCoursesByMajor)) ?
+                                        this.props.recommendCoursesByMajor.map(course => (
+                                            <Grid item key={course.id}>
+                                                <CourseCard data={course} />
+                                            </Grid>
+                                        )) : null
+                                }
                             </Grid>
                         </Grid>
 
-                        <Grid item container direction='column' >
-                            <Grid item style={{ marginBottom: '1em' }}>
-                                <Typography variant="h2">My courses</Typography>
-                            </Grid>
 
-                            <Grid item container direction="column" alignItems="stretch" spacing="4px">
-                                <Grid item container >
-                                    <CourseCard type="detail" />
-                                </Grid>
-
-                                <Grid item container >
-                                    <CourseCard type="detail" />
-                                </Grid>
-
-                                <Grid item container >
-                                    <CourseCard type="detail" />
-                                </Grid>
-                            </Grid>
-                        </Grid>
                     </Grid>
                 </Container>
             </div>
@@ -254,17 +251,21 @@ class MenteeHomePage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state.mentor.recommendMentor);
+    // console.log(state.mentor.recommendMentor);
     return {
         recommendMentor: state.mentor.recommendMentor,
-        recommendMentorByMajor: state.mentor.recommendMentorByMajor
+        recommendMentorByMajor: state.mentor.recommendMentorByMajor,
+        recommendCoursesByMajor: state.course.recommendCoursesByMajor,
+        mylearningCourses: state.course.mylearningCourses
     }
 }
 
 export default connect(
     mapStateToProps, {
     fetchRecommendMentorByMajor,
-    fetchRecommendMentor
+    fetchRecommendMentor,
+    fetchRecommendCoursesByUserMajor,
+    fetchMyLearningCourses
 }
 )(
     withStyles(styles)(MenteeHomePage)

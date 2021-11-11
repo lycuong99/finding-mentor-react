@@ -1,4 +1,4 @@
-import { Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Paper } from '@mui/material';
+import { Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Paper, Divider, Typography } from '@mui/material';
 import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -6,13 +6,19 @@ import { fetchAllMajor } from '../../../actions';
 const studentList = [
     {
         id: '1',
-        name: 'Ly Van Cuong',
+        name: 'Mentee1',
         avatarURL: '',
         majorId: 'CN',
     },
     {
         id: '2',
-        name: 'Ly Van Cuong',
+        name: 'Mentee2',
+        avatarURL: '',
+        majorId: 'CN',
+    },
+    {
+        id: '2',
+        name: 'Mentee3',
         avatarURL: '',
         majorId: 'CN',
     }
@@ -32,6 +38,8 @@ const MenteeList = (props) => {
     }, []);
     return (
         <Paper>
+            <Typography variant="h2" sx={{ padding: '1em' }}>Mentees</Typography>
+            <Divider />
             <TableContainer sx={{ maxHeight: 440 }}>
                 <Table>
                     <TableHead>

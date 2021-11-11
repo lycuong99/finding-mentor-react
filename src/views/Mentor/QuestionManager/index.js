@@ -32,7 +32,7 @@ const questions = [
         answers: [
             {
                 id: '1',
-                createBy: 'lyvancuong',
+                createBy: 'locton',
                 content: ""
             }
         ]

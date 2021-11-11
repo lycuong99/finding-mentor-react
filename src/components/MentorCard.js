@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MentorCard = (props) => {
     const { type, data } = props;
-    console.log(data);
+    
     const classes = useStyles();
     const theme = useTheme();
     const matchMDUp = useMediaQuery(theme.breakpoints.up('md'));

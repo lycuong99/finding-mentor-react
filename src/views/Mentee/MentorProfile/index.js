@@ -4,8 +4,9 @@ import CourseCard from '../../../components/CourseCard';
 import SectionContainer from '../../../components/SectionContainer';
 import WorkIcon from '@mui/icons-material/WorkOutline';
 import { useParams } from 'react-router';
-import { fetchMentor } from '../../../actions';
+import { fetchMentor, fetchCoursesOfMentor } from '../../../actions';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 const CustomChip = (props) => {
     return (<Chip label={props.label} sx={{ borderRadius: '16px !important', fontFamily: 'Inter, Epilogue', fontWeight: '600', fontSize: '0.85rem', paddingX: '10px', paddingY: '1.4em' }} />);
@@ -78,6 +79,7 @@ const MentorProfilePage = (props) => {
     useEffect(() => {
         if (id) {
             props.fetchMentor(id);
+            props.fetchCoursesOfMentor(id);
         }
     },
         []
@@ -165,19 +167,6 @@ const MentorProfilePage = (props) => {
                                                     </Grid>
                                                 ))}
 
-                                                {/* <Grid item><CustomChip label="DB301" /></Grid>
-                         <Grid item><CustomChip label="SYB202" /></Grid>
-                         <Grid item><CustomChip label="JAV101" /></Grid>
-
-                         <Grid item><CustomChip label="SWP391" /></Grid>
-                         <Grid item><CustomChip label="DB301" /></Grid>
-                         <Grid item><CustomChip label="SYB202" /></Grid>
-                         <Grid item><CustomChip label="JAV101" /></Grid>
-
-                         <Grid item><CustomChip label="SWP391" /></Grid>
-                         <Grid item><CustomChip label="DB301" /></Grid>
-                         <Grid item><CustomChip label="SYB202" /></Grid>
-                         <Grid item><CustomChip label="JAV101" /></Grid> */}
                                             </Grid>
                                         </SectionContainer>
                                     </Grid>
@@ -186,11 +175,12 @@ const MentorProfilePage = (props) => {
                                         <SectionContainer title="My Course">
                                             <Grid container direction="row" gap='12px' flexWrap="wrap">
                                                 {
-                                                    courses.map(course => (
-                                                        <Grid item md id={course.id}>
-                                                            <CourseCard data={course} />
-                                                        </Grid>
-                                                    ))
+                                                    _.isEmpty(props.mentorCourses) ? (<Typography variant="h3" textAlign="center">No Course</Typography>)
+                                                        : props.mentorCourses.courses.map(course => (
+                                                            <Grid item md key={course.id}>
+                                                                <CourseCard data={course} />
+                                                            </Grid>
+                                                        ))
                                                 }
 
 
@@ -216,10 +206,12 @@ const MentorProfilePage = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    data: state.mentor.currentMentor
+    data: state.mentor.currentMentor,
+    mentorCourses: state.course.mentorCourses
 })
 export default connect(
     mapStateToProps, {
-    fetchMentor
+    fetchMentor,
+    fetchCoursesOfMentor
 }
 )(MentorProfilePage);

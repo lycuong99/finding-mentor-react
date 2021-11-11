@@ -19,27 +19,16 @@ const MenuProps = {
   },
 };
 
-const names = [
-  { id: 1, name: 'One', },
-  { id: 2, name: 'Two', },
-  { id: 3, name: 'Three', },
-  { id: 4, name: 'Four', },
-  { id: 5, name: 'Five', },
-  { id: 6, name: 'Six', }
-
-];
-
-
-
 export default function MultipleSelectChip(props) {
   const theme = useTheme();
   // const [values, setValues] = React.useState([]);
-  const { fullWidth, values, onChange } = props;
+  const { fullWidth, values, onChange, selectDatas } = props;
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
 
+    console.log(value);
     // setValues(
     //   // On autofill we get a the stringified value.
     //   typeof value === 'string' ? value.split(',') : value,
@@ -67,12 +56,15 @@ export default function MultipleSelectChip(props) {
       input={<OutlinedInput id="select-multiple-chip" />}
       renderValue={(selected) => {
         // console.log(names.find(e => e.id == 1));
+        // console.log(selected);
+        // console.log(selectDatas);
+
         return (
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
             {
 
               selected.map((value) => (
-                <Chip key={value} label={names.find(e => e.id == value).name}
+                <Chip key={value} label={selectDatas.find(e => e.id == value).name}
                   sx={{ zIndex: 2100 }}
                   onDelete={(event) => {
                     // event.stopPropagation();
@@ -86,17 +78,17 @@ export default function MultipleSelectChip(props) {
       }}
       MenuProps={MenuProps}
     >
-      {names.map((name) => (
+      {selectDatas.map((item) => (
         <MenuItem
-          key={name.id}
-          value={name.id}
+          key={item.id}
+          value={item.id}
           style={{
             fontWeight: 500,
             paddingTop: '10px',
             paddingBottom: '10px'
           }}
         >
-          {name.name}
+          {item.name}
         </MenuItem>
       ))}
     </Select>

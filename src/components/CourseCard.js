@@ -51,7 +51,7 @@ const CourseCard = (props) => {
                                 Become a full-stack web developer with just one course. HTML, CSS, Javascript, Node, React, MongoDB and more!
                             </Typography>
                             <Typography variant="subtitle2">
-                                Ly Van Cuong
+                                {data.mentorName}
                             </Typography>
                             <Rating size="medium"
                                 readOnly
@@ -64,7 +64,7 @@ const CourseCard = (props) => {
                         <CardActions>
                             <Grid container alignItems="center" direction="column-reverse" justifyContent="space-between">
                                 <Grid item>
-                                    <Button variant="contained" component={Link} to="/mentee/course" sx={{ color: 'white' }}> Enroll </Button>
+                                    <Button variant="contained" component={Link} to={`/mentee/course/${data.id}`} sx={{ color: 'white' }}> Enroll </Button>
                                 </Grid>
 
                                 <Grid item>
@@ -82,7 +82,7 @@ const CourseCard = (props) => {
         );
     } else if (props.type && props.type == 'mentor') {
         return (
-            <Card  sx={{
+            <Card sx={{
                 width: '100%',
                 borderWidth: 2,
                 // borderRadius: 2,
@@ -146,7 +146,7 @@ const CourseCard = (props) => {
                     </Typography>
 
                     <Typography variant="subtitle2">
-                        Ly Van Cuong
+                        {data.mentorName ? data.mentorName : 'unknown'}
                     </Typography>
                     <Rating size="small"
                         readOnly
@@ -157,7 +157,7 @@ const CourseCard = (props) => {
                 <CardActions>
                     <Grid container alignItems="center" justifyContent="space-between">
                         <Grid item>
-                            <Button variant="contained" component={Link} to="/mentee/course" sx={{ color: 'white' }}> Enroll </Button>
+                            <Button variant="contained" component={Link} to={`/mentee/course/${data.id}`} sx={{ color: 'white' }}> Enroll </Button>
                         </Grid>
 
                         <Grid item>

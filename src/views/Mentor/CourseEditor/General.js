@@ -46,27 +46,8 @@ const General = (props) => {
     }
 
 
-
-
-    // const initMajor = () => {
-    //     _.keys(props.subjectMajors).forEach(key => {
-    //         props.subjectMajors[key].forEach(subject => {
-    //             // console.log(subject);
-    //             if (subject.id === initialValues.subjectId) {
-    //                 initialValues.major = key;
-    //                 setMajorInit(key);
-    //                 console.log("SET");
-    //                 return;
-    //             }
-    //         })
-    //     });
-    // }
-
-    const formRef = useRef(React.createRef());
-
-
-
     let majorIdInit = '';
+    if(props.initValues)
     _.keys(props.subjectMajors).forEach(key => {
         props.subjectMajors[key].forEach(subject => {
             // console.log(subject);
