@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
 import React from "react";
 import { Link } from "react-router-dom";
+import courseImgNull from '../assets/images/courseImgAlter.png';
 
 const useStyles = makeStyles((theme) => ({
     logo: {
@@ -98,7 +99,7 @@ const CourseCard = (props) => {
                         <CardMedia
                             component="img"
                             height="150"
-                            image={data.imageURL}
+                            image={data.imageUrl ? data.imageUrl : courseImgNull}
                             alt="green iguana"
                         />
                     </Grid>

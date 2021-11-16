@@ -19,7 +19,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-function SimpleSlider() {
+function SimpleSlider(props) {
     const slider = useRef();
     const next = () => {
         slider.current.slickNext();
@@ -35,7 +35,6 @@ function SimpleSlider() {
         slidesToScroll: 1,
         // dots: true,
         afterChange: current => {
-            console.log(current);
             if (current == 0) setDisabledFirstBtn(true); else setDisabledFirstBtn(false);
             if (current == 2.5) setDisabledLastBtn(true); else setDisabledLastBtn(false);
         },
@@ -52,26 +51,17 @@ function SimpleSlider() {
                     <IconButton onClick={next} style={{ backgroundColor: 'white', opacity: disabledLastBtn == true ? 0.6 : 1 }}><KeyboardArrowRightIcon fontSize="large" /></IconButton>
                 </Stack></Stack>
             <Slider {...settings} ref={slider}>
-                <div key={1} style={{ width: '400px' }}>
-                    <Stack direction="row" spacing={2}><MentorCard data={{ fullname: "MENTOR NAME" }} type="horizontal" />
-                        <Box sx={{ width: 20 }} /></Stack>
-                </div>
-                <div key={2} style={{ width: '400px' }}>
-                    <Stack direction="row" spacing={2}><MentorCard data={{ fullname: "MENTOR NAME" }} type="horizontal" />
-                        <Box sx={{ width: 20 }} /></Stack>
-                </div>
-                <div key={3} style={{ width: '400px' }}>
-                    <Stack direction="row" spacing={2}><MentorCard data={{ fullname: "MENTOR NAME" }} type="horizontal" />
-                        <Box sx={{ width: 20 }} /></Stack>
-                </div >
-                <div key={4} style={{ width: '400px' }}>
-                    <Stack direction="row" spacing={2}><MentorCard data={{ fullname: "MENTOR NAME" }} type="horizontal" />
-                        <Box sx={{ width: 20 }} /></Stack>
-                </div>
-                <div key={5} style={{ width: '400px' }}>
-                    <Stack direction="row" spacing={2}><MentorCard data={{ fullname: "MENTOR NAME" }} type="horizontal" />
-                        <Box sx={{ width: 20 }} /></Stack>
-                </div>
+                {
+                    props.datas ?
+                        props.datas.map((mentor, index) => (
+                            <div key={index} style={{ width: '400px' }}>
+                                <Stack direction="row" spacing={2}><MentorCard data={mentor} type="horizontal" />
+                                    <Box sx={{ width: 20 }} /></Stack>
+                            </div>
+                        )) : '...loading'
+                }
+
+               
             </Slider>
 
             <Box height="2em" />
@@ -143,15 +133,15 @@ class MenteeHomePage extends React.Component {
     }
 
     renderRecommendMentorByMajor = () => {
-        let renderRecommendMentor = this.props.renderRecommendMentorByMajor;
+        let recommendMentorByMajor = this.props.recommendMentorByMajor;
 
-        if (renderRecommendMentor)
+        if (recommendMentorByMajor)
             return (<Grid container direction="row" spacing={3} flexWrap="wrap">
                 {
-                    renderRecommendMentor.map(mentor => {
+                    recommendMentorByMajor.map(mentor => {
                         return (
                             <Grid item xs md={4} sm={6} key={mentor.id}>
-                                <MentorCard type="vertical" mentorData={mentor} />
+                                <MentorCard type="vertical" data={mentor} />
                             </Grid>
                         );
                     })
@@ -217,9 +207,10 @@ class MenteeHomePage extends React.Component {
                                 {this.renderRecommendMentor()}
                             </Grid>
                         </Grid>
+
                     </Grid>
 
-                    <SimpleSlider />
+                    <SimpleSlider datas={this.props.recommendMentor} />
 
                 </Container>
 

@@ -14,7 +14,8 @@ import General from './General';
 import history from '../../../history';
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { connect } from 'react-redux';
-import { addCourse, fetchAllMajor, fetchAllSubjectByMajor } from '../../../actions';
+import { createCourse, fetchMajorsOfMentor, fetchAllSubjectByMajor } from '../../../actions';
+import UserStorage from '../../../ultils/UserStorage';
 import _ from 'lodash';
 const CourseCreaterPage = (props) => {
     const paddingX = '3em';
@@ -26,7 +27,7 @@ const CourseCreaterPage = (props) => {
 
     useEffect(() => {
         if (_.isEmpty(props.majors)) {
-            props.fetchAllMajor();
+            props.fetchMajorsOfMentor(UserStorage.getUserId());
         }
     }, []);
 
@@ -35,58 +36,19 @@ const CourseCreaterPage = (props) => {
             props.majors.forEach(major => { props.fetchAllSubjectByMajor(major.id); })
         }
     }, [props.majors]);
-    const uploadImage = (image, successFunc) => {
-        if (image == null) {
-            successFunc(null);
-            return;
-        }
-
-        // Create a reference to 'image.jpg'
-        let date = new Date();
-        let newName = date.getTime() + image.name.substring(image.name.lastIndexOf('.'));
-        // console.log(newName);
-        const mountainsRef = ref(storage, newName);
-
-        // // Create a reference to 'images/mountains.jpg'
-        // const mountainImagesRef = ref(storage, 'images/mountains.jpg');
-
-        // storage.ref(`/images/${image.name}`).put(image)
-        //     .on("state_changed", alert("success"), alert);
-
-        // 'file' comes from the Blob or File API
-        uploadBytes(mountainsRef, image).then((snapshot) => {
-            console.log('Uploaded a blob or file!');
-            // console.log(snapshot);
-            getDownloadURL(snapshot.ref)
-                .then((url) => {
-                    // console.log(url);
-                    successFunc(url);
-                })
-                .catch((error) => {
-                    // Handle any errors
-                    console.log(error);
-                });
-        });
 
 
-    }
 
     const handleSubmitGeneralInfo = (values) => {
         console.log(values);
-        let image = values.imageFileData;
-
-        uploadImage(image, (imageURL) => {
-            let courseData = { ...values, imageURL: imageURL, imageFileData: undefined, imageFile: undefined };
-            setCourse({ ...courseData, });
-            setSelectedItem(1);
-        })
-
+        setCourse({ ...values, });
+        setSelectedItem(1);
     }
 
     const handleSubmitCurriculum = (curiculumObj) => {
         let newCourse = { ...course, curriculum: curiculumObj, mentor: { id: '111-222-333-444', name: "Ly Van Cuong" } };
         setCourse(newCourse);
-        props.addCourse(newCourse);
+        props.createCourse(newCourse, UserStorage.getUserId());
         history.replace('/mentor/course');
     }
 
@@ -136,10 +98,10 @@ const CourseCreaterPage = (props) => {
 }
 const mapStateToProps = (state) => {
     return {
-        majors: state.major.majors,
+        majors: state.major.majorsOfMentor,
         subjectMajors: state.major.subjectMajors,
     }
 };
 export default connect(mapStateToProps, {
-    addCourse, fetchAllMajor, fetchAllSubjectByMajor
+    createCourse, fetchMajorsOfMentor, fetchAllSubjectByMajor
 })(CourseCreaterPage);

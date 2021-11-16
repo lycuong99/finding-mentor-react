@@ -5,10 +5,14 @@ import {
     FETCH_COURSES_BY_MENTOR_ID,
     FETCH_COURSE_SEARCH,
     FETCH_RECOMMEND_COURSES_BY_MAJOR,
-    FETCH_MY_LEARNING_COURSES
+    FETCH_MY_LEARNING_COURSES,
+    CREATE_COURSE,
+    DELETE_COURSE
 } from '../constants/actionTypes';
 import authHeader from '../ultils/authHeader';
 import UserStorage from '../ultils/UserStorage';
+import { uploadCourseImage, initCourseData, deleteCourseFirebase } from '../ultils';
+import { useDispatch } from 'react-redux';
 
 export const fetchCourses = (key) => async (dispatch) => {
     try {
@@ -21,7 +25,6 @@ export const fetchCourses = (key) => async (dispatch) => {
     } catch (error) {
         // dispatch({ type: FETCH_RECOMMEND_MENTOR_ERROR, payload: { error: "ERROR" } });
     }
-
 }
 
 export const fetchRecommendCoursesByUserMajor = () => async (dispatch) => {
@@ -78,6 +81,65 @@ export const fetchCoursesOfMentor = (mentorId) => async (dispatch) => {
         });
 
         dispatch({ type: FETCH_COURSES_BY_MENTOR_ID, payload: { id: mentorId, courses: response.data } });
+    } catch (error) {
+        // dispatch({ type: FETCH_RECOMMEND_MENTOR_ERROR, payload: { error: "ERROR" } });
+    }
+
+}
+
+export const createCourse = (course, mentorId) => async (dispatch) => {
+    try {
+        // insert course
+
+        const courseInsetObj = {
+            subjectId: course.subjectId,
+            imageUrl: '',
+            description: course.description,
+            name: course.name,
+            price: course.price,
+            duration: course.duration,
+            startDate: course.startDate,
+            mentorId: mentorId,
+        };
+
+        const response = await fm.post(`/Course/`, courseInsetObj, {
+            headers: authHeader(),
+        });
+
+
+
+        // take id course
+        let courseId = response.data;
+
+        //init course info to firebase {curriculum,questions,activity}
+        initCourseData(courseId, course.curriculum);
+
+        //upload Image
+        uploadCourseImage(course.imageFileData, courseId, (url) => {
+            fm.put(`/Course/ImageUrl/${courseId}`, {
+                imageUrl: url,
+            }, {
+                headers: authHeader(),
+            });
+
+            dispatch({ type: CREATE_COURSE, payload: { ...courseInsetObj, id: courseId, imageUrl: url } });
+        });
+
+    } catch (error) {
+        // dispatch({ type: FETCH_RECOMMEND_MENTOR_ERROR, payload: { error: "ERROR" } });
+    }
+
+}
+export const deleteCourse = (id) => async (dispatch) => {
+    try {
+        // insert course
+        const response = await fm.delete(`/Course/${id}`, {
+            headers: authHeader(),
+        });
+        // take id course
+        deleteCourseFirebase(id);
+
+        dispatch({ type: DELETE_COURSE, payload: id });
     } catch (error) {
         // dispatch({ type: FETCH_RECOMMEND_MENTOR_ERROR, payload: { error: "ERROR" } });
     }

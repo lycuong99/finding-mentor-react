@@ -4,33 +4,36 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CourseCard from '../../../components/CourseCard';
-import { fetchCourses_test } from '../../../actions'
-import { useDispatch, useSelector } from "react-redux";
+import { deleteCourse, fetchCoursesOfMentor } from '../../../actions'
 import _ from 'lodash';
+import UserStorage from '../../../ultils/UserStorage';
+import DeleteDialog from '../../../components/dialog/DeleteDialog';
 const CourseManagementPage = (props) => {
 
     const paddingX = '3em';
     const [keySearch, setKeySearch] = useState('');
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [currentCourseId, setCurrentCourseId] = useState(null);
     const courses = props.courses;
-    const dispatch = useDispatch();
-    // useEffect(
-    //     () => {
-    //         if (_.isEmpty(courses)) {
-    //             dispatch(fetchCourses_test(''));
-    //         }
-    //     }, []);
 
-    console.log(courses);
-    const onDelete = (id) => {
-        // deleteCourse(id);
-        // setCourses(getCourses());
+
+    const handleDeleteCourse = () => {
+
+        if (currentCourseId) {
+            props.deleteCourse(currentCourseId);
+            setCurrentCourseId(null);
+        }
     }
 
+
     useEffect(() => {
-        dispatch(fetchCourses_test(keySearch));
+
     },
         [keySearch]
     )
+    useEffect(() => {
+        props.fetchCoursesOfMentor(UserStorage.getUserId());
+    }, []);
 
     return (
         <Container maxWidth="xl" sx={{ paddingBottom: '2em' }} >
@@ -53,16 +56,30 @@ const CourseManagementPage = (props) => {
                     </Grid>
                     <Grid item container direction="column" alignItems="stretch" rowGap={3}>
                         {
-                            courses.map((course, index) => {
-                                // console.log(courses.length);
-                                return (<Grid item key={index}>
-                                    <CourseCard type="mentor" data={course} />
-                                </Grid>);
-                            })
+                            _.isEmpty(props.mentorCourses) ? 'Loading' :
+                                props.mentorCourses.courses.filter(course => course.name.includes(keySearch)).map((course, index) => {
+                                    // console.log(courses.length);
+                                    return (<Grid item key={index}>
+                                        <CourseCard type="mentor" data={course}
+                                            onDelete={() => {
+                                                setOpenDeleteDialog(true);
+                                                setCurrentCourseId(course.id);
+                                            }} />
+                                    </Grid>);
+                                })
                         }
 
                     </Grid>
                 </Grid>
+                <DeleteDialog open={openDeleteDialog}
+                    handleClose={() => {
+                        setOpenDeleteDialog(false);
+                    }}
+                    onConfirm={() => {
+                        handleDeleteCourse();
+                    }}
+                    contentText={`Do you want to delete this course?`}
+                />
 
 
             </Paper>
@@ -71,6 +88,8 @@ const CourseManagementPage = (props) => {
 }
 
 const mapStateToProps = (state) => {
-    return { courses: state.test.searchResults };
+    return { mentorCourses: state.course.mentorCourses };
 }
-export default connect(mapStateToProps, {})(CourseManagementPage);
+export default connect(mapStateToProps, {
+    fetchCoursesOfMentor, deleteCourse
+})(CourseManagementPage);

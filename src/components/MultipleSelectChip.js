@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Chip from '@mui/material/Chip';
+import _ from 'lodash';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -22,13 +23,16 @@ const MenuProps = {
 export default function MultipleSelectChip(props) {
   const theme = useTheme();
   // const [values, setValues] = React.useState([]);
-  const { fullWidth, values, onChange, selectDatas } = props;
+  const { fullWidth, values, onChange, selectDatas, name } = props;
+  // console.log(name);
+  // console.log(selectDatas);
+  // console.log(selectDatas.flat());
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
 
-    console.log(value);
+
     // setValues(
     //   // On autofill we get a the stringified value.
     //   typeof value === 'string' ? value.split(',') : value,
@@ -47,13 +51,11 @@ export default function MultipleSelectChip(props) {
 
   return (
     <Select
-      labelId="demo-multiple-chip-label"
-      id="demo-multiple-chip"
       multiple
       fullWidth
       value={values}
       onChange={handleChange}
-      input={<OutlinedInput id="select-multiple-chip" />}
+      input={<OutlinedInput />}
       renderValue={(selected) => {
         // console.log(names.find(e => e.id == 1));
         // console.log(selected);
@@ -63,34 +65,40 @@ export default function MultipleSelectChip(props) {
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
             {
 
-              selected.map((value) => (
-                <Chip key={value} label={selectDatas.find(e => e.id == value).name}
-                  sx={{ zIndex: 2100 }}
-                  onDelete={(event) => {
-                    // event.stopPropagation();
-                    // if (event.currentTarget != event.target) return;
-                    handleDelete(value);
-                  }} />
-              ))
+              selected.map((value) => {
+                return (
+                  <Chip key={value} label={selectDatas.find(e => e?.id == value)?.name}
+                    sx={{ zIndex: 2100 }}
+                    onDelete={(event) => {
+                      // event.stopPropagation();
+                      // if (event.currentTarget != event.target) return;
+                      handleDelete(value);
+                    }} />
+                );
+              })
             }
           </Box>
         )
       }}
       MenuProps={MenuProps}
     >
-      {selectDatas.map((item) => (
-        <MenuItem
-          key={item.id}
-          value={item.id}
-          style={{
-            fontWeight: 500,
-            paddingTop: '10px',
-            paddingBottom: '10px'
-          }}
-        >
-          {item.name}
-        </MenuItem>
-      ))}
+      {_.isEmpty(selectDatas) ? null : selectDatas.map((item) => {
+        if (item) {
+          return (
+            <MenuItem
+              key={item.id}
+              value={item.id}
+              style={{
+                fontWeight: 500,
+                paddingTop: '10px',
+                paddingBottom: '10px'
+              }}
+            >
+              {item.name}
+            </MenuItem>
+          );
+        }
+      })}
     </Select>
   );
 }

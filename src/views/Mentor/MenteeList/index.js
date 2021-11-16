@@ -3,6 +3,7 @@ import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchAllMajor } from '../../../actions';
+
 const studentList = [
     {
         id: '1',

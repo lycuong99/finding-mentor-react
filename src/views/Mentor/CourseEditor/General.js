@@ -47,20 +47,20 @@ const General = (props) => {
 
 
     let majorIdInit = '';
-    if(props.initValues)
-    _.keys(props.subjectMajors).forEach(key => {
-        props.subjectMajors[key].forEach(subject => {
-            // console.log(subject);
-            if (subject.id === props.initValues.subjectId) {
-                majorIdInit = key;
-                return;
-            }
-        })
-    });
+    if (props.initValues)
+        _.keys(props.subjectMajors).forEach(key => {
+            props.subjectMajors[key].forEach(subject => {
+                // console.log(subject);
+                if (subject.id === props.initValues.subjectId) {
+                    majorIdInit = key;
+                    return;
+                }
+            })
+        });
 
     const initialValues = {
         name: '',
-        imageURL: '',
+        imageUrl: '',
         imageFile: '',
         description: '',
         price: 0,
@@ -240,8 +240,8 @@ const General = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        majors: state.major.majors,
-        subjectMajors: state.major.subjectMajors
+        majors: state.major.majorsOfMentor,
+        subjectMajors: state.major.subjectMajors,
     }
 };
 
