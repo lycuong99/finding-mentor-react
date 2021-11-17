@@ -57,16 +57,17 @@ const CourseManagementPage = (props) => {
                     <Grid item container direction="column" alignItems="stretch" rowGap={3}>
                         {
                             _.isEmpty(props.mentorCourses) ? 'Loading' :
-                                props.mentorCourses.courses.filter(course => course.name.includes(keySearch)).map((course, index) => {
-                                    // console.log(courses.length);
-                                    return (<Grid item key={index}>
-                                        <CourseCard type="mentor" data={course}
-                                            onDelete={() => {
-                                                setOpenDeleteDialog(true);
-                                                setCurrentCourseId(course.id);
-                                            }} />
-                                    </Grid>);
-                                })
+                                _.isEmpty(props.mentorCourses?.courses) ? "0 Course" :
+                                    props.mentorCourses.courses.filter(course => course.name.includes(keySearch)).map((course, index) => {
+                                        // console.log(courses.length);
+                                        return (<Grid item key={index}>
+                                            <CourseCard type="mentor" data={course}
+                                                onDelete={() => {
+                                                    setOpenDeleteDialog(true);
+                                                    setCurrentCourseId(course.id);
+                                                }} />
+                                        </Grid>);
+                                    })
                         }
 
                     </Grid>

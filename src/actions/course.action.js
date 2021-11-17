@@ -7,11 +7,12 @@ import {
     FETCH_RECOMMEND_COURSES_BY_MAJOR,
     FETCH_MY_LEARNING_COURSES,
     CREATE_COURSE,
-    DELETE_COURSE
+    DELETE_COURSE,
+    UPDATE_COURSE
 } from '../constants/actionTypes';
 import authHeader from '../ultils/authHeader';
 import UserStorage from '../ultils/UserStorage';
-import { uploadCourseImage, initCourseData, deleteCourseFirebase } from '../ultils';
+import { uploadCourseImage, initCourseData, deleteCourseFirebase, deleteCourseImage } from '../ultils';
 import { useDispatch } from 'react-redux';
 
 export const fetchCourses = (key) => async (dispatch) => {
@@ -91,7 +92,7 @@ export const createCourse = (course, mentorId) => async (dispatch) => {
     try {
         // insert course
 
-        const courseInsetObj = {
+        const courseInsertObj = {
             subjectId: course.subjectId,
             imageUrl: '',
             description: course.description,
@@ -102,7 +103,7 @@ export const createCourse = (course, mentorId) => async (dispatch) => {
             mentorId: mentorId,
         };
 
-        const response = await fm.post(`/Course/`, courseInsetObj, {
+        const response = await fm.post(`/Course/`, courseInsertObj, {
             headers: authHeader(),
         });
 
@@ -122,8 +123,49 @@ export const createCourse = (course, mentorId) => async (dispatch) => {
                 headers: authHeader(),
             });
 
-            dispatch({ type: CREATE_COURSE, payload: { ...courseInsetObj, id: courseId, imageUrl: url } });
+            dispatch({ type: CREATE_COURSE, payload: { ...courseInsertObj, id: courseId, imageUrl: url } });
         });
+
+    } catch (error) {
+        // dispatch({ type: FETCH_RECOMMEND_MENTOR_ERROR, payload: { error: "ERROR" } });
+    }
+
+}
+
+export const updateCourse = (course) => async (dispatch) => {
+    try {
+        const courseInsertObj = {
+            subjectId: course.subjectId,
+            imageUrl: course.imageUrl,
+            description: course.description,
+            name: course.name,
+            price: course.price,
+            duration: course.duration,
+            startDate: course.startDate,
+            mentorId: course.mentorId,
+        };
+        //  check image change or not
+        if (course.imageFileData) {
+
+            //upload Image
+            uploadCourseImage(course.imageFileData, course.id, async (url) => {
+
+                // update course
+                const response = await fm.put(`/Course/${course.id}`, { ...courseInsertObj, imageUrl: url }, {
+                    headers: authHeader(),
+                });
+                dispatch({ type: CREATE_COURSE, payload: { ...courseInsertObj } });
+            });
+        } else {
+            // update course
+            const response = await fm.put(`/Course/${course.id}`, courseInsertObj, {
+                headers: authHeader(),
+            });
+
+            dispatch({ type: UPDATE_COURSE, payload: { ...courseInsertObj } });
+        }
+
+
 
     } catch (error) {
         // dispatch({ type: FETCH_RECOMMEND_MENTOR_ERROR, payload: { error: "ERROR" } });
@@ -138,6 +180,7 @@ export const deleteCourse = (id) => async (dispatch) => {
         });
         // take id course
         deleteCourseFirebase(id);
+        deleteCourseImage(id);
 
         dispatch({ type: DELETE_COURSE, payload: id });
     } catch (error) {

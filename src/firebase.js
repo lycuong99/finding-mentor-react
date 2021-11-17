@@ -6,7 +6,7 @@ import 'firebase/firestore';
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional 
 const firebaseConfig = {
     apiKey: "AIzaSyBFh1dSOmo5gd4ktalf6hdtuEX_7o49pJA",
     authDomain: "finding-mentor-fad7e.firebaseapp.com",

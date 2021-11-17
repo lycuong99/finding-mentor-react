@@ -7,18 +7,17 @@ import { Box } from '@mui/system';
 
 import { fetchAllMajor, fetchAllSubjectByMajor } from '../../../actions';
 import { DesktopDatePicker } from '@mui/lab';
-import MultipleSelectChip from '../../../components/MultipleSelectChip';
 import { Formik, useFormik } from "formik";
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import PropTypes from 'prop-types'
+
 
 const General = (props) => {
-    console.log("RERENDER");
-    // const [image, setImage] = useState('');
-    // console.log(props.initValues?.id);
+
     let durationNumber = 1;
     let durationUnit = 'day';
-    const [majorInit, setMajorInit] = useState('');
+
 
     if (props.initValues && props.initValues.duration) {
         const myArray = props.initValues.duration.split(" ");
@@ -38,7 +37,6 @@ const General = (props) => {
         delete valuesNew.durationNumber;
         delete valuesNew.imageFile;
         props.onSubmit(valuesNew);
-        console.log(values);
     };
 
     const handleValidate = (values) => {
@@ -128,7 +126,7 @@ const General = (props) => {
                                 </Grid>
                                 <Grid item xs={6} >
                                     <div style={{ padding: '16px', border: '1px solid #e5e7eb', borderRadius: 12, marginTop: '23px' }}>
-                                        <img src={formik.values.imageFileData ? URL.createObjectURL(formik.values.imageFileData) : formik.values.imageURL} style={{ height: '200px', maxWidth: '100%' }} />
+                                        <img src={formik.values.imageFileData ? URL.createObjectURL(formik.values.imageFileData) : formik.values.imageUrl} style={{ height: '200px', maxWidth: '100%' }} />
                                     </div>
                                 </Grid>
 
@@ -227,7 +225,7 @@ const General = (props) => {
 
                             </Grid>
                             <Grid item>
-                                <Button type="submit" variant="contained">Next</Button>
+                                <Button type="submit" variant="contained">{props.type == 'update' ? 'save' : 'next'}</Button>
                             </Grid>
                         </Grid>
                     </Paper>
@@ -236,6 +234,16 @@ const General = (props) => {
             }}
         </Formik>
     </Box>);
+}
+
+General.propTypes = {
+    type: PropTypes.oneOf([
+        'update', 'create'
+    ])
+}
+
+General.defaultProps = {
+    type: 'create'
 }
 
 const mapStateToProps = (state) => {

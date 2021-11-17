@@ -6,7 +6,8 @@ import {
     FETCH_RECOMMEND_COURSES_BY_MAJOR,
     FETCH_MY_LEARNING_COURSES,
     CREATE_COURSE,
-    DELETE_COURSE
+    DELETE_COURSE,
+    UPDATE_COURSE
 } from '../constants/actionTypes';
 
 const INIT_STATE = {
@@ -51,7 +52,15 @@ export default (state = INIT_STATE, action) => {
             let newState = { ...state, mentorCourses: newMentorCourses1 };
             console.log(newState.mentorCourses);
             return { ...state, mentorCourses: newMentorCourses1 };
+        case UPDATE_COURSE:
+            {
+                let newMentorCourses = {
+                    id: state.mentorCourses.id,
+                    courses: state.mentorCourses.courses.filter(c => c.id !== action.payload.id).push(action.payload)
+                }
 
+                return { ...state, mentorCourses: newMentorCourses, currentCourse: action.payload };
+            }
         default: return state;
     }
 }
