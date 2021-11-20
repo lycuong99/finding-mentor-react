@@ -247,7 +247,7 @@ const mapStateToProps = (state) => {
         recommendMentor: state.mentor.recommendMentor,
         recommendMentorByMajor: state.mentor.recommendMentorByMajor,
         recommendCoursesByMajor: state.course.recommendCoursesByMajor,
-        mylearningCourses: state.course.mylearningCourses
+        mylearningCourses: state.mentee.mylearningCourses
     }
 }
 

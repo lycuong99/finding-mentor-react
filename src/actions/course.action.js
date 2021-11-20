@@ -8,7 +8,8 @@ import {
     FETCH_MY_LEARNING_COURSES,
     CREATE_COURSE,
     DELETE_COURSE,
-    UPDATE_COURSE
+    UPDATE_COURSE,
+    FETCH_COURSES_MENTEES
 } from '../constants/actionTypes';
 import authHeader from '../ultils/authHeader';
 import UserStorage from '../ultils/UserStorage';
@@ -58,8 +59,6 @@ export const fetchMyLearningCourses = () => async (dispatch) => {
     }
 
 }
-
-
 
 export const fetchCourse = (id) => async (dispatch) => {
     try {
@@ -174,11 +173,11 @@ export const updateCourse = (course) => async (dispatch) => {
 }
 export const deleteCourse = (id) => async (dispatch) => {
     try {
-        // insert course
+
         const response = await fm.delete(`/Course/${id}`, {
             headers: authHeader(),
         });
-        // take id course
+
         deleteCourseFirebase(id);
         deleteCourseImage(id);
 
@@ -188,3 +187,17 @@ export const deleteCourse = (id) => async (dispatch) => {
     }
 
 }
+
+export const fetchMenteesInCourse = (courseId) => async (dispatch) => {
+    try {
+        const response = await fm.get(`/Course/${courseId}/Mentees`, {
+            headers: authHeader(),
+        });
+
+        dispatch({ type: FETCH_COURSES_MENTEES, payload: response.data });
+    } catch (error) {
+        // dispatch({ type: FETCH_RECOMMEND_MENTOR_ERROR, payload: { error: "ERROR" } });
+    }
+
+}
+

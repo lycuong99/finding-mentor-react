@@ -2,7 +2,9 @@ import { Table, TableContainer, TableHead, TableRow, TableCell, TableBody, Paper
 import _ from 'lodash';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchAllMajor } from '../../../actions';
+import { fetchAllMajor, fetchMenteesInCourse } from '../../../actions';
+
+import { format } from 'date-fns';
 
 const studentList = [
     {
@@ -26,8 +28,9 @@ const studentList = [
 ];
 
 const columns = [
-    { id: 'name', label: 'Name', minWidth: 170, align: 'center' },
+    { id: 'fullname', label: 'Name', minWidth: 170, align: 'center' },
     { id: 'majorId', label: 'Major', minWidth: 100, align: 'center' },
+    { id: 'startDate', label: 'DateStart', minWidth: 100, align: 'center', type: 'date' },
 ];
 
 const MenteeList = (props) => {
@@ -36,6 +39,8 @@ const MenteeList = (props) => {
         if (_.isEmpty(props.majors)) {
             props.fetchAllMajor();
         }
+
+        props.fetchMenteesInCourse(props.courseId);
     }, []);
     return (
         <Paper>
@@ -55,30 +60,39 @@ const MenteeList = (props) => {
                                 Major
                             </TableCell>
                             <TableCell align="center" >
+                                DateStart
+                            </TableCell>
+                            <TableCell align="center" >
                                 Action
                             </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {
-                            !_.isEmpty(props.majors) ?
-                                studentList.map((mentee, index) => ((
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                                        <TableCell align="center">{index}</TableCell>
-                                        {columns.map((column) => {
-                                            let value = mentee[column.id];
-                                            if (column.id == 'majorId') {
-                                                value = props.majors.find(m => m.id == value).name;
-                                            }
-                                            return (
-                                                <TableCell key={column.id} align={column.align}>
-                                                    {value}
-                                                </TableCell>
-                                            );
-                                        })}
-                                        <TableCell align="center">Action</TableCell>
-                                    </TableRow>
-                                ))) : '...loading'
+                            !_.isEmpty(props.majors) && props.mentees ? props.mentees.lenght == 0 ? '0 Mentee' :
+                                (
+                                    props.mentees.map((mentee, index) => ((
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                                            <TableCell align="center">{index}</TableCell>
+                                            {columns.map((column) => {
+                                                let value = mentee[column.id];
+                                                if (column.id == 'majorId') {
+                                                    value = props.majors.find(m => m.id == value).name;
+                                                }
+                                                if (column.type == 'date') {
+                                                    value = format(new Date(value), 'dd/MM/yyyy');
+                                                }
+                                                return (
+                                                    <TableCell key={column.id} align={column.align}>
+                                                        {value}
+                                                    </TableCell>
+                                                );
+                                            })}
+                                            <TableCell align="center">Action</TableCell>
+                                        </TableRow>
+                                    )))
+                                )
+                                : '...loading'
                         }
                     </TableBody>
                 </Table>
@@ -90,7 +104,8 @@ const MenteeList = (props) => {
 const mapStateToProps = (state) => {
     return {
         majors: state.major.majors,
+        mentees: state.course.mentees
     }
 };
 
-export default connect(mapStateToProps, { fetchAllMajor })(MenteeList);
+export default connect(mapStateToProps, { fetchAllMajor, fetchMenteesInCourse })(MenteeList);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Button, Container, Divider, Grid, Paper, TextField, Typography, List, ListItemButton, ListItemIcon,
     Select, ListItemText, ListItem, FormControl, FormLabel, MenuItem, IconButton
@@ -7,31 +7,14 @@ import { Box } from '@mui/system';
 import AddIcon from '@mui/icons-material/Add';
 
 import Section from './Section';
-const curriculum_init = [
-    {
-        title: "Introdution",
-        lectures: [
-            {
-                title: "1",
-                description: "",
-                resource: [],
-
-            },
-            {
-                title: "2",
-                description: "aaaa",
-                resource: [],
-
-            }
-        ]
-    }
-
-];
+import _ from 'lodash';
 
 const Curriculum = (props) => {
+    const [curriculum, setCurriculum] = useState(props.initValues);
 
-
-    const [curriculum, setCurriculum] = useState(props.initValues && props.initValues.curriculum ? props.initValues.curriculum : curriculum_init);
+    useEffect(() => {
+        setCurriculum(props.initValues);
+    }, [props.initValues]);
 
     const handleSubmit = () => {
         console.log(curriculum);
@@ -45,26 +28,36 @@ const Curriculum = (props) => {
             <Divider />
             <Grid container direction="column" rowGap={3} sx={{ padding: '2em' }} >
                 {
-                    curriculum.map((section, index) => (
+                    curriculum ? curriculum.map((section, index) => (
                         <Grid item key={index}>
                             <Section data={section}
                                 index={index + 1}
                                 onTitleChange={(newValue) => {
                                     console.log(newValue);
-                                    let newCurr = curriculum;
+                                    let newCurr = [...curriculum];
                                     newCurr[index].title = newValue;
                                     setCurriculum(newCurr);
                                 }}
 
+                                onDelete={
+                                    () => {
+                                        let newCurr = [...curriculum];
+                                        newCurr.splice(index, 1);
+                                        // console.log(curriculum);
+                                        // console.log(newCurr);
+                                        setCurriculum(newCurr);
+
+                                    }
+                                }
 
                                 onLecturesChange={(newLectures) => {
-                                    let newCurr = curriculum;
+                                    let newCurr = [...curriculum];
                                     newCurr[index].lectures = newLectures;
                                     setCurriculum(newCurr);
                                 }}
                             />
                         </Grid>
-                    ))
+                    )) : 'loading...'
                 }
                 <Grid item>
                     <IconButton color="primary" variant="outlined" onClick={() => {

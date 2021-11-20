@@ -1,4 +1,4 @@
-import { getFirestore, collection, addDoc, setDoc, doc, deleteDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, setDoc, doc, deleteDoc, getDoc, updateDoc } from "firebase/firestore";
 import app from '../firebase';
 
 const db = getFirestore(app);
@@ -14,28 +14,54 @@ export const initCourseData = async (id, curriculum) => {
         curriculum: curriculum,
         questions: []
     });
-
-    // db.collection("courses").add({
-    //     name: "Tokyo",
-    //     country: "Japan"
-    // }).then((docRef) => {
-    //     console.log("Document written with ID: ", docRef.id);
-    // }).catch((error) => {
-    //     console.error("Error adding document: ", error);
-    // });
-
-    // db.collection("courses").doc('345').set({
-    //     id: id,
-    //     curriculum: curriculum,
-    //     questions: []
-    // }).then(() => {
-    //     console.log("Course successfully crate!");
-    // }).catch((error) => {
-    //     console.error("Error writing Course: ", error);
-    // });
 }
 
 export const deleteCourseFirebase = async (id) => {
     await deleteDoc(doc(db, "courses", id));
+}
+
+export const getCurriculum = async (courseId) => {
+    const docRef = doc(db, "courses", courseId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        console.log(docSnap.data().curriculum);
+        return docSnap.data().curriculum;
+
+    } else {
+        initCourseData(courseId, []);
+        return null;
+    }
+}
+
+
+export const updateCurriculum = async (courseId, curriculum) => {
+    const docRef = doc(db, "courses", courseId);
+    console.log('Update curriculm');
+    console.log(curriculum);
+    await updateDoc(docRef, {
+        curriculum: curriculum
+    });
+}
+
+export const getQuestions = async (courseId) => {
+    const docRef = doc(db, "courses", courseId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        return docSnap.data().questions;
+    } else {
+        initCourseData(courseId, []);
+        return null;
+    }
+}
+
+
+export const updateQuestions = async (courseId, questions) => {
+    const docRef = doc(db, "courses", courseId);
+
+    await updateDoc(docRef, {
+        questions: questions
+    });
 }
 

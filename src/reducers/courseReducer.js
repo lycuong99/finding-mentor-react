@@ -4,7 +4,7 @@ import {
     FETCH_COURSE_SEARCH,
     FETCH_COURSES_BY_MENTOR_ID,
     FETCH_RECOMMEND_COURSES_BY_MAJOR,
-    FETCH_MY_LEARNING_COURSES,
+    FETCH_COURSES_MENTEES,
     CREATE_COURSE,
     DELETE_COURSE,
     UPDATE_COURSE
@@ -15,7 +15,7 @@ const INIT_STATE = {
     currentCourse: null,
     mentorCourses: null,
     recommendCoursesByMajor: [],
-    mylearningCourses: [],
+    mentees: null,
     error: '',
 
 }
@@ -27,7 +27,7 @@ export default (state = INIT_STATE, action) => {
         case FETCH_COURSE_BY_ID: return { ...state, currentCourse: action.payload };
         case FETCH_COURSES_BY_MENTOR_ID: return { ...state, mentorCourses: { id: action.payload.id, courses: action.payload.courses } };
         case FETCH_RECOMMEND_COURSES_BY_MAJOR: return { ...state, recommendCoursesByMajor: action.payload };
-        case FETCH_MY_LEARNING_COURSES: return { ...state, mylearningCourses: action.payload };
+        case FETCH_COURSES_MENTEES: return { ...state, mentees: action.payload };
 
         case DELETE_COURSE:
 

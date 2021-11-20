@@ -17,6 +17,28 @@ import { connect } from 'react-redux';
 import { createCourse, fetchMajorsOfMentor, fetchAllSubjectByMajor } from '../../../actions';
 import UserStorage from '../../../ultils/UserStorage';
 import _ from 'lodash';
+
+const curriculum_init = [
+    {
+        title: "Introdution",
+        lectures: [
+            {
+                title: "1",
+                description: "",
+                resource: [],
+
+            },
+            {
+                title: "2",
+                description: "",
+                resource: [],
+
+            }
+        ]
+    }
+
+];
+
 const CourseCreaterPage = (props) => {
     const paddingX = '3em';
     const [selectedItem, setSelectedItem] = useState(0);
@@ -36,8 +58,6 @@ const CourseCreaterPage = (props) => {
             props.majors.forEach(major => { props.fetchAllSubjectByMajor(major.id); })
         }
     }, [props.majors]);
-
-
 
     const handleSubmitGeneralInfo = (values) => {
         console.log(values);
@@ -88,7 +108,7 @@ const CourseCreaterPage = (props) => {
                             : 'loading'}
                     </div>
                     <div hidden={selectedItem !== 1}>
-                        <Curriculum onSubmit={handleSubmitCurriculum} />
+                        <Curriculum onSubmit={handleSubmitCurriculum} initValues={curriculum_init} />
                     </div>
 
                 </Grid>

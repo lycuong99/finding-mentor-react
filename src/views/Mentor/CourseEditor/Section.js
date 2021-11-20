@@ -53,32 +53,20 @@ const useStyle = makeStyles(() => ({
 const Section = (props) => {
     const classes = useStyle();
 
-    const { data, index, onTitleChange, onLecturesChange } = props;
+    const { data, index, onTitleChange, onLecturesChange, onDelete } = props;
     const [title, setTitle] = useState(data.title);
     const [lectures, setLectures] = useState(data.lectures);
     const [expanded, setExpadned] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [isHover, setIsHover] = useState(false);
 
-    const [openDeleteLectureDialog, setOpenDeleteLectureDialog] = useState(false);
+
     const [openDeleteSectionDialog, setOpenDeleteSectionDialog] = useState(false);
     // useEffect(() => {
     //     console.log("UPDAAA");
     //     setLectures(data.lectures);
     // }, [props.data.lectures]);
-    const renderDeleteLectureDialog = () => {
 
-        const handleClose = () => {
-            setOpenDeleteLectureDialog(false);
-        }
-
-        return (
-            <DeleteDialog open={openDeleteLectureDialog}
-                handleClose={handleClose}
-                contentText={`You are about to remove a curriculum item. Are you sure you want to continue?`}
-            />
-        );
-    }
 
     const renderDeleteSectionDialog = () => {
 
@@ -89,6 +77,7 @@ const Section = (props) => {
         return (
             <DeleteDialog open={openDeleteSectionDialog}
                 handleClose={handleClose}
+                onConfirm={onDelete}
                 contentText={`You are about to remove a curriculum item. Are you sure you want to continue?`}
             />
         );
@@ -119,7 +108,7 @@ const Section = (props) => {
                             </Grid>
                             <Grid item container justifyContent="end">
                                 <Grid item>
-                                    <Button onClick={() => { setEditMode(false) }}>Cancel</Button>
+                                    <Button onClick={() => { setEditMode(false); setTitle(data.title); }}>Cancel</Button>
                                     <Button variant="contained" onClick={() => {
                                         onTitleChange(title);
                                         setEditMode(false);
@@ -159,10 +148,13 @@ const Section = (props) => {
                                     data={lecture}
                                     index={index + 1}
                                     onDelete={() => {
-                                        setOpenDeleteLectureDialog(true);
+
+                                        let newLectures = [...lectures];
+                                        newLectures.splice(index, 1);
+                                        setLectures(newLectures);
                                     }}
                                     onLectureChange={(newValue) => {
-                                        let newLectures = lectures;
+                                        let newLectures = [...lectures];
                                         newLectures[index] = newValue;
                                         setLectures(newLectures);
                                     }} />
@@ -182,7 +174,7 @@ const Section = (props) => {
                     </Grid>
                 </Grid>
             </AccordionDetails>
-            {renderDeleteLectureDialog()}
+
             {renderDeleteSectionDialog()}
         </Accordion>
     );

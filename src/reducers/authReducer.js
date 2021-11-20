@@ -17,6 +17,8 @@ export default (state = INIT_STATE, action) => {
             return { ...state, authenticated: false };
         case RESET_AUTH_FORM: return { ...state, invalidSignIn: false, invalidSignUp: false }
         default: return state;
+
+        
     }
 }
 

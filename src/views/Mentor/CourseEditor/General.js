@@ -27,8 +27,8 @@ const General = (props) => {
             durationUnit = myArray[1];
         }
 
-        console.log(durationNumber);
-        console.log(durationUnit);
+        // console.log(durationNumber);
+        // console.log(durationUnit);
     }
 
     const handleSubmit = (values) => {

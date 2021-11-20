@@ -179,5 +179,6 @@ export const reset = () => {
 export * from './mentor.action';
 export * from './major.action';
 export * from './course.action';
-
+export * from './user.action';
+export * from './student.action';
 export * from './test';

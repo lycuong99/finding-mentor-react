@@ -1,30 +1,33 @@
 import {
     Button, Container, Divider, Grid, Paper, TextField, Typography, List, ListItemButton, ListItemIcon,
-    Select, ListItemText, ListItem, FormControl, FormLabel, MenuItem
+    Select, ListItemText, ListItem, FormControl, FormLabel, MenuItem, Snackbar, Alert
 } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import Curriculum from './Curriculum';
 import General from './General';
 import history from '../../../history';
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 import { connect } from 'react-redux';
-import { fetchAllSubjectByMajor, fetchMajorsOfMentor, fetchCourse, updateCourse } from '../../../actions';
+import { fetchAllSubjectByMajor, fetchMajorsOfMentor, fetchCourse, updateCourse, } from '../../../actions';
 import { useParams } from 'react-router';
 import _ from 'lodash';
 import MenteeList from '../MenteeList';
 import QuestionManager from '../QuestionManager';
 import UserStorage from '../../../ultils/UserStorage';
+import { getCurriculum, updateCurriculum, getQuestions } from '../../../ultils';
 
 
 const CourseEditPage = (props) => {
     const paddingX = '3em';
     const [selectedItem, setSelectedItem] = useState(0);
     const [course, setCourse] = useState(props.course);
+    const [curriculum, setCurriculum] = useState(null);
+    const [openSnackBar, setOpenSnackBar] = useState(false);
 
     const { id } = useParams();
-    console.log(props.course?.id);
-    useEffect(() => {
+    // console.log(props.course?.id);
+    useEffect(async () => {
         if (id) {
             props.fetchCourse(id);
         }
@@ -32,6 +35,10 @@ const CourseEditPage = (props) => {
         if (_.isEmpty(props.majors)) {
             props.fetchMajorsOfMentor(UserStorage.getUserId());
         }
+
+        let curriculumnData = await getCurriculum(id);
+        console.log(curriculumnData);
+        setCurriculum(curriculumnData);
     }, []);
 
     useEffect(() => {
@@ -49,14 +56,27 @@ const CourseEditPage = (props) => {
     }
 
     const handleSubmitCurriculum = (curiculumObj) => {
-        let newCourse = { ...course, curriculum: curiculumObj, mentor: { id: '111-222-333-444', name: "Ly Van Cuong" } };
-        setCourse(newCourse);
-        props.updateCourse_test(newCourse);
-        history.replace('/mentor/course');
+        setCurriculum(curiculumObj);
+        updateCurriculum(id, curiculumObj);
+        setOpenSnackBar(true);
     }
 
     return (
         <Container maxWidth="xl" sx={{ paddingBottom: '2em', }} >
+            <Snackbar
+                open={openSnackBar}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                onClose={() => {
+                    setOpenSnackBar(false);
+                }}
+                message="Update Success"
+
+            >
+                <Alert severity="success">Update Success!</Alert>
+            </Snackbar>
             <Grid container spacing={2}>
                 <Grid item width="300px">
                     {/* MENU */}
@@ -102,13 +122,13 @@ const CourseEditPage = (props) => {
                             : 'loading'}
                     </div>
                     <div hidden={selectedItem !== 1}>
-                        <Curriculum onSubmit={handleSubmitCurriculum} initValues={props.course} />
+                        <Curriculum onSubmit={handleSubmitCurriculum} initValues={curriculum} />
                     </div>
                     <div hidden={selectedItem !== 2}>
-                        <MenteeList />
+                        <MenteeList courseId={id} />
                     </div>
                     <div hidden={selectedItem !== 3}>
-                        <QuestionManager />
+                        <QuestionManager courseId={id}/>
                     </div>
 
                 </Grid>

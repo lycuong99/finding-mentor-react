@@ -8,7 +8,7 @@ import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import { styled, makeStyles } from '@mui/styles';
-
+import DeleteDialog from '../../../components/dialog/DeleteDialog';
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
@@ -68,11 +68,35 @@ const Lecture = (props) => {
     const [isHover, setIsHover] = useState(false);
     const [editDescription, setEditDesciption] = useState(false);
 
-    useEffect(() => {
+    const [openDeleteLectureDialog, setOpenDeleteLectureDialog] = useState(false);
+
+    const renderDeleteLectureDialog = () => {
+
+        const handleClose = () => {
+            setOpenDeleteLectureDialog(false);
+        }
+
+        return (
+            <DeleteDialog open={openDeleteLectureDialog}
+                handleClose={handleClose}
+                onConfirm={onDelete}
+                contentText={`You are about to remove a curriculum item. Are you sure you want to continue?`}
+            />
+        );
+    }
+
+    // useEffect(() => {
+    //     onLectureChange({
+    //         title, description
+    //     })
+    // }, [title, description]);
+
+    const handleSave = () => {
         onLectureChange({
             title, description
-        })
-    }, [title, description]);
+        });
+    }
+
     return (
         <Accordion expanded={expanded}>
             <AccordionSummary
@@ -91,13 +115,14 @@ const Lecture = (props) => {
                         <Grid container direction="column">
                             <Grid item container alignItems="center" gap={1}>
                                 <Typography fontWeight={600}> {`Lecture ${index} : `}</Typography>
-                                <TextField value={title} onChange={(e) => { setTitle(e.target.value) }} size="small" />
+                                <TextField value={title} onChange={(e) => { setTitle(e.target.value); }} size="small" />
                             </Grid>
                             <Grid item container justifyContent="end">
                                 <Grid item>
-                                    <Button onClick={() => { setEditMode(false) }}>Cancel</Button>
+                                    <Button onClick={() => { setEditMode(false); setTitle(data.title); }}>Cancel</Button>
                                     <Button variant="contained" onClick={() => {
                                         setEditMode(false);
+                                        handleSave();
                                     }}>Save</Button>
                                 </Grid>
                             </Grid>
@@ -116,7 +141,8 @@ const Lecture = (props) => {
                                 <IconButton
                                     sx={{ visibility: isHover ? 'visible' : 'hidden' }}
                                     onClick={() => {
-                                        onDelete();
+
+                                        setOpenDeleteLectureDialog(true);
                                     }}><DeleteOutlineIcon /></IconButton>
                             </>
 
@@ -139,9 +165,10 @@ const Lecture = (props) => {
                             </Grid>
                             <Grid item container justifyContent="end">
                                 <Grid item>
-                                    <Button onClick={() => { setEditDesciption(false) }}>Cancel</Button>
+                                    <Button onClick={() => { setEditDesciption(false); setDescription(data.description) }}>Cancel</Button>
                                     <Button variant="contained" onClick={() => {
                                         setEditDesciption(false);
+                                        handleSave();
                                     }}>Save</Button>
                                 </Grid>
                             </Grid>
@@ -153,6 +180,7 @@ const Lecture = (props) => {
 
                 </Grid>
             </AccordionDetails>
+            {renderDeleteLectureDialog()}
         </Accordion>
     );
 }

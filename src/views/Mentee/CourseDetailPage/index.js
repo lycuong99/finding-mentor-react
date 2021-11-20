@@ -4,8 +4,12 @@ import SectionContainer from '../../../components/SectionContainer';
 import { Box } from '@mui/system';
 import CurriculumSection from './CurriculumSection';
 import { useParams } from 'react-router';
-import { fetchCourse } from '../../../actions';
+import { fetchCourse, fetchUserInfo, enrollCourse, fetchMyLearningCourses } from '../../../actions';
 import { connect } from 'react-redux';
+import UserStorage from '../../../ultils/UserStorage';
+import _ from 'lodash';
+import { getCurriculum } from '../../../ultils';
+
 const courseData = {
     "id": 0,
     "name": "The Full JavaScript & ES6 Tutorial",
@@ -19,42 +23,51 @@ const courseData = {
     mentor: { id: "3c5ec754-01b1-49cf-94e0-09250222b061", name: "Ly Van Cuong" }
 };
 
-const curriculum_init = [
-    {
-        title: "Introdution",
-        lectures: [
-            {
-                title: "1",
-                description: "",
-                resource: [],
 
-            },
-            {
-                title: "2",
-                description: "aaaa",
-                resource: [],
-
-            }
-        ]
-    }
-
-];
 
 const CourseDetailPage = (props) => {
 
     const course = courseData;
     const [tabIndex, setTabIndex] = useState(0);
+    const [isEnrolled, setIsEnrolled] = useState(false);
+    const [curriculumData, setCurriculumData] = useState(null);
     const { id } = useParams();
-    useEffect(() => {
+    useEffect(async () => {
         console.log(id);
         if (id) {
             props.fetchCourse(id);
         }
-    }, [])
+
+        if (_.isEmpty(props.userInfo)) {
+            props.fetchUserInfo(UserStorage.getUserId());
+        }
+
+        if (_.isEmpty(props.mylearningCourses)) {
+            props.fetchMyLearningCourses();
+        }
+        let cur = await getCurriculum(id);
+        setCurriculumData(cur);
+    }, []);
+
+    useEffect(() => {
+        if (!_.isEmpty(props.mylearningCourses)) {
+            let c = props.mylearningCourses.find(c => c.id == id);
+
+            if (c) {
+                setIsEnrolled(true);
+            } else {
+                setIsEnrolled(false);
+            }
+        }
+    }, [props.mylearningCourses])
 
     const handleChangeTableIndex = (event, newValue) => {
         setTabIndex(newValue);
     };
+
+    const handleEnrollSubmit = () => {
+        props.enrollCourse(id, UserStorage.getUserId(), new Date())
+    }
     return (
         <React.Fragment>
             {!props.course ?
@@ -68,7 +81,8 @@ const CourseDetailPage = (props) => {
                             <Grid container sx={{ paddingLeft: '2em', paddingRight: '2em', paddingY: '3em' }} direction="column" justifyContent="space-between" >
                                 <Grid item container spacing={2}>
                                     <Grid item sx={{ marginRight: '10px' }}>
-                                        <img style={{ width: '15em' }} src={props.course && props.course.imageUrl ? props.course.imageUrl : course.imageUrl} />
+                                        <img style={{ width: '15em' }}
+                                            src={props.course && props.course.imageUrl ? props.course.imageUrl : course.imageUrl} />
                                     </Grid>
                                     <Grid item xs container direction="column" rowGap={2} >
                                         <Typography variant="h2">{props.course && props.course.name ? props.course.name : course.name}</Typography>
@@ -85,9 +99,8 @@ const CourseDetailPage = (props) => {
                                                 {`Duration: ${props.course && props.course.duration ? props.course.duration : course.duration}`}
                                             </Grid>
                                             <Grid item >
-                                                Status: <Chip label="Not Enroll" color="warning" />
+                                                Status: <Chip label={isEnrolled ? "Enrolled" : "Not Enroll"} color={isEnrolled ? "success" : "warning"} />
                                             </Grid>
-
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={2} container direction="column" alignItems='stretch' justifyContent="center" sx={{ marginLeft: '5em' }}>
@@ -95,7 +108,12 @@ const CourseDetailPage = (props) => {
                                             <Typography variant="h1" textAlign="center">{`$${props.course && props.course.price ? props.course.price : course.price}`} </Typography>
                                         </Grid>
                                         <Grid item sx={{ marginTop: '1em' }}>
-                                            <Button variant="contained" fullWidth sx={{ width: '100%', paddingY: '0.7em', fontSize: '1.2rem' }}> Enroll </Button>
+                                            {
+                                                !isEnrolled ? (<Button variant="contained" fullWidth sx={{ width: '100%', paddingY: '0.7em', fontSize: '1.2rem' }}
+                                                    onClick={handleEnrollSubmit}> Enroll </Button>) :
+                                                    (<Typography variant="h2">Enrolled</Typography>)
+                                            }
+
                                         </Grid>
                                     </Grid>
 
@@ -117,9 +135,9 @@ const CourseDetailPage = (props) => {
                                         </div>
                                     </Box>
                                 </Grid>
-                                <Grid item>
+                                <Grid item sx={{ paddingY: '2em' }}>
                                     <div hidden={tabIndex !== 0}>
-                                        <CurriculumSection curriculum={curriculum_init} />
+                                        <CurriculumSection curriculum={curriculumData} />
                                     </div>
                                 </Grid>
                                 <Grid item>
@@ -143,9 +161,11 @@ const CourseDetailPage = (props) => {
     );
 }
 const mapStateToProps = (state) => ({
-    course: state.course.currentCourse
+    course: state.course.currentCourse,
+    userInfo: state.user.userInfo,
+    mylearningCourses: state.mentee.mylearningCourses
 });
 
 export default connect(mapStateToProps, {
-    fetchCourse
+    fetchCourse, fetchUserInfo, enrollCourse, fetchMyLearningCourses
 })(CourseDetailPage);
