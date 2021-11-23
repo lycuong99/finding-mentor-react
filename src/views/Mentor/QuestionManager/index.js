@@ -1,11 +1,13 @@
 import { Grid, Paper, TextField, Typography, Button, Divider, List, ListItem } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import QuestionCard from '../../../components/QuestionCard';
 import QuestionCollection from './QuestionCollection';
 import QuestionDetail from './QuestionDetail';
+import { addQuestion, getQuestionsOnSnapshot } from '../../../ultils';
+import { Unsubscribe } from '@mui/icons-material';
 
-const questions = [
+const questions_INIT = [
     {
         id: '1',
         title: "Do you want to eat ?",
@@ -41,9 +43,11 @@ const questions = [
 ];
 const DETAIL_MODE = 'DETAIL_MODE';
 
-const QuestionManager = () => {
+const QuestionManager = (props) => {
     const paddingX = '3em';
-
+    const { courseId } = props;
+    console.log(courseId);
+    const [questions, setQuestions] = useState(null);
     const [currentQuestion, setCurrentQuestion] = useState(null);
     const handleSelectQuestion = (id) => {
         setCurrentQuestion(id);
@@ -51,6 +55,25 @@ const QuestionManager = () => {
     const handleCloseQuestionDetail = () => {
         setCurrentQuestion(null);
     }
+
+
+    useEffect(() => {
+
+
+        let unsub = getQuestionsOnSnapshot(courseId,
+            (datas) => {
+                setQuestions(datas);
+            });
+
+        return () => {
+            if (unsub) {
+                unsub();
+            }
+
+        }
+
+    }, []);
+
 
     return (
         <Paper>
@@ -61,12 +84,15 @@ const QuestionManager = () => {
 
                 </Grid>
 
-               
+
                 <Grid item>
                     {
                         currentQuestion ?
-                            (<QuestionDetail data={questions.find(q => q.id == currentQuestion)} onClose={handleCloseQuestionDetail} />)
-                            : <QuestionCollection questions={questions} onSelectQuestion={handleSelectQuestion} />
+                            (<QuestionDetail
+                                data={questions.find(q => q.id == currentQuestion)} questionId={currentQuestion} courseId={courseId}
+                                onClose={handleCloseQuestionDetail} />)
+                            : questions ? <QuestionCollection questions={questions} onSelectQuestion={handleSelectQuestion} />
+                                : '...loading'
                     }
                 </Grid>
 

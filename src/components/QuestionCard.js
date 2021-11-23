@@ -4,6 +4,7 @@ import { Box } from "@mui/system";
 import React from "react";
 import { Link } from "react-router-dom";
 import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         cursor: 'pointer'
@@ -14,7 +15,7 @@ const QuestionCard = (props) => {
     const { data } = props;
     const classes = useStyles();
     return (
-        <Card variant="outlined" sx={{ borderRadius: 2, borderWidth: '2px', width: '100%', padding: '1em' }}>
+        <Card variant="outlined" sx={{ borderRadius: 2, borderWidth: '2px', width: '100%', padding: '1em', cursor: 'pointer' }}>
             <Grid container>
                 <Grid item container direction="column" sx={{ width: '112px' }}>
                     <Grid item>

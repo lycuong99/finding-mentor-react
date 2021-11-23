@@ -1,8 +1,9 @@
 import { Grid, Paper, TextField, Typography, Button, Divider, List, ListItem, Avatar, Card } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useState } from 'react';
-
-
+import React, { useEffect, useState } from 'react';
+import AnswerCard from '../../../../components/AnswerCard';
+import { addAnswer, getAnswersOnSnapshot } from '../../../../ultils';
+import _ from 'lodash'
 const question_init = {
     id: '1',
     title: "Do you want to eat ?",
@@ -32,21 +33,34 @@ const question_init = {
 
 const QuestionDetail = (props) => {
     const paddingX = '3em';
-    const { data } = { props };
-    const [question, setQuestion] = useState(question_init);
+    const { courseId } = props;
+    const [question, setQuestion] = useState(props.data);
     const [answerText, setAnswerText] = useState('');
+    const [answers, setAnswers] = useState(null);
 
+    console.log(courseId);
     const handleAnswerSubmit = () => {
-        let newQuestion = question;
-        let date = new Date();
-        newQuestion.answers.push({
-            id: date.getTime().toString(),
+
+
+        addAnswer(courseId, question.id, {
             createBy: 'mentor1',
             content: answerText,
+            dateCreated: new Date(),
+            isMentor: true
         });
         setAnswerText('');
-        setQuestion(newQuestion);
+
     }
+
+    useEffect(() => {
+        let unSub = getAnswersOnSnapshot(courseId, question.id, (datas) => {
+            setAnswers(datas);
+        });
+
+        return () => {
+            if (unSub) unSub();
+        }
+    }, [props.data])
 
     return (
         <Grid container direction="row" sx={{ padding: '1em', paddingRight: '2em' }}>
@@ -87,14 +101,14 @@ const QuestionDetail = (props) => {
                             </Grid>
                             <Grid item container sx={{ paddingTop: '12px' }}>
                                 <Grid item>
-                                    <Button variant="contained" size="small" sx={{ textTransform: 'capitalize' }}
+                                    <Button variant="contained" disabled={_.isEmpty(answerText)} size="small" sx={{ textTransform: 'capitalize' }}
                                         onClick={handleAnswerSubmit}>answer</Button>
                                 </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item sx={{ marginTop: '1em' }}>
-                        <Typography variant="h2">3 answers</Typography>
+                        <Typography variant="h2">{answers ? answers.length : 0} answers</Typography>
                     </Grid>
                     {/* ANSWERs */}
                     <Grid item container>
@@ -104,29 +118,32 @@ const QuestionDetail = (props) => {
                         <Grid item>
                             <List >
                                 {
-                                    question.answers.map(answer => (
-                                        <ListItem key={answer.id}>
-                                            <Card sx={{ padding: '1em', width: '100%' }}>
-                                                <Grid container >
-                                                    <Grid item sx={{ marginRight: '1em' }}>
-                                                        <Avatar sx={{ width: 60, height: 60, border: '2px solid #0000001f' }}
-                                                            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80" />
-                                                    </Grid>
-                                                    <Grid item xs>
-                                                        <Grid item container direction="column">
-                                                            <Grid item sx={{ marginBottom: '1em' }}>
-                                                                <Typography variant="h2">{answer.createBy}</Typography>
-                                                            </Grid>
-                                                            <Grid item>
-                                                                <Typography variant="body1">{answer.content}</Typography>
+                                    answers ?
+                                        answers.map(answer => (
+                                            <ListItem key={answer.id} >
+                                                {/* <Card sx={{ padding: '1em', width: '100%' }}>
+                                                    <Grid container >
+                                                        <Grid item sx={{ marginRight: '1em' }}>
+                                                            <Avatar sx={{ width: 60, height: 60, border: '2px solid #0000001f' }}
+                                                                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80" />
+                                                        </Grid>
+                                                        <Grid item xs>
+                                                            <Grid item container direction="column">
+                                                                <Grid item sx={{ marginBottom: '1em' }}>
+                                                                    <Typography variant="h2">{answer.createBy}</Typography>
+                                                                </Grid>
+                                                                <Grid item>
+                                                                    <Typography variant="body1">{answer.content}</Typography>
+                                                                </Grid>
                                                             </Grid>
                                                         </Grid>
-                                                    </Grid>
 
-                                                </Grid>
-                                            </Card>
-                                        </ListItem>
-                                    ))
+                                                    </Grid>
+                                                </Card> */}
+                                                <AnswerCard data={answer} />
+                                            </ListItem>
+                                        ))
+                                        : '0 answer'
                                 }
                                 <ListItem>
 
@@ -142,7 +159,7 @@ const QuestionDetail = (props) => {
                 </Grid>
             </Grid>
 
-        </Grid>
+        </Grid >
     );
 }
 

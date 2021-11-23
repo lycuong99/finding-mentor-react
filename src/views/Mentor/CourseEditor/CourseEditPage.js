@@ -128,7 +128,7 @@ const CourseEditPage = (props) => {
                         <MenteeList courseId={id} />
                     </div>
                     <div hidden={selectedItem !== 3}>
-                        <QuestionManager courseId={id}/>
+                        <QuestionManager courseId={id} />
                     </div>
 
                 </Grid>
