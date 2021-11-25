@@ -19,12 +19,12 @@ const AnswerCard = (props) => {
             <Grid container >
                 <Grid item sx={{ marginRight: '1em' }}>
                     <Avatar sx={{ width: 60, height: 60, border: '2px solid #0000001f' }}
-                        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80" />
+                        src={data.avatarUrl} />
                 </Grid>
                 <Grid item xs>
                     <Grid item container direction="column">
                         <Grid item sx={{ marginBottom: '1em' }}>
-                            <Typography variant="h2">{data.createBy}</Typography>
+                            <Typography variant="h2">{data.fullname}</Typography>
                         </Grid>
                         <Grid item>
                             <Typography variant="body1">{data.content}</Typography>

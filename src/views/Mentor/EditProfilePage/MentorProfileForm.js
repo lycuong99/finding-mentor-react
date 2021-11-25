@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { fetchMentor } from '../../../actions';
 import UserStorage from '../../../ultils/UserStorage';
 import _ from 'lodash';
+import * as yup from 'yup';
 
 const majors_init = [
     {
@@ -61,6 +62,20 @@ const majors_init = [
     }
 ]
 
+const validationSchema = yup.object({
+    fullname: yup
+        .string('Enter your Fullname')
+        .required('Fullname is required'),
+    company: yup
+        .string('Enter your Company')
+        .required('Company is required'),
+    about: yup
+        .string('Enter your About')
+        .required('About is required'),
+
+
+});
+
 const MentorProfileForm = (props) => {
 
     // console.log(props.initialValues);
@@ -76,22 +91,23 @@ const MentorProfileForm = (props) => {
             console.log(values);
             props.onSubmit(values);
         },
-        validate: (values) => {
-            const errors = {};
+        validationSchema: validationSchema,
+        // validate: (values) => {
+        //     const errors = {};
 
 
-            // if (!values.email) {
-            //     errors.email = 'Required';
-            // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-            //     errors.email = 'Invalid email address';
-            // }
+        //     // if (!values.email) {
+        //     //     errors.email = 'Required';
+        //     // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        //     //     errors.email = 'Invalid email address';
+        //     // }
 
-            // if (!values.email) {
-            //     errors.password = "Required!"
-            // }
+        //     // if (!values.email) {
+        //     //     errors.password = "Required!"
+        //     // }
 
-            // return errors;
-        }
+        //     // return errors;
+        // }
     });
     //console.log(['SJ','SE'].flatMap(majorId => props.subjectMajors[majorId]));
 
@@ -123,7 +139,9 @@ const MentorProfileForm = (props) => {
                         value={formik.values.fullname}
                         onChange={(e) => {
                             formik.handleChange(e);
-                        }} />
+                        }}
+                        error={formik.touched.fullname && Boolean(formik.errors.fullname)}
+                        helperText={formik.touched.fullname && formik.errors.fullname} />
                 </FormControl>
             </Grid>
             <Grid item container spacing={2}>
@@ -143,8 +161,8 @@ const MentorProfileForm = (props) => {
                     <FormControl component="fieldset" fullWidth>
                         <FormLabel component="legend">Phone</FormLabel>
                         <TextField fullWidth
-                            name='phone'
-                            value={formik.values.fullname}
+                            name='phoneNumber'
+                            value={formik.values.phoneNumber}
 
                             onChange={(e) => {
                                 formik.handleChange(e);
@@ -158,10 +176,8 @@ const MentorProfileForm = (props) => {
                         <FormLabel component="label" htmlFor="upload" ref={imageInputRef} >Avatar Image</FormLabel>
 
                         <TextField fullWidth type="file"
-
                             placeholder="change avatar"
                             id="input-img"
-
 
                             style={{ display: 'none', }}
                             InputProps={{ id: 'upload', }}
@@ -200,7 +216,7 @@ const MentorProfileForm = (props) => {
             <Grid item container spacing={2}>
                 <Grid item xs>
                     <FormControl component="fieldset" fullWidth>
-                        <FormLabel component="legend">What is you major ?</FormLabel>
+                        <FormLabel component="legend">What is your major ?</FormLabel>
                         <MultipleSelectChip values={formik.values.majors}
                             selectDatas={props.majors}
                             name="majors"

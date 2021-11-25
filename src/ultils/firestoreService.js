@@ -1,5 +1,6 @@
 import { getFirestore, collection, addDoc, setDoc, doc, deleteDoc, getDoc, updateDoc, onSnapshot, increment, query, orderBy } from "firebase/firestore";
 import app from '../firebase';
+import UserStorage from './UserStorage';
 
 const db = getFirestore(app);
 
@@ -60,13 +61,16 @@ export const getQuestions = async (courseId) => {
 
 
 export const addQuestion = async (courseId, question) => {
+    console.log('add Question');
     try {
         const questionRef = doc(collection(db, `courses/${courseId}/questions`));
 
         await setDoc(questionRef, {
             ...question,
             id: questionRef.id,
-            answerCount: 0
+            answerCount: 0,
+            dateCreated: new Date(),
+            createBy: UserStorage.getUserId()
         });
         return true;
     } catch (e) {
@@ -95,17 +99,23 @@ export const addAnswer = async (courseId, questionId, newAnswer) => {
     }
 }
 
+
 export const getQuestionsOnSnapshot = (courseId, subFunction) => {
     const docRef = collection(db, `courses/${courseId}/questions`);
     const q = query(docRef, orderBy("dateCreated", "desc"));
+    // const response = await fm.get(`/Course/${courseId}/Mentees`, {
+    //     headers: authHeader(),
+    // });
     const unsub = onSnapshot(q, (querySnapshot) => {
         let i = 0;
-        const questions = [];
+        let questions = [];
         querySnapshot.forEach((doc) => {
-            // console.log(`${i++}:`, doc.data());
+            console.log(`${i++}:`, doc.data());
             questions.push(doc.data());
         });
-        subFunction(questions);
+        if (subFunction) {
+            subFunction(questions);
+        }
     });
 
     return unsub;
@@ -116,11 +126,13 @@ export const getAnswersOnSnapshot = (courseId, questionId, subFunction) => {
     const q = query(answersRef, orderBy("dateCreated", "desc"));
     const unsub = onSnapshot(q, (querySnapshot) => {
         let i = 0;
+
         const answers = [];
         querySnapshot.forEach((doc) => {
             console.log(`${i++}:`, doc.data());
             answers.push(doc.data());
         });
+
         subFunction(answers);
     });
 

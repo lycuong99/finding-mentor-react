@@ -65,7 +65,7 @@ const LoginForm = (props) => {
                 errors.email = 'Invalid email address';
             }
 
-            if (!values.email) {
+            if (!values.password) {
                 errors.password = "Required!"
             }
 

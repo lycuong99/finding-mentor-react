@@ -7,7 +7,7 @@ class Authentication extends React.Component {
     handleAuth = () => {
         const { authenticated } = this.props;
 
-        if (authenticated === false && window.location.pathname !== "/auth/signin") {
+        if (authenticated === false && (window.location.pathname !== "/auth/signin" || window.location.pathname !== "/auth/signup")) {
             history.push("/auth/signin");
         }
     }

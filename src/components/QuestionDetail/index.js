@@ -1,9 +1,10 @@
 import { Grid, Paper, TextField, Typography, Button, Divider, List, ListItem, Avatar, Card } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
-import AnswerCard from '../../../../components/AnswerCard';
-import { addAnswer, getAnswersOnSnapshot } from '../../../../ultils';
-import _ from 'lodash'
+import AnswerCard from '../AnswerCard';
+import { addAnswer, getAnswersOnSnapshot, getAvatarLetter } from '../../ultils';
+import _ from 'lodash';
+import { connect } from 'react-redux';
 const question_init = {
     id: '1',
     title: "Do you want to eat ?",
@@ -49,12 +50,38 @@ const QuestionDetail = (props) => {
             isMentor: true
         });
         setAnswerText('');
-
     }
+
 
     useEffect(() => {
         let unSub = getAnswersOnSnapshot(courseId, question.id, (datas) => {
-            setAnswers(datas);
+
+            const answersTmp = datas.map(answer => {
+                if (answer.isMentor) {
+                    return {
+                        ...answer,
+                        fullname: props.currentMentor.fullname,
+                        avatarUrl: props.currentMentor.avatarUrl ? props.currentMentor.avatarUrl : getAvatarLetter(props.currentMentor.fullname)
+                    }
+                }
+                // -----
+                let mentee = props.mentees.find(m => m.id == answer.createBy);
+                console.log(mentee);
+                if (mentee) {
+                    return {
+                        ...answer,
+                        fullname: mentee.fullname,
+                        avatarUrl: mentee.avatarUrl ? mentee.avatarUrl : getAvatarLetter(mentee.fullname)
+                    }
+                }
+                return {
+                    ...answer,
+                    fullname: 'Unknown',
+                    avatarUrl: null
+                }
+            });
+
+            setAnswers(answersTmp);
         });
 
         return () => {
@@ -68,8 +95,7 @@ const QuestionDetail = (props) => {
                 <Grid item ><Button onClick={props.onClose}>BACk</Button></Grid>
                 <Grid item xs>
                     <Avatar sx={{ width: 88, height: 88, border: '2px solid #0000001f' }}
-                        src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80" />
-                </Grid>
+                        src={question.avatarUrl} /> </Grid>
             </Grid>
 
             {/* QUESTION */}
@@ -77,7 +103,7 @@ const QuestionDetail = (props) => {
                 <Grid container direction="column">
                     <Grid item container direction="column" >
                         <Grid item>
-                            <Typography variant="h2">{question.createBy}</Typography>
+                            <Typography variant="h2">{question.fullname}</Typography>
                         </Grid>
                         <Grid item>
                             <Typography variant="h2">{question.title}</Typography>
@@ -121,25 +147,6 @@ const QuestionDetail = (props) => {
                                     answers ?
                                         answers.map(answer => (
                                             <ListItem key={answer.id} >
-                                                {/* <Card sx={{ padding: '1em', width: '100%' }}>
-                                                    <Grid container >
-                                                        <Grid item sx={{ marginRight: '1em' }}>
-                                                            <Avatar sx={{ width: 60, height: 60, border: '2px solid #0000001f' }}
-                                                                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80" />
-                                                        </Grid>
-                                                        <Grid item xs>
-                                                            <Grid item container direction="column">
-                                                                <Grid item sx={{ marginBottom: '1em' }}>
-                                                                    <Typography variant="h2">{answer.createBy}</Typography>
-                                                                </Grid>
-                                                                <Grid item>
-                                                                    <Typography variant="body1">{answer.content}</Typography>
-                                                                </Grid>
-                                                            </Grid>
-                                                        </Grid>
-
-                                                    </Grid>
-                                                </Card> */}
                                                 <AnswerCard data={answer} />
                                             </ListItem>
                                         ))
@@ -162,5 +169,10 @@ const QuestionDetail = (props) => {
         </Grid >
     );
 }
-
-export default QuestionDetail;
+const mapStateToProps = (state) => {
+    return {
+        mentees: state.course.mentees,
+        currentMentor: state.mentor.currentMentor,
+    }
+};
+export default connect(mapStateToProps, {})(QuestionDetail);

@@ -19,3 +19,28 @@ export const updateMajor = async (majorId) => {
     }
 
 }
+
+export const getMenteeListInfo = async (courseId) => {
+    try {
+        const response = await fm.get(`/Course/${courseId}/Mentees`, {
+            headers: authHeader(),
+        });
+        return response.data;
+    } catch (error) {
+        return null;
+    }
+
+}
+
+
+export const getMentorInfo = async (mentorId) => {
+    try {
+        const response = await fm.get(`Mentor/Information/${mentorId}`, {
+            headers: authHeader(),
+        });
+        return response.data;
+    } catch (error) {
+        return null;
+    }
+
+}

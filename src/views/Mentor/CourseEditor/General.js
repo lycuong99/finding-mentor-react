@@ -11,8 +11,19 @@ import { Formik, useFormik } from "formik";
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types'
+import * as yup from 'yup';
 
 
+const validationSchema = yup.object({
+    name: yup
+        .string('Enter course name')
+        .required('Course name is required'),
+    description: yup
+        .string('Enter course description')
+        .required('Course description is required'),
+    startDate: yup.date().min(new Date(), "StartDate must be after now!")
+
+});
 const General = (props) => {
 
     let durationNumber = 1;
@@ -84,6 +95,7 @@ const General = (props) => {
                 handleSubmit(values);
             }}
             validate={handleValidate}
+            validationSchema={validationSchema}
 
         >
             {formik => {
@@ -98,16 +110,22 @@ const General = (props) => {
                                     <FormLabel component="legend">Course title</FormLabel>
                                     <TextField fullWidth name="name" value={formik.values.name} onChange={(e) => {
                                         formik.handleChange(e);
-                                    }} />
+                                    }}
+                                        error={formik.touched.name && Boolean(formik.errors.name)}
+                                        helperText={formik.touched.name && formik.errors.name} />
                                 </FormControl>
                             </Grid>
 
                             <Grid item>
                                 <FormControl component="fieldset" fullWidth>
                                     <FormLabel component="legend">Course Description</FormLabel>
-                                    <TextField fullWidth multiline rows={5} name="description" value={formik.values.description} onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }} />
+                                    <TextField fullWidth multiline rows={5}
+                                        name="description" value={formik.values.description}
+                                        onChange={(e) => {
+                                            formik.handleChange(e);
+                                        }}
+                                        error={formik.touched.description && Boolean(formik.errors.description)}
+                                        helperText={formik.touched.description && formik.errors.description} />
                                 </FormControl>
                             </Grid>
 
@@ -136,11 +154,14 @@ const General = (props) => {
                                     <FormControl component="fieldset" fullWidth>
                                         <FormLabel component="legend">What is major ?</FormLabel>
                                         {/* <MultipleSelectChip /> */}
-                                        <Select label="Select Major" name='major' value={formik.values.major} onChange={(e) => {
-                                            formik.handleChange(e);
-                                            // setMajorInit(e.target.value);
-                                            formik.setFieldValue('subjectId', props.subjectMajors[e.target.value][0].id);
-                                        }}>
+                                        <Select label="Select Major" name='major'
+                                            required
+                                            value={formik.values.major} onChange={(e) => {
+                                                formik.handleChange(e);
+
+                                                // setMajorInit(e.target.value);
+                                                formik.setFieldValue('subjectId', props.subjectMajors[e.target.value][0].id);
+                                            }}>
                                             {
                                                 props.majors ? props.majors.map(major => ((
                                                     <MenuItem value={major.id} key={major.id}>{major.name}</MenuItem>
@@ -152,9 +173,11 @@ const General = (props) => {
                                 <Grid item xs>
                                     <FormControl component="fieldset" fullWidth>
                                         <FormLabel component="legend">What subject you can mentor ?</FormLabel>
-                                        <Select label="Select Subject" name='subjectId' value={formik.values.subjectId} onChange={(e) => {
-                                            formik.handleChange(e);
-                                        }}>
+                                        <Select label="Select Subject" name='subjectId'
+                                            required
+                                            value={formik.values.subjectId} onChange={(e) => {
+                                                formik.handleChange(e);
+                                            }}>
                                             {
                                                 props.majors && props.subjectMajors ? props.subjectMajors[formik.values.major] ?
                                                     props.subjectMajors[formik.values.major].map((subject) => ((
@@ -192,7 +215,10 @@ const General = (props) => {
                                             onChange={(newValue) => {
                                                 formik.setFieldValue("startDate", newValue);
                                             }}
-                                            renderInput={(params) => <TextField {...params} />}
+                                            error={formik.touched.description && Boolean(formik.errors.description)}
+                                            helperText={formik.touched.description && formik.errors.description}
+                                            renderInput={(params) => <TextField {...params} error={formik.touched.description && Boolean(formik.errors.description)}
+                                                helperText={formik.touched.description && formik.errors.description} />}
                                         />
                                     </FormControl>
                                 </Grid>

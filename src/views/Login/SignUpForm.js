@@ -6,8 +6,30 @@ import firebase from "../../firebase";
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import GoogleSignInButton from "../../components/GoogleSignInButton";
+import * as yup from 'yup';
+import { YouTube } from "@mui/icons-material";
 
 
+const validationSchema = yup.object({
+    firstname: yup
+        .string('Enter your Firstname')
+        .required('Firstname is required'),
+    lastname: yup
+        .string('Enter your Lastname')
+        .required('Lastname is required'),
+    email: yup
+        .string('Enter your email')
+        .email('Enter a valid email')
+        .required('Email is required'),
+    password: yup
+        .string('Enter your password')
+        .min(8, 'Password should be of minimum 8 characters length')
+        .required('Password is required'),
+    confirm: yup.string('Enter confirm password')
+        .test('passwords-match', 'Passwords must match', function (value) {
+            return this.parent.password === value
+        })
+});
 
 const SignUpForm = (props) => {
     const [error, setError] = useState(null);
@@ -50,30 +72,8 @@ const SignUpForm = (props) => {
             signUpWithFirebase(values);
 
         },
-        validate: (values) => {
-            const errors = {};
+        validationSchema: validationSchema
 
-
-            // if (!values.username) {
-            //     errors.username = "Required!"
-            // }
-
-            if (!values.email) {
-                errors.email = 'Required';
-            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                errors.email = 'Invalid email address';
-            }
-
-            if (!values.password) {
-                errors.password = "Required!"
-            }
-
-            if (values.password !== values.confirm) {
-                errors.confirm = "Password must match!"
-            }
-
-            return errors;
-        }
     });
 
     return (
@@ -164,7 +164,7 @@ const SignUpForm = (props) => {
                 <GoogleSignInButton style={{ width: "100%", padding: "0.75em 1em", marginTop: "1em" }}>Sign Up With Google</GoogleSignInButton>
             </Grid>
 
-        
+
 
         </Grid>
     );

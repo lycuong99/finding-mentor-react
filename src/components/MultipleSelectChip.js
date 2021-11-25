@@ -54,6 +54,7 @@ export default function MultipleSelectChip(props) {
       multiple
       fullWidth
       value={values}
+      required
       onChange={handleChange}
       input={<OutlinedInput />}
       renderValue={(selected) => {

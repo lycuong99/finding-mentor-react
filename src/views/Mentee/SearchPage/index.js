@@ -27,6 +27,8 @@ const SearchPage = (props) => {
     const [keySearch, setKeySearch] = useState("");
     const [deboundpKeySearch, setDeboundKeySearch] = useState("");
     const [searchType, setSearchType] = useState(MENTOR);
+    const [selectedMajor, setSelectedMajor] = useState(null);
+    const [selectedSubjects, setSelectedSubjects] = useState([]);
 
     const handleChangeSearchType = (value) => {
         if (searchType != value) {
@@ -41,6 +43,13 @@ const SearchPage = (props) => {
         }
     }
 
+    const handleChangeMajor = (newValue) => {
+        setSelectedMajor(newValue);
+    }
+    const handleChangeSubjects = (newValue) => {
+        setSelectedSubjects(newValue);
+    }
+
     useEffect(() => {
         let timeoutId = setTimeout(() => {
             setDeboundKeySearch(keySearch);
@@ -50,6 +59,7 @@ const SearchPage = (props) => {
         }
     },
         [keySearch]);
+        
     useEffect(() => {
         switch (searchType) {
             case COURSE: props.fetchCourses(keySearch); return;
@@ -68,7 +78,10 @@ const SearchPage = (props) => {
         <Container sx={{}}>
             <Grid container spacing={3} >
                 <Grid item sx={{ width: '20em' }}>
-                    <FilterContainer variant="outlined" searchType={searchType} onChangeSearchType={handleChangeSearchType} />
+                    <FilterContainer variant="outlined" searchType={searchType}
+                        onChangeSearchType={handleChangeSearchType}
+                        onChangeMajor={handleChangeMajor}
+                        onChangeSelectedSubjects={handleChangeSubjects} />
                 </Grid>
                 <Grid item xs container>
                     <Grid container direction="column">

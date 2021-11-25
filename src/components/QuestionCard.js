@@ -4,13 +4,19 @@ import { Box } from "@mui/system";
 import React from "react";
 import { Link } from "react-router-dom";
 import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
-
+import format from "date-fns/format";
+import { getAvatarLetter } from '../ultils';
 const useStyles = makeStyles((theme) => ({
     root: {
         cursor: 'pointer'
     }
 }));
-
+const formatDate = (date) => {
+    if (typeof date == 'string') return date;
+    let d = new Date(date.toDate());
+    console.log(d);
+    return format(d, 'dd/MM/yyyy');
+}
 const QuestionCard = (props) => {
     const { data } = props;
     const classes = useStyles();
@@ -20,7 +26,7 @@ const QuestionCard = (props) => {
                 <Grid item container direction="column" sx={{ width: '112px' }}>
                     <Grid item>
                         <Avatar sx={{ width: 88, height: 88, border: '2px solid #0000001f' }}
-                            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80" />
+                            src={data.avatarUrl} />
                     </Grid>
                 </Grid>
                 <Grid item container direction="column" xs>
@@ -28,7 +34,7 @@ const QuestionCard = (props) => {
                         <Typography variant="h2">{data.title}</Typography>
                     </Grid>
                     <Grid item>
-                        <Typography variant="subtitle2">{data.dateCreated}</Typography>
+                        <Typography variant="subtitle2">    {formatDate(data.dateCreated)}</Typography>
                     </Grid>
                     <Grid item sx={{ marginTop: '1em' }}>
                         <Typography variant="body1">{data.content}</Typography>
@@ -37,7 +43,7 @@ const QuestionCard = (props) => {
                 <Grid item>
                     <Grid container>
                         <Grid item> <QuestionAnswerOutlinedIcon /></Grid>
-                        <Grid item>4 answer</Grid>
+                        <Grid item>{data.answerCount} answer</Grid>
                     </Grid>
                 </Grid>
             </Grid>

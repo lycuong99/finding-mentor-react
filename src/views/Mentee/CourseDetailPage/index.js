@@ -4,11 +4,12 @@ import SectionContainer from '../../../components/SectionContainer';
 import { Box } from '@mui/system';
 import CurriculumSection from './CurriculumSection';
 import { useParams } from 'react-router';
-import { fetchCourse, fetchUserInfo, enrollCourse, fetchMyLearningCourses } from '../../../actions';
+import { fetchCourse, fetchUserInfo, enrollCourse, fetchMyLearningCourses, fetchMentor, fetchMenteesInCourse } from '../../../actions';
 import { connect } from 'react-redux';
 import UserStorage from '../../../ultils/UserStorage';
 import _ from 'lodash';
 import { getCurriculum } from '../../../ultils';
+import QuestionSection from './QuestionSection';
 
 const courseData = {
     "id": 0,
@@ -45,9 +46,16 @@ const CourseDetailPage = (props) => {
         if (_.isEmpty(props.mylearningCourses)) {
             props.fetchMyLearningCourses();
         }
+        props.fetchMenteesInCourse(id);
         let cur = await getCurriculum(id);
         setCurriculumData(cur);
     }, []);
+
+    useEffect(() => {
+        if (!_.isEmpty(props.course)) {
+            props.fetchMentor(props.course.mentorId);
+        }
+    }, [props.course]);
 
     useEffect(() => {
         if (!_.isEmpty(props.mylearningCourses)) {
@@ -121,7 +129,10 @@ const CourseDetailPage = (props) => {
 
                             </Grid>
                         </Container>
-                        <Container component={Paper} maxWidth="xl" variant="outline" sx={{ border: '2px solid #e5e7eb', borderRadius: 3, marginTop: '2em' }} >
+                        <Container component={Paper} maxWidth="xl" variant="outline" sx={{
+                            border: '2px solid #e5e7eb', borderRadius: 3, marginTop: '2em',
+                            minHeight: '98vh'
+                        }} >
                             <Grid container direction="column">
                                 <Grid item>
                                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -142,6 +153,9 @@ const CourseDetailPage = (props) => {
                                 </Grid>
                                 <Grid item>
                                     <div hidden={tabIndex !== 1}>
+                                        {
+                                            (!_.isEmpty(props.mentees) && !_.isEmpty(props.currentMentor)) ? <QuestionSection courseId={id} /> : 'loading'
+                                        }
 
                                     </div>
                                 </Grid>
@@ -163,9 +177,11 @@ const CourseDetailPage = (props) => {
 const mapStateToProps = (state) => ({
     course: state.course.currentCourse,
     userInfo: state.user.userInfo,
-    mylearningCourses: state.mentee.mylearningCourses
+    mylearningCourses: state.mentee.mylearningCourses,
+    mentees: state.course.mentees,
+    currentMentor: state.mentor.currentMentor,
 });
 
 export default connect(mapStateToProps, {
-    fetchCourse, fetchUserInfo, enrollCourse, fetchMyLearningCourses
+    fetchCourse, fetchUserInfo, enrollCourse, fetchMyLearningCourses, fetchMenteesInCourse, fetchMentor
 })(CourseDetailPage);

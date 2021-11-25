@@ -8,5 +8,5 @@ const formatName = (fullname) => {
 }
 export const getAvatarLetter = (fullname) => {
     //formatName
-    return `https://ui-avatars.com/api/?name=${formatName(fullname)}`;
+    return `https://ui-avatars.com/api/?name=${formatName(fullname)}&background=random`;
 }

@@ -1,16 +1,10 @@
 import { Grid, Paper, TextField, Typography, Button, Divider, List, ListItem } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
-
+import { connect } from 'react-redux';
 import QuestionCollection from '../../../components/QuestionCollection';
 import QuestionDetail from '../../../components/QuestionDetail';
 import { addQuestion, getQuestionsOnSnapshot, getAvatarLetter } from '../../../ultils';
-import { fetchAllMajor, fetchMenteesInCourse } from '../../../actions';
-import { getMenteeListInfo, getMentorInfo } from '../../../services';
-
-import _ from 'lodash';
-import { connect } from 'react-redux';
-
 const questions_INIT = [
     {
         id: '1',
@@ -59,75 +53,73 @@ const QuestionManager = (props) => {
     const handleCloseQuestionDetail = () => {
         setCurrentQuestion(null);
     }
+
     const handleAddQuestion = (question) => {
         addQuestion(courseId, {
             ...question,
-            isMentor: true
+            isMentor: false
         });
     }
 
 
     useEffect(() => {
-        if (!_.isEmpty(props.mentees)) {
-            let unsub = getQuestionsOnSnapshot(courseId,
-                (datas) => {
-                    const questionsTmp = datas.map(question => {
-                        if (question.isMentor) {
-                            return {
-                                ...question,
-                                fullname: props.currentMentor.fullname,
-                                avatarUrl: props.currentMentor.avatarUrl ? props.currentMentor.avatarUrl : getAvatarLetter(props.currentMentor.fullname)
-                            }
-                        }
-                        // -----
-                        let mentee = props.mentees.find(m => m.id == question.createBy);
-                        console.log(mentee);
-                        if (mentee) {
-                            return {
-                                ...question,
-                                fullname: mentee.fullname,
-                                avatarUrl: mentee.avatarUrl ? mentee.avatarUrl : getAvatarLetter(mentee.fullname)
-                            }
-                        }
+        let unsub = getQuestionsOnSnapshot(courseId,
+            (datas) => {
+                const questionsTmp = datas.map(question => {
+                    if (question.isMentor) {
                         return {
                             ...question,
-                            fullname: 'Unknown',
-                            avatarUrl: null
+                            fullname: props.currentMentor.fullname,
+                            avatarUrl: props.currentMentor.avatarUrl ? props.currentMentor.avatarUrl : getAvatarLetter(props.currentMentor.fullname)
                         }
-                    });
-                    setQuestions(questionsTmp);
+                    }
+                    // -----
+                    let mentee = props.mentees.find(m => m.id == question.createBy);
+                    console.log(mentee);
+                    if (mentee) {
+                        return {
+                            ...question,
+                            fullname: mentee.fullname,
+                            avatarUrl: mentee.avatarUrl ? mentee.avatarUrl : getAvatarLetter(mentee.fullname)
+                        }
+                    }
+                    return {
+                        ...question,
+                        fullname: 'Unknown',
+                        avatarUrl: null
+                    }
                 });
+                setQuestions(questionsTmp);
+              
+            });
 
-            return () => {
-                if (unsub) {
-                    unsub();
-                }
+        return () => {
+            if (unsub) {
+                unsub();
             }
         }
     }, []);
 
-    return (
-        <Paper>
-            <Grid container direction="column" >
-                <Grid item>
-                    <Typography variant="h2" sx={{ padding: '1em' }}>Questions</Typography>
-                    <Divider />
-                </Grid>
-                <Grid item>
-                    {
-                        currentQuestion ?
-                            (<QuestionDetail
-                                data={questions.find(q => q.id == currentQuestion)} questionId={currentQuestion} courseId={courseId}
-                                onClose={handleCloseQuestionDetail} />)
-                            : questions ? <QuestionCollection questions={questions}
-                                onSelectQuestion={handleSelectQuestion}
-                                onAddQuestion={handleAddQuestion} />
-                                : '...loading'
-                    }
-                </Grid>
 
+    return (
+        <Grid container direction="column" >
+            {/* <Grid item>
+                <Typography variant="h2" sx={{ padding: '1em' }}>Questions</Typography>
+                <Divider />
+            </Grid> */}
+            <Grid item>
+                {
+                    currentQuestion ?
+                        (<QuestionDetail
+                            data={questions.find(q => q.id == currentQuestion)} questionId={currentQuestion} courseId={courseId}
+                            onClose={handleCloseQuestionDetail} />)
+                        : questions ? <QuestionCollection questions={questions} onSelectQuestion={handleSelectQuestion}
+                            onAddQuestion={handleAddQuestion} />
+                            : '...loading'
+                }
             </Grid>
-        </Paper>
+
+        </Grid>
     );
 }
 
@@ -137,4 +129,5 @@ const mapStateToProps = (state) => {
         currentMentor: state.mentor.currentMentor,
     }
 };
-export default connect(mapStateToProps, {})(QuestionManager);
+
+export default connect(mapStateToProps)(QuestionManager);

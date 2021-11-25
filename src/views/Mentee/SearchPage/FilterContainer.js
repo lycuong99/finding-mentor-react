@@ -9,8 +9,10 @@ import {
     ListItemIcon,
     Checkbox,
     ListItemText,
-    Divider
+    Divider,
+    Radio
 } from '@mui/material';
+
 import React, { useEffect, useState } from 'react';
 import { COURSE, MENTOR } from '../../../constants/searchType';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -18,21 +20,22 @@ import { fetchAllMajor, fetchAllSubjectByMajor } from '../../../actions';
 import { connect } from 'react-redux';
 
 
-
 const FilterContainer = (props) => {
-    const { variant } = props;
-    const typeSearchList = []
+    const { variant, selectedMajor, onChangeMajor, selectedSubjects, onChangeSelectedSubjects } = props;
+    const typeSearchList = [];
 
 
-    // ............ 
-    const [selectedMajors, setSelectedMajors] = useState([]);
-    // const [selectedMajors, setSelectedMajors] = useState([]);
 
-    const handleToggleMajor = (value) => () => {
-        // console.log(selectedMajors);
-        props.fetchAllSubjectByMajor(value);
-        const currentIndex = selectedMajors.indexOf(value);
-        const newChecked = [...selectedMajors];
+    useEffect(() => {
+        props.fetchAllMajor();
+    }, []);
+    useEffect(() => {
+        onChangeSelectedSubjects([]);
+    }, [selectedMajor]);
+
+    const handleToggleSubject = (value) => {
+        const currentIndex = selectedSubjects.indexOf(value);
+        const newChecked = [...selectedSubjects];
 
         if (currentIndex === -1) {
             newChecked.push(value);
@@ -40,18 +43,19 @@ const FilterContainer = (props) => {
             newChecked.splice(currentIndex, 1);
         }
 
-        setSelectedMajors(newChecked);
+        onChangeSelectedSubjects(newChecked);
+    }
+
+    const handleToggleMajor = (value) => {
+        props.fetchAllSubjectByMajor(value);
+        onChangeMajor(value);
     };
 
-    useEffect(() => {
-        props.fetchAllMajor();
-    }, []);
+    // useEffect(() => {
+    //     if (props.subjectMajors) {
 
-    useEffect(() => {
-        if (props.subjectMajors) {
-
-        }
-    }, [props.subjectMajors])
+    //     }
+    // }, [props.subjectMajors])
 
 
     return (<Card variant={variant} sx={{ paddingBottom: '5em', paddingTop: '0.5em', minHeight: '40em', borderWidth: 2, borderRadius: 2 }}>
@@ -96,11 +100,14 @@ const FilterContainer = (props) => {
                                     props.majors ?
                                         props.majors.map((major) => ((
                                             <ListItem disablePadding key={major.id}>
-                                                <ListItemButton dense onClick={handleToggleMajor(major.id)}>
+                                                <ListItemButton dense onClick={() => {
+                                                    handleToggleMajor(major.id);
+                                                }}>
                                                     <ListItemIcon>
-                                                        <Checkbox
+                                                        <Radio
                                                             edge="start"
-                                                            checked={selectedMajors.indexOf(major.id) !== -1}
+                                                            checked={selectedMajor == major.id}
+
                                                             tabIndex={-1}
                                                             disableRipple
                                                         />
@@ -122,30 +129,30 @@ const FilterContainer = (props) => {
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
                             id="panel1a-header"
+                            sx={{ paddingRight: '5px' }}
                         >
                             <Typography>Select Subject</Typography>
                         </AccordionSummary>
-                        <AccordionDetails>
+                        <AccordionDetails sx={{ padding: 0, paddingRight: '10px' }}>
                             <List>
                                 {
-                                    props.majors && props.subjectMajors ?
-                                        selectedMajors.map((majorId) => {
-                                            if (!props.subjectMajors[majorId]) return;
-                                            return props.subjectMajors[majorId].map((subject) => ((
-                                                <ListItem disablePadding key={subject.id}>
-                                                    <ListItemButton dense>
-                                                        <ListItemIcon>
-                                                            <Checkbox
-                                                                edge="start"
-                                                                tabIndex={-1}
-                                                                disableRipple
-                                                            />
-                                                        </ListItemIcon>
-                                                        <ListItemText primary={`${subject.name}`} />
-                                                    </ListItemButton>
-                                                </ListItem>
-                                            )))
-                                        })
+                                    selectedMajor && props.subjectMajors[selectedMajor] && props.majors && props.subjectMajors ?
+                                        props.subjectMajors[selectedMajor].map((subject) => ((
+                                            <ListItem disablePadding key={subject.id}>
+                                                <ListItemButton dense onClick={() => {
+                                                    handleToggleSubject(subject.id);
+                                                }}>
+                                                    <ListItemIcon>
+                                                        <Checkbox
+                                                            edge="start"
+                                                            tabIndex={-1}
+                                                            checked={selectedSubjects.indexOf(subject.id) !== -1}
+                                                            disableRipple
+                                                        />
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={`${subject.name}`} />
+                                                </ListItemButton>
+                                            </ListItem>)))
                                         : null
                                 }
 
@@ -159,9 +166,6 @@ const FilterContainer = (props) => {
     </Card>);
 }
 const mapStateToProps = (state) => {
-
-    // let subjectMajors = state.major.subjectMajors.map(majorSubject => ({majorSubject.}));
-    // let 
     return {
         majors: state.major.majors,
         subjectMajors: state.major.subjectMajors

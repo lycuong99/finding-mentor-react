@@ -9,7 +9,7 @@ import General from './General';
 import history from '../../../history';
 
 import { connect } from 'react-redux';
-import { fetchAllSubjectByMajor, fetchMajorsOfMentor, fetchCourse, updateCourse, } from '../../../actions';
+import { fetchAllSubjectByMajor, fetchMajorsOfMentor, fetchCourse, updateCourse, fetchMentor, fetchMenteesInCourse } from '../../../actions';
 import { useParams } from 'react-router';
 import _ from 'lodash';
 import MenteeList from '../MenteeList';
@@ -36,6 +36,9 @@ const CourseEditPage = (props) => {
             props.fetchMajorsOfMentor(UserStorage.getUserId());
         }
 
+
+        props.fetchMenteesInCourse(id);
+
         let curriculumnData = await getCurriculum(id);
         console.log(curriculumnData);
         setCurriculum(curriculumnData);
@@ -47,6 +50,11 @@ const CourseEditPage = (props) => {
         }
     }, [props.majors]);
 
+    useEffect(() => {
+        if (!_.isEmpty(props.course)) {
+            props.fetchMentor(props.course.mentorId);
+        }
+    }, [props.course]);
 
     const handleSubmitGeneralInfo = (values) => {
         console.log('Update Course');
@@ -128,7 +136,10 @@ const CourseEditPage = (props) => {
                         <MenteeList courseId={id} />
                     </div>
                     <div hidden={selectedItem !== 3}>
-                        <QuestionManager courseId={id} />
+                        {
+                            (!_.isEmpty(props.mentees) && !_.isEmpty(props.currentMentor)) ? <QuestionManager courseId={id} /> : 'loading'
+                        }
+
                     </div>
 
                 </Grid>
@@ -141,10 +152,12 @@ const mapStateToProps = (state) => {
     return {
         majors: state.major.majorsOfMentor,
         subjectMajors: state.major.subjectMajors,
-        course: state.course.currentCourse
+        course: state.course.currentCourse,
+        mentees: state.course.mentees,
+        currentMentor: state.mentor.currentMentor,
     }
 };
 
 export default connect(mapStateToProps, {
-    fetchCourse, fetchMajorsOfMentor, fetchAllSubjectByMajor, updateCourse
+    fetchCourse, fetchMajorsOfMentor, fetchAllSubjectByMajor, updateCourse, fetchMenteesInCourse, fetchMentor
 })(CourseEditPage);

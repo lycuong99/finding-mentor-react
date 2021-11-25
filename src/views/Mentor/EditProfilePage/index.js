@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchMentor, fetchAllMajor, fetchAllSubjectByMajor, updateMentorProfile, closeSnackBar } from '../../../actions';
+import { fetchMentor, fetchAllMajor, fetchAllSubjectByMajor, updateMentorProfile, closeSnackBar,  } from '../../../actions';
 import UserStorage from '../../../ultils/UserStorage';
 import MentorProfileForm from './MentorProfileForm';
 import { updateAvatarImage } from '../../../ultils';
@@ -13,7 +13,7 @@ import _ from 'lodash';
 
 const convertToFormObj = (data) => {
     return {
-        avatarUrl: data.mentor.avatarUrl,
+        avatarUrl: data.avatarUrl,
         fullname: data.fullname,
         id: data.id,
         about: data.mentor.about ? data.mentor.about : '',
@@ -21,7 +21,8 @@ const convertToFormObj = (data) => {
         majors: data.mentor.majors.map(m => m.id),
         subjects: data.mentor.subjects.map(s => s.id),
         address: data.address ? data.address : '',
-        company: data.mentor.company ? data.mentor.company : ''
+        company: data.mentor.company ? data.mentor.company : '',
+        phoneNumber: data.phoneNumber
     }
 }
 

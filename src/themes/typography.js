@@ -56,7 +56,7 @@ export function themeTypography() {
             fontSize: '1rem',
             fontWeight: 400,
             lineHeight: '1.334em',
-          
+
         },
         body2: {
             letterSpacing: '0em',
