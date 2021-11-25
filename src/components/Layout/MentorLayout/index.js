@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
@@ -10,8 +10,9 @@ import { GroupOutlined, Menu, FiberManualRecord, EventNoteOutlined, CalendarToda
 import { AppBar, CssBaseline, Drawer, IconButton, useTheme, List, Typography, Divider, Toolbar, useMediaQuery, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { connect } from "react-redux";
-
-
+import UserStorage from '../../../ultils/UserStorage';
+import { useHistory } from "react-router-dom";
+import _ from "lodash";
 const drawerWidth = 260;
 const appBarHeight = '5.5em';
 
@@ -202,6 +203,7 @@ function MainLayout(props) {
     const [openSideBar, setOpenSideBar] = React.useState(false);
     const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
 
+    let history = useHistory();
     const handleDrawerToggle = () => {
         setOpenSideBar(!openSideBar);
     };
@@ -210,6 +212,24 @@ function MainLayout(props) {
         setOpenSideBar(false);
     };
 
+
+    const handleAuthorization = () => {
+        let roles = UserStorage.getUserRoles();
+        console.log(roles);
+        if (typeof roles == 'array') {
+            if (!_.includes(roles, 'MENTOR')) {
+                history.push("/mentor/apply");
+            }
+        }
+
+        if (typeof roles == 'string' && !_.includes(roles, 'MENTOR')) {
+            history.push("/mentor/apply");
+        }
+    }
+
+    useEffect(() => {
+        handleAuthorization();
+    });
 
 
     const menus = INIT_DATA.items.map((item) => {

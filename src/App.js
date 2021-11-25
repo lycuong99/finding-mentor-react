@@ -1,5 +1,5 @@
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { Router, } from "react-router";
+import { BrowserRouter, Route, Switch, } from 'react-router-dom';
+import { Router, useLocation } from "react-router";
 import Login from './views/Login';
 import MenteeHomePage from './views/Mentee';
 import history from './history';
@@ -19,6 +19,7 @@ import AdditionalInformationAfterSignUp from './views/AdditionalInformationAfter
 import EditProfilePage from './views/Mentor/EditProfilePage';
 
 function App() {
+  let location = window.location;
 
   return (
     <Router history={history} forceRefresh={true} >
@@ -26,9 +27,9 @@ function App() {
 
         <Route path='/auth/:type' component={Login} />
         <AuthComponent>
+
           <Route path='/additional-info' component={AdditionalInformationAfterSignUp} />
-          {/* <Route path='/mentee/search' component={SearchPage} /> */}
-          <Route path={['/mentee', '/mentee/search', '/']} >
+          <Route path={['/mentee', '/mentee/search']} >
             <MenteeLayout>
               <Route exact path='/'><MenteeHomePage /></Route>
               <Route path='/mentee/' exact>
@@ -39,24 +40,39 @@ function App() {
               <Route path='/mentee/course/:id' component={CourseDetailPage} />
             </MenteeLayout>
           </Route>
-          <Route path='/mentor/apply' exact>
+          {/* <Route path='/mentor/apply' exact>
             <BecomeMentorPage />
-          </Route>
-          <Route path={['/mentor']} >
-            <MentorLayout>
-              <Route path={['/mentor', '/mentor/course']} exact>
-                <CoursesManagementPage />
-              </Route>
-              <Route path='/mentor/course/new' exact>
-                <CourseCreaterPage />
-              </Route>
-              <Route path='/mentor/course/edit/:id' exact>
-                <CourseEditPage />
-              </Route>
-              <Route path='/mentor/profile' exact>
-                <EditProfilePage />
-              </Route>
-            </MentorLayout>
+          </Route> */}
+
+          <Route path={['/mentor']} render={
+            () => {
+
+              return (
+                <>
+                  {
+                    location.pathname === '/mentor/apply' ? (<BecomeMentorPage />) :
+                      (
+                        <MentorLayout>
+                          <Route path={['/mentor', '/mentor/course']} exact>
+                            <CoursesManagementPage />
+                          </Route>
+                          <Route path='/mentor/course/new' exact>
+                            <CourseCreaterPage />
+                          </Route>
+                          <Route path='/mentor/course/edit/:id' exact>
+                            <CourseEditPage />
+                          </Route>
+                          <Route path='/mentor/profile' exact>
+                            <EditProfilePage />
+                          </Route>
+                        </MentorLayout>
+                      )
+                  }</>
+              )
+            }
+          }>
+
+
           </Route>
 
 

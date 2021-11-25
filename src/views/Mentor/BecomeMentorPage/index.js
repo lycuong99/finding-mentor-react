@@ -1,115 +1,129 @@
 import {
-    Avatar, Button, Card, Checkbox, Chip, Container, FormControl,
-    FormControlLabel, FormGroup, FormLabel, Grid, Paper, Radio, RadioGroup, Rating, TextField, Typography
+    Container, Paper, Snackbar, Alert, Typography
 } from '@mui/material';
-import React from 'react';
-import MultipleSelectChip from '../../../components/MultipleSelectChip';
-import { useFormik } from "formik";
+import React, { useEffect, useState } from 'react';
 
-const BecomeMentorPage = () => {
-        const formik = useFormik({
-            initialValues: {
-                majors: [],
-                subjects: [],
-                isGraduted: false,
-                company: '',
-                about: ''
-            },
-            onSubmit: (values) => {
-                console.log(values);
-            },
-            validate: (values) => {
-                const errors = {};
+import { fetchAllMajor, fetchAllSubjectByMajor } from '../../../actions';
+import { getUserStudentInfo, registerMentor } from '../../../services';
+import BecomeMentorForm from './BecomeMentorForm';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+import history from '../../../history';
+import UserStorage from '../../../ultils/UserStorage';
 
+const FAIL = -1;
+const SUCCESS = 1;
+const NONE = 0;
 
-                // if (!values.email) {
-                //     errors.email = 'Required';
-                // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                //     errors.email = 'Invalid email address';
-                // }
+const BecomeMentorPage = (props) => {
 
-                // if (!values.email) {
-                //     errors.password = "Required!"
-                // }
+    const [studentInfo, setStudentInfo] = useState(null);
+    const [registerStatus, setRegisterStatus] = useState(NONE);
 
-                // return errors;
-            }
-        });
+    const handleAuthorization = () => {
+        let roles = UserStorage.getUserRoles();
+        console.log(roles);
+
+        if (_.includes(roles, 'MENTOR')) {
+            history.push("/mentor/course");
+        }
+
+    }
+    useEffect(() => {
+        handleAuthorization();
+    })
+    useEffect(async () => {
+        handleAuthorization();
+        
+        props.fetchAllMajor();
+        let student = await getUserStudentInfo();
+        setStudentInfo(student);
+    }, []);
+
+    useEffect(() => {
+        if (!_.isEmpty(props.majors)) {
+            props.majors.forEach(major => { props.fetchAllSubjectByMajor(major.id); })
+        }
+    }, [props.majors]);
+
+    const handleSubmitForm = async (values) => {
+        let submitObj = {
+            ...values,
+            subjectIds: values.subjects,
+            majorIds: values.majors
+        }
+        let result = await registerMentor(submitObj);
+        if (result) {
+            setRegisterStatus(SUCCESS);
+            setTimeout(() => {
+                history.push('/mentor/course');
+            }, 1000);
+        } else {
+            setRegisterStatus(FAIL);
+        }
+    }
+
     return (
         <Container maxWidth="md" sx={{ minHeight: '100vh', paddingTop: '2em' }}>
+            <Snackbar
+                open={registerStatus === SUCCESS}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                onClose={() => {
+                    setTimeout(() => {
+                        setRegisterStatus(NONE);
+                    }, 200);
+                }}
+                message="Register Success"
+            >
+                <Alert severity="success">Register Success!</Alert>
+            </Snackbar>
 
+            <Snackbar
+                open={registerStatus === FAIL}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                onClose={() => {
+                    setTimeout(() => {
+                        setRegisterStatus(NONE);
+                    }, 200);
+                }}
+                message="Register fail"
+            >
+                <Alert severity="error">Register Fail!</Alert>
+            </Snackbar>
             <Paper sx={{ paddingLeft: '2em', paddingRight: '2em', paddingTop: '2em', paddingBottom: '3em', borderRadius: 3, borderWidth: '2px' }} variant="outlined">
                 <Typography variant="h1">Apply as a mentor</Typography>
+                {studentInfo && props.majors ?
+                    <BecomeMentorForm majors={props.majors}
+                        subjectMajors={props.subjectMajors}
+                        onSubmit={handleSubmitForm}
+                        initialValues={
+                            {
+                                about: '',
+                                isGraduted: true,
+                                majors: studentInfo.majorId ? [studentInfo.majorId] : [],
+                                subjects: [],
+                                company: '',
+                            }
+                        }
+                    /> : '..loading'
+                }
 
-                <Grid container direction="column" rowGap={3} sx={{ marginTop: '2em' }}
-                    component='form'
-                    justifyContent="space-between" onSubmit={formik.handleSubmit} >
-                    <Grid item>
-                        <FormControl component="fieldset" fullWidth>
-                            <FormLabel component="legend">What is you major ?</FormLabel>
-                            <MultipleSelectChip values={formik.values.majors} onChange={(e) => {
-                                formik.handleChange(e);
-                            }} />
-                        </FormControl>
-                    </Grid>
-                    <Grid item>
-                        <FormControl component="fieldset" variant="standard" fullWidth>
-                            <FormLabel component="legend">What subject you can mentor ?</FormLabel>
-                            <MultipleSelectChip values={formik.values.subjects} onChange={(e) => {
-                                formik.handleChange(e);
-                            }} />
-
-                        </FormControl>
-                    </Grid>
-                    <Grid item>
-                        <FormControl component="fieldset" fullWidth>
-                            <FormLabel component="legend">Have you graduated yet ?</FormLabel>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    name='isGraduted'
-                                    checked={formik.values.isGraduted}
-                                    onChange={(e) => {
-                                        formik.handleChange(e);
-                                    }} />
-
-                            } label="Graduted" />
-
-                        </FormControl>
-                    </Grid>
-                    <Grid item>
-                        <FormControl component="fieldset" fullWidth>
-                            <FormLabel component="legend">What company are you working ?</FormLabel>
-                            <TextField fullWidth
-                                name='company'
-                                value={formik.values.company}
-
-                                onChange={(e) => {
-                                    formik.handleChange(e);
-                                }} />
-                        </FormControl>
-                    </Grid>
-                    {/* <Grid item>
-                        <FormControl component="fieldset" fullWidth>
-                            <FormLabel component="legend">Where are you live</FormLabel>
-                            <TextField fullWidth />
-                        </FormControl>
-                    </Grid> */}
-                    <Grid item>
-                        <FormControl component="fieldset" fullWidth>
-                            <FormLabel component="legend">Tell us a little bit about yourself. </FormLabel>
-                            <TextField fullWidth multiline
-                                name='about'
-                                rows={5} value={formik.values.about} onChange={(e) => {
-                                    formik.handleChange(e);
-                                }} />
-                        </FormControl>
-                    </Grid>
-                    <Grid item>
-                        <Button type='submit' variant="contained">Submit</Button>
-                    </Grid>
-                </Grid>
             </Paper>
         </Container>
     );
 }
-export default BecomeMentorPage;
+const mapStateToProps = (state) => ({
+
+    majors: state.major.majors,
+    subjectMajors: state.major.subjectMajors,
+});
+
+export default connect(mapStateToProps, {
+    fetchAllMajor, fetchAllSubjectByMajor
+})(BecomeMentorPage);

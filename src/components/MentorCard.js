@@ -2,7 +2,7 @@ import { Avatar, Button, Card, CardActionArea, CardActions, CardContent, CardMed
 import { makeStyles } from '@mui/styles';
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { getAvatarLetter } from '../ultils';
 const useStyles = makeStyles((theme) => ({
     root: {
         cursor: 'pointer'
@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 
 const MentorCard = (props) => {
     const { type, data } = props;
-    
+
     const classes = useStyles();
     const theme = useTheme();
     const matchMDUp = useMediaQuery(theme.breakpoints.up('md'));
@@ -89,16 +89,25 @@ const MentorCard = (props) => {
                 <Grid container>
                     <Grid item container xs sx={{ paddingX: '1.5em', paddingY: '2em' }} spacing={3} className="Left">
                         <Grid item>
-                            <Avatar sx={{ width: 88, height: 88, border: '2px solid #0000001f' }} src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80" />
+                            <Avatar sx={{ width: 88, height: 88, border: '2px solid #0000001f' }}
+                                src={data.avatarUrl ? data.avatarUrl : null} />
                         </Grid>
                         <Grid item container xs direction="column" spacing={1} sx={{ paddingX: '1em' }} >
                             <Grid item container rowGap="4px" direction="column">
                                 <Typography variant="subtitle1" color="primary">
                                     {data.fullname}
                                 </Typography>
-                                <Typography variant="subtitle2">
-                                    Software engineering
-                                </Typography>
+
+                                <Grid item container>
+                                    {
+                                        data.mentor.majors.map(major => (
+                                            <Typography variant="subtitle2" key={major.id}>
+                                                {major.name}
+                                            </Typography>
+                                        ))
+                                    }
+                                </Grid>
+
 
                                 <Rating size="small"
                                     readOnly
@@ -106,14 +115,20 @@ const MentorCard = (props) => {
                                     value={4}
                                 />
                                 <Typography variant="body1" paragraph >
-                                    Hi, I'm a Data Scientist, working in this domain for the last 3 years. I am open to helping someone to start with Data Science/ dig deeper into it or someone looking for help in one of their projects. About me: I delved into research initially, working with Harvard Business ...
+                                    {data.mentor.about}
                                 </Typography>
                             </Grid>
                             <Grid item container spacing={1}>
-                                <Grid item><Chip label="SWP391" size="small" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                                <Grid item><Chip label="DB301" size="small" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                                <Grid item><Chip label="SYB202" size="small" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                                <Grid item><Chip label="JAV101" size="small" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
+                                {
+                                    data.mentor.subjects.map(subject => (
+                                        <Grid item>
+                                            <Tooltip title={subject.name}>
+                                                <Chip label={subject.id} size="small" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} />
+                                            </Tooltip>
+                                        </Grid>
+                                    ))
+                                }
+
                             </Grid>
                         </Grid>
 

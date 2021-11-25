@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import logo from "../../assets/images/FMLogo.png";
 import { reset } from '../../actions/index';
 import { connect } from 'react-redux';
+import { useHistory } from "react-router-dom";
 const containerHeight = '60vh';
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,20 +49,34 @@ function LoginPage(props) {
     const [SignUpAppear, setSignUpAppear] = useState(true);
     let { type } = useParams();
     const [containerDirection, setContainerDirection] = useState("row-reverse");
+    const history = useHistory();
     useEffect(() => {
-        console.log(type);
-        if (type == 'signup') {
-            navToSignUp();
-        } else if (type == 'signin') {
-            setTimeout(() => {
-                navToSignIn();
-            }, 300);
-
+        if (props.authenticated == true) {
+            history.push("/mentee");
         } else {
+            console.log(type);
 
+
+            if (type == 'signup') {
+                navToSignUp();
+            } else if (type == 'signin') {
+                setTimeout(() => {
+                    navToSignIn();
+                }, 300);
+
+            } else {
+
+            }
         }
 
+
     }, []);
+
+    useEffect(() => {
+        if (props.authenticated == true) {
+            history.push("/mentee");
+        }
+    })
 
     const navToSignIn = () => {
         console.log(formRef);
@@ -186,7 +201,7 @@ function LoginPage(props) {
                             // transform: `translateX(-${translateImage}px)`,
                             transition: 'all .7s ease-in-out',
                             height: "100%",
-                           
+
                             zIndex: 1001
                         }}>
                         <img src={bg} style={{ height: "100%", maxHeight: '600px', width: '100%', borderRadius: 12 }} />
@@ -199,5 +214,9 @@ function LoginPage(props) {
 
     );
 }
-
-export default connect(null, { reset })(LoginPage);
+const mapStateToProps = (state) => {
+    return {
+        authenticated: state.auth.authenticated
+    }
+}
+export default connect(mapStateToProps, { reset })(LoginPage);

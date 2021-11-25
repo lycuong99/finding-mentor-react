@@ -49,16 +49,16 @@ const CourseCard = (props) => {
                                 {data.name}
                             </Typography>
                             <Typography variant="body1">
-                                Become a full-stack web developer with just one course. HTML, CSS, Javascript, Node, React, MongoDB and more!
+                              {data.description}
                             </Typography>
                             <Typography variant="subtitle2">
                                 {data.mentorName}
                             </Typography>
-                            <Rating size="medium"
+                            {/* <Rating size="medium"
                                 readOnly
                                 name="simple-controlled"
                                 value={4}
-                            />
+                            /> */}
                         </CardContent>
                     </Grid>
                     <Grid item>

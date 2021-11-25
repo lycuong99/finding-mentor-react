@@ -24,6 +24,7 @@ const validationSchema = yup.object({
     startDate: yup.date().min(new Date(), "StartDate must be after now!")
 
 });
+
 const General = (props) => {
 
     let durationNumber = 1;
@@ -37,9 +38,6 @@ const General = (props) => {
             durationNumber = myArray[0];
             durationUnit = myArray[1];
         }
-
-        // console.log(durationNumber);
-        // console.log(durationUnit);
     }
 
     const handleSubmit = (values) => {
@@ -49,11 +47,6 @@ const General = (props) => {
         delete valuesNew.imageFile;
         props.onSubmit(valuesNew);
     };
-
-    const handleValidate = (values) => {
-        const errors = {};
-    }
-
 
     let majorIdInit = '';
     if (props.initValues)
@@ -67,6 +60,7 @@ const General = (props) => {
             })
         });
 
+     console.log(majorIdInit);   
     const initialValues = {
         name: '',
         imageUrl: '',
@@ -84,9 +78,6 @@ const General = (props) => {
     };
 
 
-
-
-
     return (<Box>
         <Formik
             initialValues={{ ...initialValues }}
@@ -94,7 +85,7 @@ const General = (props) => {
             onSubmit={(values, actions) => {
                 handleSubmit(values);
             }}
-            validate={handleValidate}
+      
             validationSchema={validationSchema}
 
         >
@@ -154,9 +145,9 @@ const General = (props) => {
                                     <FormControl component="fieldset" fullWidth>
                                         <FormLabel component="legend">What is major ?</FormLabel>
                                         {/* <MultipleSelectChip /> */}
-                                        <Select label="Select Major" name='major'
+                                        <Select  name='majorId'
                                             required
-                                            value={formik.values.major} onChange={(e) => {
+                                            value={formik.values.majorId} onChange={(e) => {
                                                 formik.handleChange(e);
 
                                                 // setMajorInit(e.target.value);
@@ -172,15 +163,15 @@ const General = (props) => {
                                 </Grid>
                                 <Grid item xs>
                                     <FormControl component="fieldset" fullWidth>
-                                        <FormLabel component="legend">What subject you can mentor ?</FormLabel>
-                                        <Select label="Select Subject" name='subjectId'
+                                        <FormLabel component="legend">What is subject ?</FormLabel>
+                                        <Select name='subjectId'
                                             required
                                             value={formik.values.subjectId} onChange={(e) => {
                                                 formik.handleChange(e);
                                             }}>
                                             {
-                                                props.majors && props.subjectMajors ? props.subjectMajors[formik.values.major] ?
-                                                    props.subjectMajors[formik.values.major].map((subject) => ((
+                                                props.majors && props.subjectMajors ? props.subjectMajors[formik.values.majorId] ?
+                                                    props.subjectMajors[formik.values.majorId].map((subject) => ((
                                                         <MenuItem value={subject.id} key={subject.id}>{subject.name}</MenuItem>
                                                     )))
                                                     : null : null
@@ -192,7 +183,7 @@ const General = (props) => {
                             <Grid item>
                                 <FormControl component="fieldset">
                                     <FormLabel component="legend">Price</FormLabel>
-                                    <Select label="Select Price" name='price' value={formik.values.price} onChange={(e) => {
+                                    <Select  name='price' value={formik.values.price} onChange={(e) => {
                                         formik.handleChange(e);
                                     }}>
                                         <MenuItem value={0}>Free</MenuItem>
@@ -202,6 +193,8 @@ const General = (props) => {
                                         <MenuItem value={20}>20</MenuItem>
                                         <MenuItem value={25}>25</MenuItem>
                                         <MenuItem value={30}>30</MenuItem>
+                                        <MenuItem value={50}>50</MenuItem>
+                                        <MenuItem value={100}>100</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Grid>

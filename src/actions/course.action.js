@@ -15,13 +15,22 @@ import authHeader from '../ultils/authHeader';
 import UserStorage from '../ultils/UserStorage';
 import { uploadCourseImage, initCourseData, deleteCourseFirebase, deleteCourseImage } from '../ultils';
 import { useDispatch } from 'react-redux';
+import qs from 'qs';
 
-export const fetchCourses = (key) => async (dispatch) => {
+export const fetchCourses = (key, majorId, subjectIds) => async (dispatch) => {
     try {
+        console.log('SEARCH: ' + key);
+        const response = await fm.get(`/Course/Search`,
+            {
+                params: { name: key ? key : '', majorId, subjectIds: subjectIds },
+                paramsSerializer: function (params) {
+                    return qs.stringify(params)
+                },
+            },
+            {
+                headers: authHeader(),
 
-        const response = await fm.get(`/Course/Name/${key}`, {
-            headers: authHeader(),
-        });
+            });
 
         dispatch({ type: FETCH_COURSE_SEARCH, payload: response.data });
     } catch (error) {

@@ -19,4 +19,5 @@ export default class JwtToken {
     static getJWTDecode = () => localStorage.getItem("fm_jwt_decode");
     static getJWTToken = () => localStorage.getItem("fm_jwt_token");
     static getUserId = () => localStorage.getItem('fm_userId');
+    static getUserRoles = () => localStorage.getItem('fm_userRoles');
 }

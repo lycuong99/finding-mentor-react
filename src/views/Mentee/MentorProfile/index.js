@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import CourseCard from '../../../components/CourseCard';
 import SectionContainer from '../../../components/SectionContainer';
 import WorkIcon from '@mui/icons-material/WorkOutline';
+import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
+import AddLocationOutlinedIcon from '@mui/icons-material/AddLocationOutlined';
 import { useParams } from 'react-router';
 import { fetchMentor, fetchCoursesOfMentor } from '../../../actions';
 import { connect } from 'react-redux';
@@ -69,12 +71,27 @@ const coursesTest = [{
     mentor: { id: "3c5ec754-01b1-49cf-94e0-09250222b061", name: "Ly Van Cuong" }
 },];
 
+const FieldInfo = (props) => {
+
+    return (
+        <Grid container alignItems="center" spacing={1}>
+            <Grid item>
+                {props.icon}
+            </Grid>
+            <Grid item>
+                <Typography variant="h3" > {props.label}</Typography>
+            </Grid>
+        </Grid>
+    );
+}
+
 const MentorProfilePage = (props) => {
     const avatarSize = 180;
+    const { data } = props;
     let { id } = useParams();
     console.log(useParams());
     const mentor = MentorObj;
-    const courses = coursesTest;
+
 
     useEffect(() => {
         if (id) {
@@ -97,7 +114,6 @@ const MentorProfilePage = (props) => {
                         <Grid container sx={{ paddingLeft: '0em', paddingRight: '2em', paddingY: '3em' }} justifyContent="space-between" >
                             <Grid item width={250} sx={{ marginRight: '1em' }}>
                                 <Grid container direction="column" alignItems="center" >
-
                                     <Grid item sx={{ marginBottom: '2em' }}>
                                         <Avatar
                                             sx={{ width: avatarSize, height: avatarSize }}
@@ -109,7 +125,6 @@ const MentorProfilePage = (props) => {
                                             Follow
                                         </Button>
                                     </Grid>
-
                                     <Grid item>
                                         <Button variant="outlined" fullWidth sx={{ backgroundColor: 'white', fontSize: '1rem', width: '12em', textTransform: 'capitalize', fontWeight: 500 }}>
                                             Contact
@@ -122,6 +137,7 @@ const MentorProfilePage = (props) => {
                                 <Grid container direction="column" >
                                     <Grid item container >
                                         <Grid item container direction="column" rowSpacing={1}>
+
                                             <Grid item>
                                                 <Typography variant="h3" color='#b9b9b9'>MENTOR</Typography>
                                             </Grid>
@@ -131,24 +147,30 @@ const MentorProfilePage = (props) => {
                                             <Grid item>
                                                 <Typography variant="h3" color="primary"> {props.data.mentor.majors[0].name}</Typography>
                                             </Grid>
-                                            <Grid item>
-                                                <Typography variant="h3" >{mentor.phone}</Typography>
-                                            </Grid>
-                                            <Grid item>
-                                                <Grid container columnGap={1}>
-                                                    {/* <WorkIcon /> */}
-                                                    <Typography variant="h3" >{props.data.mentor.company}</Typography>
-                                                </Grid>
-                                            </Grid>
-                                            <Grid item>
+
+                                            {/* <Grid item>
                                                 <Rating
                                                     readOnly
                                                     name="simple-controlled"
                                                     value={props.data.mentor.rating ? props.data.mentor.rating : mentor.rating}
-                                                /></Grid>
+                                                /></Grid> */}
+                                            <Grid item container >
+                                                {/* <Grid item md>
+                                                    <FieldInfo icon={<WorkIcon />} label={props.data.mentor.majors[0].name} />
+                                                </Grid> */}
+                                                <Grid item md>
+                                                    <FieldInfo icon={<WorkIcon color="primary"  fontSize='large'/>} label={data.mentor.company} />
+                                                </Grid>
+                                            </Grid>
+                                            <Grid item container >
+                                                <Grid item md>
+                                                    <FieldInfo icon={<AddLocationOutlinedIcon color="primary" fontSize='large' />} label={data.address} />
+                                                </Grid>
+                                                <Grid item md>
+                                                    <FieldInfo icon={<PhoneOutlinedIcon color="primary"  fontSize='large'/>} label={data.phoneNumber} />
+                                                </Grid>
+                                            </Grid>
 
-                                            <Grid item>
-                                                <Typography variant="h3">{props.data.address}</Typography></Grid>
                                         </Grid>
                                     </Grid>
                                     <Grid item>
@@ -159,7 +181,7 @@ const MentorProfilePage = (props) => {
 
                                     <Grid item>
 
-                                        <SectionContainer title="Subject">
+                                        <SectionContainer title="Subject I can mentoring">
                                             <Grid container spacing={2}>
                                                 {props.data.mentor.subjects.map(subject => (
                                                     <Grid item key={subject.id}>
@@ -182,9 +204,6 @@ const MentorProfilePage = (props) => {
                                                             </Grid>
                                                         ))
                                                 }
-
-
-
                                             </Grid>
                                         </SectionContainer>
                                     </Grid>

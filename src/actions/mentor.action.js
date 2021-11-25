@@ -11,14 +11,22 @@ import {
     UPDATE_MENTOR_PROFILE_FAIL,
     UPDATE_MENTOR_PROFILE_SUCCESS
 } from '../constants/actionTypes';
+import qs from 'qs';
 import authHeader from '../ultils/authHeader';
 
-export const fetchMentors = (key) => async (dispatch) => {
+export const fetchMentors = (key, majorId, subjectIds) => async (dispatch) => {
     try {
 
-        const response = await fm.get(`Mentor/Search/${key}`, {
-            headers: authHeader(),
-        });
+        const response = await fm.get(`Mentor/Search`,
+            {
+                params: { name: key ? key : '', majorId, subjectIds: subjectIds },
+                paramsSerializer: function (params) {
+                    return qs.stringify(params)
+                },
+            }
+            , {
+                headers: authHeader(),
+            });
 
         dispatch({ type: FETCH_MENTOR_SEARCH, payload: response.data });
     } catch (error) {

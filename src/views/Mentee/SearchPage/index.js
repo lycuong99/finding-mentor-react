@@ -3,13 +3,7 @@ import {
     Popover, TextField, Card, CardHeader,
     CardActions, ToggleButtonGroup, ToggleButton, Accordion, AccordionSummary, AccordionDetails,
     Typography,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    Checkbox,
-    ListItemText,
-    Divider
+ 
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import FilterContainer from './FilterContainer';
@@ -18,7 +12,6 @@ import SearchSection from './SearchSection';
 import { COURSE, MENTOR } from '../../../constants/searchType';
 import { connect } from 'react-redux';
 import { fetchMentors, fetchCourses } from '../../../actions';
-import { propsToClassKey } from '@mui/styles';
 import CourseResults from './CourseResults';
 const SearchPage = (props) => {
 
@@ -59,16 +52,16 @@ const SearchPage = (props) => {
         }
     },
         [keySearch]);
-        
+
     useEffect(() => {
         switch (searchType) {
-            case COURSE: props.fetchCourses(keySearch); return;
-            case MENTOR: props.fetchMentors(keySearch); return;
+            case COURSE: props.fetchCourses(keySearch, selectedMajor, selectedSubjects); return;
+            case MENTOR: props.fetchMentors(keySearch, selectedMajor, selectedSubjects); return;
             default:
         }
 
     },
-        [deboundpKeySearch]);
+        [deboundpKeySearch, selectedSubjects, selectedMajor,searchType]);
 
 
     const onSubmitSearch = () => {
@@ -79,6 +72,8 @@ const SearchPage = (props) => {
             <Grid container spacing={3} >
                 <Grid item sx={{ width: '20em' }}>
                     <FilterContainer variant="outlined" searchType={searchType}
+                        selectedMajor={selectedMajor}
+                        selectedSubjects={selectedSubjects}
                         onChangeSearchType={handleChangeSearchType}
                         onChangeMajor={handleChangeMajor}
                         onChangeSelectedSubjects={handleChangeSubjects} />

@@ -34,6 +34,7 @@ const FilterContainer = (props) => {
     }, [selectedMajor]);
 
     const handleToggleSubject = (value) => {
+
         const currentIndex = selectedSubjects.indexOf(value);
         const newChecked = [...selectedSubjects];
 
@@ -49,6 +50,7 @@ const FilterContainer = (props) => {
     const handleToggleMajor = (value) => {
         props.fetchAllSubjectByMajor(value);
         onChangeMajor(value);
+        console.log(value);
     };
 
     // useEffect(() => {
@@ -82,7 +84,7 @@ const FilterContainer = (props) => {
                     </ToggleButtonGroup>
                 </Grid>
                 <Grid item >
-                    <Accordion disableGutters elevation={0}>
+                    <Accordion disableGutters elevation={0} defaultExpanded>
                         <AccordionSummary
                             sx={{ paddingRight: '5px' }}
                             expandIcon={<ExpandMoreIcon />}
@@ -124,7 +126,7 @@ const FilterContainer = (props) => {
                 </Grid>
 
                 <Grid item>
-                    <Accordion disableGutters elevation={0}>
+                    <Accordion disableGutters elevation={0} defaultExpanded>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
@@ -146,7 +148,9 @@ const FilterContainer = (props) => {
                                                         <Checkbox
                                                             edge="start"
                                                             tabIndex={-1}
-                                                            checked={selectedSubjects.indexOf(subject.id) !== -1}
+                                                            value={subject.id}
+                                                            checked={selectedSubjects && selectedSubjects.indexOf(subject.id) !== -1}
+                                                            onChange={() => { handleToggleSubject(subject.id); }}
                                                             disableRipple
                                                         />
                                                     </ListItemIcon>
