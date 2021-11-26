@@ -35,7 +35,7 @@ const question_init = {
 
 const QuestionDetail = (props) => {
     const paddingX = '3em';
-    const { courseId } = props;
+    const { courseId, isMentor } = props;
     const [question, setQuestion] = useState(props.data);
     const [answerText, setAnswerText] = useState('');
     const [answers, setAnswers] = useState(null);
@@ -48,7 +48,7 @@ const QuestionDetail = (props) => {
             createBy: 'mentor1',
             content: answerText,
             dateCreated: new Date(),
-            isMentor: true
+            isMentor: isMentor
         });
         setAnswerText('');
     }

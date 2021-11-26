@@ -112,6 +112,7 @@ const QuestionManager = (props) => {
                     currentQuestion ?
                         (<QuestionDetail
                             data={questions.find(q => q.id == currentQuestion)} questionId={currentQuestion} courseId={courseId}
+                            isMentor={false}
                             onClose={handleCloseQuestionDetail} />)
                         : <QuestionCollection questions={questions} onSelectQuestion={handleSelectQuestion}
                             onAddQuestion={handleAddQuestion} />

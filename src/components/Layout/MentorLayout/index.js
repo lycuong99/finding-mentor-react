@@ -136,13 +136,13 @@ INIT_DATA.items.push(
         url: '/mentor/course',
         icon: <FiberManualRecord fontSize="small" />
     },
-    {
-        id: 'question',
-        title: 'Questions',
-        type: 'item',
-        url: '/mentor/question',
-        icon: <FiberManualRecord fontSize="small" />
-    },
+    // {
+    //     id: 'question',
+    //     title: 'Questions',
+    //     type: 'item',
+    //     url: '/mentor/question',
+    //     icon: <FiberManualRecord fontSize="small" />
+    // },
     // {
     //     id: 'questions',
     //     title: 'Staff',
@@ -166,13 +166,13 @@ INIT_DATA.items.push(
     //         }
     //     ]
     // },
-    {
-        id: 'resourse',
-        title: 'Resourse',
-        url: 'mentor/resourse',
-        type: 'item',
-        icon: <EventNoteOutlined />
-    },
+    // {
+    //     id: 'resourse',
+    //     title: 'Resourse',
+    //     url: 'mentor/resourse',
+    //     type: 'item',
+    //     icon: <EventNoteOutlined />
+    // },
     {
         id: 'profile',
         title: 'Profile',
@@ -180,13 +180,13 @@ INIT_DATA.items.push(
         type: 'item',
         icon: <EventNoteOutlined />
     },
-    {
-        id: 'timekeeping',
-        title: 'Timekeeping',
-        url: '/timekeeping',
-        type: 'item',
-        icon: <CalendarTodayOutlined />
-    },
+    // {
+    //     id: 'timekeeping',
+    //     title: 'Timekeeping',
+    //     url: '/timekeeping',
+    //     type: 'item',
+    //     icon: <CalendarTodayOutlined />
+    // },
     // {
     //   id: 'profile',
     //   title: 'Profile',

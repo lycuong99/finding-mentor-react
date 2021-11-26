@@ -61,10 +61,11 @@ export const getQuestions = async (courseId) => {
 
 
 export const addQuestion = async (courseId, question) => {
-    console.log('add Question');
+
     try {
         const questionRef = doc(collection(db, `courses/${courseId}/questions`));
-
+        console.log('add Question');
+        console.log(UserStorage.getUserId());
         await setDoc(questionRef, {
             ...question,
             id: questionRef.id,
@@ -79,13 +80,14 @@ export const addQuestion = async (courseId, question) => {
 }
 
 export const addAnswer = async (courseId, questionId, newAnswer) => {
-    console.log('ADD answer', courseId, questionId);
+    console.log('ADD answer', courseId, questionId, UserStorage.getUserId());
     try {
         const ref = doc(collection(db, `courses/${courseId}/questions/${questionId}/answers`));
 
         await setDoc(ref, {
             ...newAnswer,
-            id: ref.id
+            id: ref.id,
+            createBy: UserStorage.getUserId()
         });
 
         const questionRef = doc(db, `courses/${courseId}/questions`, questionId);
