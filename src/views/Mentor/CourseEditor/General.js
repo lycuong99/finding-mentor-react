@@ -60,7 +60,7 @@ const General = (props) => {
             })
         });
 
-     console.log(majorIdInit);   
+    console.log(majorIdInit);
     const initialValues = {
         name: '',
         imageUrl: '',
@@ -69,7 +69,7 @@ const General = (props) => {
         price: 0,
         startDate: new Date(),
         duration: 1,
-        major: majorIdInit,
+        majorId: majorIdInit,
         subjectId: '',
         ...props.initValues,
         durationUnit: durationUnit,
@@ -85,7 +85,7 @@ const General = (props) => {
             onSubmit={(values, actions) => {
                 handleSubmit(values);
             }}
-      
+
             validationSchema={validationSchema}
 
         >
@@ -145,11 +145,13 @@ const General = (props) => {
                                     <FormControl component="fieldset" fullWidth>
                                         <FormLabel component="legend">What is major ?</FormLabel>
                                         {/* <MultipleSelectChip /> */}
-                                        <Select  name='majorId'
+                                        <Select
+                                            name='majorId'
                                             required
-                                            value={formik.values.majorId} onChange={(e) => {
-                                                formik.handleChange(e);
-
+                                            value={formik.values.majorId}
+                                            onChange={(e) => {
+                                                //  formik.handleChange(e);
+                                                formik.setFieldValue('majorId', e.target.value);
                                                 // setMajorInit(e.target.value);
                                                 formik.setFieldValue('subjectId', props.subjectMajors[e.target.value][0].id);
                                             }}>
@@ -183,7 +185,7 @@ const General = (props) => {
                             <Grid item>
                                 <FormControl component="fieldset">
                                     <FormLabel component="legend">Price</FormLabel>
-                                    <Select  name='price' value={formik.values.price} onChange={(e) => {
+                                    <Select name='price' value={formik.values.price} onChange={(e) => {
                                         formik.handleChange(e);
                                     }}>
                                         <MenuItem value={0}>Free</MenuItem>
@@ -210,8 +212,8 @@ const General = (props) => {
                                             }}
                                             error={formik.touched.description && Boolean(formik.errors.description)}
                                             helperText={formik.touched.description && formik.errors.description}
-                                            renderInput={(params) => <TextField {...params} error={formik.touched.description && Boolean(formik.errors.description)}
-                                                helperText={formik.touched.description && formik.errors.description} />}
+                                            renderInput={(params) => <TextField {...params} error={formik.touched.startDate && Boolean(formik.errors.startDate)}
+                                                helperText={formik.touched.description && formik.errors.startDate} />}
                                         />
                                     </FormControl>
                                 </Grid>

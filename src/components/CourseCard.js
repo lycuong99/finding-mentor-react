@@ -32,15 +32,15 @@ const CourseCard = (props) => {
     const classes = useStyles();
     if (props.type && props.type == 'detail') {
         return (
-
             <Card sx={{ width: '100%', borderWidth: 2, borderRadius: 2, }} variant="outlined" className={classes.root}>
                 <Grid container direction="row" justifyContent="space-between">
                     <Grid item >
                         <CardMedia
                             component="img"
                             height="160"
-                            image="https://img-c.udemycdn.com/course/240x135/705264_caa9_11.jpg"
+                            image={data.imageUrl != null ? data.imageUrl : courseImgNull}
                             alt="green iguana"
+                            sx={{ width: '280px' }}
                         />
                     </Grid>
                     <Grid item xs>
@@ -48,12 +48,13 @@ const CourseCard = (props) => {
                             <Typography variant="subtitle1">
                                 {data.name}
                             </Typography>
-                            <Typography variant="body1">
-                              {data.description}
-                            </Typography>
                             <Typography variant="subtitle2">
                                 {data.mentorName}
                             </Typography>
+                            <Typography variant="body1">
+                                {data.description}
+                            </Typography>
+
                             {/* <Rating size="medium"
                                 readOnly
                                 name="simple-controlled"
@@ -100,6 +101,7 @@ const CourseCard = (props) => {
                             component="img"
                             height="150"
                             image={data.imageUrl ? data.imageUrl : courseImgNull}
+                            sx={{ width: '280px' }}
                             alt="green iguana"
                         />
                     </Grid>
@@ -138,7 +140,8 @@ const CourseCard = (props) => {
                 <CardMedia
                     component="img"
                     height="140"
-                    image="https://img-c.udemycdn.com/course/240x135/947098_02ec_2.jpg"
+                    image={data.imageUrl ? data.imageUrl : courseImgNull}
+                    sx={{ width: '280px' }}
                     alt="green iguana"
                 />
                 <CardContent sx={{ paddingTop: '1em', paddingX: '8px', paddingBottom: 0 }}>
@@ -149,11 +152,11 @@ const CourseCard = (props) => {
                     <Typography variant="subtitle2">
                         {data.mentorName ? data.mentorName : 'unknown'}
                     </Typography>
-                    <Rating size="small"
+                    {/* <Rating size="small"
                         readOnly
                         name="simple-controlled"
                         value={4}
-                    />
+                    /> */}
                 </CardContent>
                 <CardActions>
                     <Grid container alignItems="center" justifyContent="space-between">

@@ -6,11 +6,15 @@ import CourseCard from '../../../components/CourseCard';
 
 const CourseResults = (props) => {
     return (
-        <List>
+        <List >
             {
                 _.isEmpty(props.courseResults) ? null :
                     props.courseResults.map((course) =>
-                        ((<CourseCard type="detail" data={course} />))
+                    ((
+                        <ListItem key={course.id} sx={{ paddingX: 0 }}>
+                            <CourseCard type="detail" data={course} />
+                        </ListItem>
+                    ))
                     )
             }
         </List>);

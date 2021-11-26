@@ -68,7 +68,7 @@ const QuestionManager = (props) => {
 
 
     useEffect(() => {
-        if (!_.isEmpty(props.mentees)) {
+        if (props.mentees != null) {
             let unsub = getQuestionsOnSnapshot(courseId,
                 (datas) => {
                     const questionsTmp = datas.map(question => {
@@ -119,10 +119,10 @@ const QuestionManager = (props) => {
                             (<QuestionDetail
                                 data={questions.find(q => q.id == currentQuestion)} questionId={currentQuestion} courseId={courseId}
                                 onClose={handleCloseQuestionDetail} />)
-                            : questions ? <QuestionCollection questions={questions}
+                            : <QuestionCollection questions={questions}
                                 onSelectQuestion={handleSelectQuestion}
                                 onAddQuestion={handleAddQuestion} />
-                                : '...loading'
+
                     }
                 </Grid>
 

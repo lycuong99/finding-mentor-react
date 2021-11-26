@@ -26,11 +26,13 @@ export default (state = INIT_STATE, action) => {
 
     switch (action.type) {
         case FETCH_RECOMMEND_MENTOR: return { ...state, recommendMentor: action.payload };
-        case FETCH_RECOMMEND_MENTOR_BY_MAJOR: 
-       
-        return { ...state, recommendMentorByMajor: action.payload };
+        case FETCH_RECOMMEND_MENTOR_BY_MAJOR:
 
-        case FETCH_MENTOR_SEARCH: return { ...state, searchResults: action.payload };
+            return { ...state, recommendMentorByMajor: action.payload };
+
+        case FETCH_MENTOR_SEARCH:
+            console.log("SEARCH MENTOR TRIGGER");
+            return { ...state, searchResults: action.payload };
 
         case FETCH_MENTOR_BY_ID: return { ...state, currentMentor: action.payload };
 

@@ -54,6 +54,8 @@ const SearchPage = (props) => {
         [keySearch]);
 
     useEffect(() => {
+
+
         switch (searchType) {
             case COURSE: props.fetchCourses(keySearch, selectedMajor, selectedSubjects); return;
             case MENTOR: props.fetchMentors(keySearch, selectedMajor, selectedSubjects); return;
@@ -61,7 +63,7 @@ const SearchPage = (props) => {
         }
 
     },
-        [deboundpKeySearch, selectedSubjects, selectedMajor,searchType]);
+        [deboundpKeySearch, selectedSubjects, searchType]);
 
 
     const onSubmitSearch = () => {

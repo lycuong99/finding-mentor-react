@@ -50,7 +50,7 @@ const FilterContainer = (props) => {
     const handleToggleMajor = (value) => {
         props.fetchAllSubjectByMajor(value);
         onChangeMajor(value);
-        console.log(value);
+        // console.log(value);
     };
 
     // useEffect(() => {

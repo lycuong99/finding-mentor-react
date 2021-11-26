@@ -117,7 +117,7 @@ const MentorProfilePage = (props) => {
                                     <Grid item sx={{ marginBottom: '2em' }}>
                                         <Avatar
                                             sx={{ width: avatarSize, height: avatarSize }}
-                                            src={props.data.mentor.avatarUrl ? props.data.mentor.avatarUrl : '/src/assets/images/userAvatar.png'} />
+                                            src={props.data.avatarUrl ? props.data.avatarUrl : null} />
                                     </Grid>
 
                                     <Grid item sx={{ marginBottom: '0.5em' }}>
@@ -144,8 +144,16 @@ const MentorProfilePage = (props) => {
                                             <Grid item sx={{ marginBottom: '0.5em' }}>
                                                 <Typography variant="h1"> {props.data.fullname}</Typography>
                                             </Grid>
-                                            <Grid item>
-                                                <Typography variant="h3" color="primary"> {props.data.mentor.majors[0].name}</Typography>
+
+                                            <Grid item container >
+                                                {
+                                                    props.data.mentor.majors ? props.data.mentor.majors.map(major => (
+                                                        <Grid item>
+                                                            <Typography variant="h3" color="primary"> {major.name}</Typography>
+                                                        </Grid>
+                                                    )) : null
+                                                }
+
                                             </Grid>
 
                                             {/* <Grid item>
@@ -159,7 +167,7 @@ const MentorProfilePage = (props) => {
                                                     <FieldInfo icon={<WorkIcon />} label={props.data.mentor.majors[0].name} />
                                                 </Grid> */}
                                                 <Grid item md>
-                                                    <FieldInfo icon={<WorkIcon color="primary"  fontSize='large'/>} label={data.mentor.company} />
+                                                    <FieldInfo icon={<WorkIcon color="primary" fontSize='large' />} label={data.mentor.company} />
                                                 </Grid>
                                             </Grid>
                                             <Grid item container >
@@ -167,7 +175,7 @@ const MentorProfilePage = (props) => {
                                                     <FieldInfo icon={<AddLocationOutlinedIcon color="primary" fontSize='large' />} label={data.address} />
                                                 </Grid>
                                                 <Grid item md>
-                                                    <FieldInfo icon={<PhoneOutlinedIcon color="primary"  fontSize='large'/>} label={data.phoneNumber} />
+                                                    <FieldInfo icon={<PhoneOutlinedIcon color="primary" fontSize='large' />} label={data.phoneNumber} />
                                                 </Grid>
                                             </Grid>
 

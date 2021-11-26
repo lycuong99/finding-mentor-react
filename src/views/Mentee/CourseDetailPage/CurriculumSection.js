@@ -12,13 +12,14 @@ const CurriculumSection = (props) => {
             <Grid container direction="column" rowGap={3} sx={{ padding: '2em' }} >
                 {
                     curriculum ?
-                        curriculum.map((section, index) => (
-                            <Grid item key={index}>
-                                <Section data={section}
-                                    index={index + 1}
-                                />
-                            </Grid>
-                        )) : "loading"
+                        curriculum?.length !== 0 ?
+                            curriculum.map((section, index) => (
+                                <Grid item key={index}>
+                                    <Section data={section}
+                                        index={index + 1}
+                                    />
+                                </Grid>
+                            )) : "No Curriculum" : "Loading"
                 }
             </Grid>
         </div>

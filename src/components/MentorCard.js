@@ -20,28 +20,34 @@ const MentorCard = (props) => {
             <Link to={`/mentee/profile/${data.id}`} style={{ textDecoration: 'none' }}>
                 <Card className={classes.root}
                     variant="outlined"
-                    sx={{ borderRadius: 2, borderWidth: '2px', paddingX: '2em', paddingY: '2.2em' }}
+                    sx={{ borderRadius: 2, borderWidth: '2px', paddingX: '2em', paddingY: '2.2em', width: '100%' }}
                 >
                     <Grid container direction="column" alignItems="center">
                         <Grid item xs >
                             <Avatar
                                 style={{ width: matchMDUp ? 220 : 160, height: matchMDUp ? 220 : 160 }}
-                                src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80" />
+                                src={data.avatarUrl} />
                         </Grid>
                         <Grid item container direction="column" alignItems="center" sx={{ marginTop: '0.5em', minWidth: 200 }} >
                             <Typography variant="subtitle1" fontSize="1.25rem" color="primary">
                                 {data.fullname}
                             </Typography>
-                            <Tooltip title={data?.majorId ? data.majorId : ''}>
-                                <Typography variant="subtitle2" fontSize="1rem" style={{ marginBottom: '5px' }}>
-                                    Software engineering
-                                </Typography>
-                            </Tooltip>
-                            <Rating size="medium"
+                            {
+                                data.mentor.majors ?
+                                    data.mentor.majors.map(major => (
+                                        <Tooltip title={major.id}>
+                                            <Typography variant="subtitle2" fontSize="1rem" style={{ marginBottom: '5px' }}>
+                                                {major.name}
+                                            </Typography>
+                                        </Tooltip>
+                                    )) : null
+                            }
+
+                            {/* <Rating size="medium"
                                 readOnly
                                 name="simple-controlled"
                                 value={4}
-                            />
+                            /> */}
                         </Grid>
                     </Grid>
 
@@ -51,31 +57,44 @@ const MentorCard = (props) => {
     }
     else if (type && type == 'horizontal') {
         return (
-            <Card variant="outlined" sx={{ borderRadius: 2, borderWidth: '2px' }}>
+            <Card variant="outlined" sx={{ borderRadius: 2, borderWidth: '2px', width: '100%' }}>
                 <Grid container sx={{ paddingX: '1em', paddingY: '1em' }}>
                     <Grid item>
-                        <Avatar sx={{ width: 88, height: 88, border: '2px solid #0000001f' }} src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80" />
+                        <Avatar sx={{ width: 88, height: 88, border: '2px solid #0000001f' }}
+                            src={data.avatarUrl} />
                     </Grid>
                     <Grid item container xs direction="column" spacing={1} sx={{ paddingX: '1em' }} >
                         <Grid item container direction="column">
                             <Typography variant="subtitle1" fontSize="1.25rem" color="primary">
                                 {data.fullname}
                             </Typography>
-                            <Typography variant="subtitle2" fontSize="0.875rem">
-                                Software engineering
-                            </Typography>
+                            {
+                                data.mentor.majors ?
+                                    data.mentor.majors.map(major => (
+                                        <Tooltip title={major.id}>
+                                            <Typography variant="subtitle2" fontSize="1rem" style={{ marginBottom: '5px' }}>
+                                                {major.name}
+                                            </Typography>
+                                        </Tooltip>
+                                    )) : null
+                            }
 
-                            <Rating size="small"
+                            {/* <Rating size="small"
                                 readOnly
                                 name="simple-controlled"
                                 value={4}
-                            />
+                            /> */}
                         </Grid>
                         <Grid item container spacing={1}>
-                            <Grid item><Chip label="SWP391" size="small" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                            <Grid item><Chip label="DB301" size="small" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                            <Grid item><Chip label="SYB202" size="small" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
-                            <Grid item><Chip label="JAV101" size="small" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} /></Grid>
+                            {
+                                data.mentor.subjects.map(subject => (
+                                    <Grid item>
+                                        <Tooltip title={subject.name}>
+                                            <Chip label={subject.id} size="small" sx={{ borderRadius: '12px !important', fontWeight: 'medium', paddingX: '10px' }} />
+                                        </Tooltip>
+                                    </Grid>
+                                ))
+                            }
                         </Grid>
                     </Grid>
                 </Grid>
@@ -85,7 +104,7 @@ const MentorCard = (props) => {
 
         return (
 
-            <Card variant="outlined" sx={{ borderRadius: 2, borderWidth: '2px' }}>
+            <Card variant="outlined" sx={{ borderRadius: 2, borderWidth: '2px', width: '100%' }}>
                 <Grid container>
                     <Grid item container xs sx={{ paddingX: '1.5em', paddingY: '2em' }} spacing={3} className="Left">
                         <Grid item>
@@ -98,22 +117,26 @@ const MentorCard = (props) => {
                                     {data.fullname}
                                 </Typography>
 
-                                <Grid item container>
+                                <Grid item container >
                                     {
-                                        data.mentor.majors.map(major => (
-                                            <Typography variant="subtitle2" key={major.id}>
-                                                {major.name}
-                                            </Typography>
+                                        data.mentor.majors.map((major, index) => (
+                                            <Grid item key={major.id} spacing={0}>
+                                                <Tooltip title={major.id}>
+                                                    <Typography variant="subtitle2" fontSize="1rem" style={{ marginBottom: '5px' }}>
+                                                        {` ${major.name}${index != data.mentor.majors.length - 1 ? ', ' : ''}`}
+                                                    </Typography>
+                                                </Tooltip>
+                                            </Grid>
                                         ))
                                     }
                                 </Grid>
 
 
-                                <Rating size="small"
+                                {/* <Rating size="small"
                                     readOnly
                                     name="simple-controlled"
                                     value={4}
-                                />
+                                /> */}
                                 <Typography variant="body1" paragraph >
                                     {data.mentor.about}
                                 </Typography>
@@ -137,7 +160,7 @@ const MentorCard = (props) => {
                         justifyContent="center" alignItems="center" xs={3}
                         sx={{ paddingX: '2em', paddingY: '2em', bgcolor: '#f8f8f8', }} >
                         <Grid item >
-                            <Button variant="contained" component={Link} to="/mentee/profile" sx={{ fontSize: '1rem', width: '8em', textTransform: 'capitalize', fontWeight: 400 }} >
+                            <Button variant="contained" component={Link} to={`/mentee/profile/${data.id}`} sx={{ fontSize: '1rem', width: '8em', textTransform: 'capitalize', fontWeight: 400 }} >
                                 View Profile
                             </Button>
                         </Grid>

@@ -137,7 +137,7 @@ const CourseEditPage = (props) => {
                     </div>
                     <div hidden={selectedItem !== 3}>
                         {
-                            (!_.isEmpty(props.mentees) && !_.isEmpty(props.currentMentor)) ? <QuestionManager courseId={id} /> : 'loading'
+                            (props.mentees !== null && !_.isEmpty(props.currentMentor)) ? <QuestionManager courseId={id} /> : '..loading..'
                         }
 
                     </div>

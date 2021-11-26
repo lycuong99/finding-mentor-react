@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Card, Chip, Container, Grid, Paper, Rating, Skeleton, Tab, Tabs, Typography } from '@mui/material';
+import { Alert, Avatar, Button, Card, Chip, Container, Grid, Paper, Rating, Skeleton, Snackbar, Tab, Tabs, Typography } from '@mui/material';
 import SectionContainer from '../../../components/SectionContainer';
 import { Box } from '@mui/system';
 import CurriculumSection from './CurriculumSection';
 import { useParams } from 'react-router';
-import { fetchCourse, fetchUserInfo, enrollCourse, fetchMyLearningCourses, fetchMentor, fetchMenteesInCourse } from '../../../actions';
+import { fetchCourse, fetchUserInfo, enrollCourse, fetchMyLearningCourses, fetchMentor, fetchMenteesInCourse, closeSnackBarEnroll } from '../../../actions';
 import { connect } from 'react-redux';
 import UserStorage from '../../../ultils/UserStorage';
 import _ from 'lodash';
@@ -33,6 +33,7 @@ const CourseDetailPage = (props) => {
     const [isEnrolled, setIsEnrolled] = useState(false);
     const [curriculumData, setCurriculumData] = useState(null);
     const { id } = useParams();
+
     useEffect(async () => {
         console.log(id);
         if (id) {
@@ -67,7 +68,9 @@ const CourseDetailPage = (props) => {
                 setIsEnrolled(false);
             }
         }
-    }, [props.mylearningCourses])
+    }, [props.mylearningCourses]);
+
+
 
     const handleChangeTableIndex = (event, newValue) => {
         setTabIndex(newValue);
@@ -85,6 +88,41 @@ const CourseDetailPage = (props) => {
                     <Skeleton variant="rectangular" width={1210} height={618} /></>) :
                 (
                     <>
+                        <Snackbar
+                            open={props.isEnrollSuccess}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'right',
+                            }}
+                            onClose={() => {
+                                setTimeout(() => {
+                                    props.closeSnackBarEnroll();
+                                    props.fetchMyLearningCourses();
+                                    props.fetchMenteesInCourse(id);
+                                }, 200)
+                            }}
+                            message="Update Success"
+
+                        >
+                            <Alert severity="success">Enroll Success!</Alert>
+                        </Snackbar>
+
+                        <Snackbar
+                            open={props.isEnrollFail}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'right',
+                            }}
+                            onClose={() => {
+                                setTimeout(() => {
+                                    props.closeSnackBarEnroll();
+                                }, 2000)
+                            }}
+                            message="Update Success"
+
+                        >
+                            <Alert severity="error">Your balance is not enough!</Alert>
+                        </Snackbar>
                         <Container component={Paper} maxWidth="xl" variant="outline" sx={{ border: '2px solid #e5e7eb', borderRadius: 3, marginTop: '-1em' }} >
                             <Grid container sx={{ paddingLeft: '2em', paddingRight: '2em', paddingY: '3em' }} direction="column" justifyContent="space-between" >
                                 <Grid item container spacing={2}>
@@ -96,7 +134,7 @@ const CourseDetailPage = (props) => {
                                         <Typography variant="h2">{props.course && props.course.name ? props.course.name : course.name}</Typography>
                                         <Typography variant="h3">{props.course && props.course.mentorName ? props.course.mentorName : course.mentor.name}</Typography>
                                         <Typography variant="body2">
-                                            {course.description}</Typography>
+                                            {props.course.description}</Typography>
                                         <Rating size="medium" readOnly name="simple-controlled" value={4} />
                                         <Typography variant="h3">{`Subject: ${props.course ? props.course.subjectId : course.subjectId}`}</Typography>
                                         <Grid item container justifyContent="space-between" alignItems="center">
@@ -115,7 +153,7 @@ const CourseDetailPage = (props) => {
                                         <Grid item>
                                             <Typography variant="h1" textAlign="center">{`$${props.course && props.course.price ? props.course.price : course.price}`} </Typography>
                                         </Grid>
-                                        <Grid item sx={{ marginTop: '1em' }}>
+                                        <Grid item sx={{ marginTop: '1em' }} container alignItems="center" direction="column">
                                             {
                                                 !isEnrolled ? (<Button variant="contained" fullWidth sx={{ width: '100%', paddingY: '0.7em', fontSize: '1.2rem' }}
                                                     onClick={handleEnrollSubmit}> Enroll </Button>) :
@@ -138,8 +176,9 @@ const CourseDetailPage = (props) => {
                                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                         <Tabs value={tabIndex} onChange={handleChangeTableIndex} aria-label="basic tabs example">
                                             <Tab label="Curriculumn" />
-                                            <Tab label="Question" />
-                                            <Tab label="Activity" />
+
+                                            <Tab label="Question" disabled={!isEnrolled} />
+                                            {/* <Tab label="Activity" /> */}
                                         </Tabs>
                                         <div>
 
@@ -154,7 +193,7 @@ const CourseDetailPage = (props) => {
                                 <Grid item>
                                     <div hidden={tabIndex !== 1}>
                                         {
-                                            (!_.isEmpty(props.mentees) && !_.isEmpty(props.currentMentor)) ? <QuestionSection courseId={id} /> : 'loading'
+                                            (props.mentees !== null && !_.isEmpty(props.currentMentor)) ? <QuestionSection courseId={id} /> : 'loading'
                                         }
 
                                     </div>
@@ -180,8 +219,10 @@ const mapStateToProps = (state) => ({
     mylearningCourses: state.mentee.mylearningCourses,
     mentees: state.course.mentees,
     currentMentor: state.mentor.currentMentor,
+    isEnrollSuccess: state.mentee.isEnrollSuccess,
+    isEnrollFail: state.mentee.isEnrollFail
 });
 
 export default connect(mapStateToProps, {
-    fetchCourse, fetchUserInfo, enrollCourse, fetchMyLearningCourses, fetchMenteesInCourse, fetchMentor
+    fetchCourse, fetchUserInfo, enrollCourse, fetchMyLearningCourses, fetchMenteesInCourse, fetchMentor, closeSnackBarEnroll
 })(CourseDetailPage);

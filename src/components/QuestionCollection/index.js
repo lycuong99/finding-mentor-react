@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import AskQuestionDialog from '../dialog/AskQuestionDialog';
 import QuestionCard from '../QuestionCard';
 import { addAnswer, getAnswersOnSnapshot } from '../../ultils';
-
+import _ from 'lodash';
 
 const QuestionCollection = (props) => {
     const paddingX = '3em';
@@ -31,14 +31,15 @@ const QuestionCollection = (props) => {
                 <Grid item sx={{ marginTop: '1em', marginBottom: '2em' }}>
                     <List>
                         {
-                            questions.filter(q => q.content.includes(keySearch) || q.title.includes(keySearch)).map((question, index) => {
-                                console.log(question);
-                                return (
-                                    <ListItem key={index} onClick={() => {
-                                        props.onSelectQuestion(question.id);
-                                    }}> <QuestionCard data={question} /> </ListItem>
-                                );
-                            })
+                            !_.isEmpty(questions) ?
+                                questions.filter(q => q.content.includes(keySearch) || q.title.includes(keySearch)).map((question, index) => {
+                                    console.log(question);
+                                    return (
+                                        <ListItem key={index} onClick={() => {
+                                            props.onSelectQuestion(question.id);
+                                        }}> <QuestionCard data={question} /> </ListItem>
+                                    );
+                                }) : '0 Question'
                         }
                     </List>
                 </Grid>

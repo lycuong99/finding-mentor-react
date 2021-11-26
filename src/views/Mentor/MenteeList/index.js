@@ -77,7 +77,9 @@ const MenteeList = (props) => {
                                             {columns.map((column) => {
                                                 let value = mentee[column.id];
                                                 if (column.id == 'majorId') {
-                                                    value = props.majors.find(m => m.id == value).name;
+                                                    let tmp = props.majors.find(m => m.id == value);
+
+                                                    value = tmp ? tmp?.name : 'unknown';
                                                 }
                                                 if (column.type == 'date') {
                                                     value = format(new Date(value), 'dd/MM/yyyy');

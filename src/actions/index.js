@@ -41,7 +41,15 @@ export const verifySignUp = ({ fullname, email, idToken }) => async (dispatch) =
         });
 
         console.log(response);
+
+        console.log('Go to additional-info');
+       
+
         if (response.status === 200) {
+            history.replace("/additional-info");
+            window.location.pathname = "/additional-info";
+            UserStorage.setJWTDecode(response.data.token);
+            
             dispatch({
                 type: SIGN_UP,
                 payload: {
@@ -50,12 +58,6 @@ export const verifySignUp = ({ fullname, email, idToken }) => async (dispatch) =
             });
             // JwtToken.set(response.data.token);
             // JwtToken.setUsername(username);
-
-            UserStorage.setJWTDecode(response.data.token);
-            console.log('Go');
-            history.replace("/additional-info");
-            // history.replace("/mentee");
-
         }
     } catch (error) {
         console.log('Sign Un fail');

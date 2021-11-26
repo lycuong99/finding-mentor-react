@@ -90,7 +90,7 @@ const QuestionManager = (props) => {
                     }
                 });
                 setQuestions(questionsTmp);
-              
+
             });
 
         return () => {
@@ -113,9 +113,9 @@ const QuestionManager = (props) => {
                         (<QuestionDetail
                             data={questions.find(q => q.id == currentQuestion)} questionId={currentQuestion} courseId={courseId}
                             onClose={handleCloseQuestionDetail} />)
-                        : questions ? <QuestionCollection questions={questions} onSelectQuestion={handleSelectQuestion}
+                        : <QuestionCollection questions={questions} onSelectQuestion={handleSelectQuestion}
                             onAddQuestion={handleAddQuestion} />
-                            : '...loading'
+
                 }
             </Grid>
 

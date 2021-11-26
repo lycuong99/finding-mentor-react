@@ -10,7 +10,10 @@ const MentorResults = (props) => {
             {
                 _.isEmpty(props.mentorResults) ? null :
                     props.mentorResults.map((mentor) =>
-                        ((<MentorCard data={mentor} />))
+                    ((
+                        <ListItem key={mentor.id} sx={{ paddingX: 0 }}>
+                            <MentorCard data={mentor} />
+                        </ListItem>))
                     )
             }
         </List>);

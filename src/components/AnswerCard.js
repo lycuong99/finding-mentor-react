@@ -15,7 +15,7 @@ const AnswerCard = (props) => {
     const { data } = props;
     const classes = useStyles();
     return (
-        <Card sx={{ padding: '1em', width: '100%' }}>
+        <Card sx={{ padding: '1em', width: '100%' }} variant="outlined">
             <Grid container >
                 <Grid item sx={{ marginRight: '1em' }}>
                     <Avatar sx={{ width: 60, height: 60, border: '2px solid #0000001f' }}

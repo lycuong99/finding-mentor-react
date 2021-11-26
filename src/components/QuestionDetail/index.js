@@ -1,10 +1,11 @@
-import { Grid, Paper, TextField, Typography, Button, Divider, List, ListItem, Avatar, Card } from '@mui/material';
+import { Grid, Paper, TextField, Typography, Button, Divider, List, ListItem, Avatar, Card, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useEffect, useState } from 'react';
 import AnswerCard from '../AnswerCard';
 import { addAnswer, getAnswersOnSnapshot, getAvatarLetter } from '../../ultils';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 const question_init = {
     id: '1',
     title: "Do you want to eat ?",
@@ -90,18 +91,18 @@ const QuestionDetail = (props) => {
     }, [props.data])
 
     return (
-        <Grid container direction="row" sx={{ padding: '1em', paddingRight: '2em' }}>
-            <Grid item container direction="column" sx={{ width: '120px' }}>
-                <Grid item ><Button onClick={props.onClose}>BACk</Button></Grid>
+        <Grid container direction="row" sx={{ padding: '1em', paddingRight: '2em' }} >
+            <Grid item container direction="column" sx={{ width: '120px' }} alignItems="center">
+                <Grid item ><IconButton color="primary" onClick={props.onClose}><ArrowBackIcon /></IconButton></Grid>
                 <Grid item xs>
-                    <Avatar sx={{ width: 88, height: 88, border: '2px solid #0000001f' }}
+                    <Avatar sx={{ width: 88, height: 88, border: '2px solid #0000001f', marginTop: '10px' }}
                         src={question.avatarUrl} /> </Grid>
             </Grid>
 
             {/* QUESTION */}
             <Grid item xs>
                 <Grid container direction="column">
-                    <Grid item container direction="column" >
+                    <Grid item container direction="column" sx={{ paddingTop: '1em' }} >
                         <Grid item>
                             <Typography variant="h2">{question.fullname}</Typography>
                         </Grid>
@@ -141,12 +142,12 @@ const QuestionDetail = (props) => {
                         {/* <Grid item sx={{width:'60px'}}>
 
                         </Grid> */}
-                        <Grid item>
+                        <Grid item xs>
                             <List >
                                 {
                                     answers ?
                                         answers.map(answer => (
-                                            <ListItem key={answer.id} >
+                                            <ListItem key={answer.id} sx={{ width: '100%' }}>
                                                 <AnswerCard data={answer} />
                                             </ListItem>
                                         ))

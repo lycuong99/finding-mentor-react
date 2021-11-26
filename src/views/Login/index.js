@@ -51,7 +51,7 @@ function LoginPage(props) {
     const [containerDirection, setContainerDirection] = useState("row-reverse");
     const history = useHistory();
     useEffect(() => {
-        if (props.authenticated == true) {
+        if (props.authenticated == true && window.location.pathname != '/additional-info') {
             history.push("/mentee");
         } else {
             console.log(type);
@@ -73,7 +73,7 @@ function LoginPage(props) {
     }, []);
 
     useEffect(() => {
-        if (props.authenticated == true) {
+        if (props.authenticated == true  && window.location.pathname != '/additional-info') {
             history.push("/mentee");
         }
     })
@@ -83,8 +83,8 @@ function LoginPage(props) {
         setSignUpAppear(false);
         setIsSignUp(false);
 
-        setTranslateImage(formRef.current.clientWidth);
-        setTranslateForm(imageRef.current.clientWidth);
+        setTranslateImage(formRef.current?.clientWidth);
+        setTranslateForm(imageRef.current?.clientWidth);
         props.reset();
     }
 
