@@ -4,7 +4,9 @@ import { Card, CardContent, ClickAwayListener, Fade, IconButton, List, ListItem,
 import { AccountCircle, ExitToApp } from '@mui/icons-material';
 import { makeStyles } from '@mui/styles';
 import { connect } from 'react-redux';
-import { logOut } from '../../actions';
+import { logOut, fetchUserInfo } from '../../actions';
+import UserStorage from '../../ultils/UserStorage';
+import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 const useStyles = makeStyles((theme) => ({
     navContainer: {
         width: '100%',
@@ -117,6 +119,12 @@ const ProfileSection = (props) => {
         prevOpen.current = open;
     }, [open]);
 
+    React.useEffect(() => {
+        props.fetchUserInfo(UserStorage.getUserId());
+    }, []);
+
+
+
     return (
         <React.Fragment>
             <IconButton ref={anchorRef}
@@ -160,6 +168,15 @@ const ProfileSection = (props) => {
                                                 button
                                             >
                                                 <ListItemIcon>
+                                                    <AccountBalanceWalletOutlinedIcon stroke={1.5} size="1.3rem" />
+                                                </ListItemIcon>
+                                                <ListItemText primary={<Typography variant="body2">Ballance: {`${props.userInfo && props.userInfo.balance ? props.userInfo?.balance : 0}`}</Typography>} />
+                                            </ListItem>
+                                            <ListItem
+                                                className={classes.listItem}
+                                                button
+                                            >
+                                                <ListItemIcon>
                                                     <ExitToApp stroke={1.5} size="1.3rem" />
                                                 </ListItemIcon>
                                                 <ListItemText primary={<Typography variant="body2">Profile</Typography>} />
@@ -188,5 +205,7 @@ const ProfileSection = (props) => {
         </React.Fragment>
     );
 }
-
-export default connect(null, { logOut })(ProfileSection);
+const mapStateToProps = (state) => ({
+    userInfo: state.user.userInfo
+});
+export default connect(mapStateToProps, { logOut, fetchUserInfo })(ProfileSection);

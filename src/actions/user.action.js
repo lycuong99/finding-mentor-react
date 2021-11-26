@@ -7,11 +7,11 @@ import { useDispatch } from 'react-redux';
 
 export const fetchUserInfo = (userId) => async (dispatch) => {
     try {
-        const response = fm.get(`User/${userId}`, {
+        const response = await fm.get(`User/${userId}`, {
             headers: authHeader(),
         });
-
-        dispatch({ type: FETCH_USER, payload: response });
+        console.log(response.data);
+        dispatch({ type: FETCH_USER, payload: response.data[0] });
 
     } catch (error) {
         // dispatch({ type: FETCH_RECOMMEND_MENTOR_ERROR, payload: { error: "ERROR" } });

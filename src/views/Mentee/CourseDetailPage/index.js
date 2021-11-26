@@ -99,6 +99,7 @@ const CourseDetailPage = (props) => {
                                     props.closeSnackBarEnroll();
                                     props.fetchMyLearningCourses();
                                     props.fetchMenteesInCourse(id);
+                                    props.fetchUserInfo(UserStorage.getUserId());
                                 }, 200)
                             }}
                             message="Update Success"
