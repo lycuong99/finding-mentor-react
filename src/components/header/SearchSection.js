@@ -6,9 +6,9 @@ import history from '../../history';
 export function SearchSection(props) {
     const [value, setValue] = useState("");
     const keyPress = (e) => {
-        if (e.keyCode == 13) {
-            history.push('/mentee/search')
-        }
+        // if (e.keyCode == 13) {
+        //     history.push('/mentee/search')
+        // }
     }
     return (
         <TextField variant="outlined"
@@ -17,6 +17,10 @@ export function SearchSection(props) {
             value={value}
             onChange={(e) => { setValue(e.target.value) }}
             onKeyDown={keyPress}
+            onClick={() => {
+                if (window.location.pathname != 'mentee/search')
+                    history.push('/mentee/search');
+            }}
             InputProps={{
                 startAdornment: (
                     <InputAdornment position="start">
